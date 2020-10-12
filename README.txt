@@ -1,0 +1,1 @@
+With the LOQED Touch Smart Lock you simply open your door with a touch. You can keep your Bluetooth phone in your pocket. Easily lock, unlock and manage access for friends, family and guests from anywhere with the LOQED app. Code access and backup power ensure you can enter whatever happens.

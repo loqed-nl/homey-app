@@ -1,0 +1,51 @@
+{
+  "id": "com.loqed.touch-smart-lock",
+  "version": "1.0.0",
+  "compatibility": ">= 4.0.0",
+  "brandColor": "#002746",
+  "sdk": 2,
+  "name": {
+    "en": "LOQED",
+    "nl": "LOQED"
+  },
+  "tags": {
+    "en": [
+      "loqed",
+      "lock"
+    ],
+    "nl": [
+      "loqed",
+      "slot"
+    ]
+  },
+  "description": {
+    "en": "Control your LOQED Touch Smart Lock",
+    "nl": "Beheer jouw LOQED Touch Smart Lock"
+  },
+  "category": [
+    "security"
+  ],
+  "images": {
+    "large": "/assets/images/large.jpg",
+    "small": "/assets/images/small.jpg"
+  },
+  "homepage": "https://loqed.com",
+  "support": "mailto:support@loqed.com",
+  "author": {
+    "name": "LOQED B.V.",
+    "email": "support@loqed.com",
+    "website": "https://loqed.com"
+  },
+  "contributors": {
+    "developers": [
+      {
+        "name": "Bert van Hoekelen",
+        "email": "bert@magwel.nl"
+      }
+    ]
+  },
+  "source": "https://github.com/loqed-nl/homey-app",
+  "bugs": {
+    "url": "https://github.com/loqed-nl/homey-app/issues"
+  }
+}

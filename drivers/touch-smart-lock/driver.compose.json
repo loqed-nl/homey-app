@@ -1,0 +1,50 @@
+{
+  "id": "touch-smart-lock",
+  "name": {
+    "en": "Touch Smart Lock",
+    "nl": "Touch Smart Lock"
+  },
+  "class": "lock",
+  "capabilities": [
+    "locked"
+  ],
+  "images": {
+    "large": "/drivers/touch-smart-lock/assets/images/large.jpg",
+    "small": "/drivers/touch-smart-lock/assets/images/small.jpg"
+  },
+  "icon": "/drivers/touch-smart-lock/assets/images/icon.svg",
+  "pair": [
+    {
+      "id": "connect",
+      "template": "login_credentials",
+      "options": {
+        "logo": "logo.svg",
+        "usernameLabel": {
+          "en": "E-mail address",
+          "nl": "Email address"
+        },
+        "usernamePlaceholder": {
+          "en": "john@example.com",
+          "nl": "jan@voorbeeld.nl"
+        }
+      }
+    },
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "create_hooks"
+      },
+      "options": {
+        "singular": true
+      }
+    },
+    {
+      "id": "create_hooks"
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ]
+}

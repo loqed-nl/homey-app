@@ -1,0 +1,239 @@
+{
+  "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
+  "id": "com.loqed.touch-smart-lock",
+  "version": "1.0.0",
+  "compatibility": ">= 4.0.0",
+  "brandColor": "#002746",
+  "sdk": 2,
+  "name": {
+    "en": "LOQED",
+    "nl": "LOQED"
+  },
+  "tags": {
+    "en": [
+      "loqed",
+      "lock"
+    ],
+    "nl": [
+      "loqed",
+      "slot"
+    ]
+  },
+  "description": {
+    "en": "Control your LOQED Touch Smart Lock",
+    "nl": "Beheer jouw LOQED Touch Smart Lock"
+  },
+  "category": [
+    "security"
+  ],
+  "images": {
+    "large": "/assets/images/large.jpg",
+    "small": "/assets/images/small.jpg"
+  },
+  "homepage": "https://loqed.com",
+  "support": "mailto:support@loqed.com",
+  "author": {
+    "name": "LOQED B.V.",
+    "email": "support@loqed.com",
+    "website": "https://loqed.com"
+  },
+  "contributors": {
+    "developers": [
+      {
+        "name": "Bert van Hoekelen",
+        "email": "bert@magwel.nl"
+      }
+    ]
+  },
+  "source": "https://github.com/loqed-nl/homey-app",
+  "bugs": {
+    "url": "https://github.com/loqed-nl/homey-app/issues"
+  },
+  "flow": {
+    "triggers": [
+      {
+        "id": "lock_state_changed",
+        "title": {
+          "en": "Lock state changed",
+          "nl": "Slot status gewijzigd"
+        },
+        "hint": {
+          "en": "Lock status is changed.",
+          "nl": "Slot status is gewijzigd."
+        },
+        "tokens": [
+          {
+            "type": "string",
+            "name": "lockState",
+            "title": {
+              "en": "Lock state",
+              "nl": "Slot status"
+            },
+            "example": {
+              "en": "OPEN, DAYLOCK, NIGHTLOCK",
+              "nl": "OPEN, DAYLOCK, NIGHTLOCK"
+            }
+          },
+          {
+            "type": "string",
+            "name": "keyAccountEmail",
+            "title": {
+              "en": "Email address",
+              "nl": "E-mailadres"
+            },
+            "example": {
+              "en": "john@example.com",
+              "nl": "jan@voorbeeld.nl"
+            }
+          }
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=touch-smart-lock"
+          }
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "change_lock_state",
+        "title": {
+          "en": "Change lock state",
+          "nl": "Verander slot status"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=touch-smart-lock"
+          },
+          {
+            "type": "dropdown",
+            "name": "lockState",
+            "placeholder": {
+              "en": "Lock state",
+              "nl": "Slot status"
+            },
+            "values": [
+              {
+                "id": "OPEN",
+                "title": {
+                  "en": "Open",
+                  "nl": "Open"
+                }
+              },
+              {
+                "id": "DAY_LOCK",
+                "title": {
+                  "en": "Unlock",
+                  "nl": "Ontgrendel"
+                }
+              },
+              {
+                "id": "NIGHT_LOCK",
+                "title": {
+                  "en": "Lock",
+                  "nl": "Vergrendel"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "drivers": [
+    {
+      "id": "touch-smart-lock",
+      "name": {
+        "en": "Touch Smart Lock",
+        "nl": "Touch Smart Lock"
+      },
+      "class": "lock",
+      "capabilities": [
+        "locked"
+      ],
+      "images": {
+        "large": "/drivers/touch-smart-lock/assets/images/large.jpg",
+        "small": "/drivers/touch-smart-lock/assets/images/small.jpg"
+      },
+      "icon": "/drivers/touch-smart-lock/assets/images/icon.svg",
+      "pair": [
+        {
+          "id": "connect",
+          "template": "login_credentials",
+          "options": {
+            "logo": "logo.svg",
+            "usernameLabel": {
+              "en": "E-mail address",
+              "nl": "Email address"
+            },
+            "usernamePlaceholder": {
+              "en": "john@example.com",
+              "nl": "jan@voorbeeld.nl"
+            }
+          }
+        },
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "create_hooks"
+          },
+          "options": {
+            "singular": true
+          }
+        },
+        {
+          "id": "create_hooks"
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "settings": [
+        {
+          "type": "group",
+          "label": {
+            "en": "LOQED Instellingen"
+          },
+          "children": [
+            {
+              "id": "apiKey",
+              "type": "text",
+              "label": {
+                "en": "API Key"
+              },
+              "hint": {
+                "en": "The API key of the homey outgoing webhook"
+              }
+            },
+            {
+              "id": "apiToken",
+              "type": "text",
+              "label": {
+                "en": "API Token"
+              },
+              "hint": {
+                "en": "The API token of the homey outgoing webhook"
+              }
+            },
+            {
+              "id": "localKeyId",
+              "type": "number",
+              "label": {
+                "en": "Local key id"
+              },
+              "hint": {
+                "en": "The local key id used in in the outgoing webhook"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

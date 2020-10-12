@@ -1,0 +1,83 @@
+{
+  "actions": [
+    {
+      "id": "change_lock_state",
+      "title": {
+        "en": "Change lock state",
+        "nl": "Verander slot status"
+      },
+      "args": [
+        {
+          "type": "dropdown",
+          "name": "lockState",
+          "placeholder": {
+            "en": "Lock state",
+            "nl": "Slot status"
+          },
+          "values": [
+            {
+              "id": "OPEN",
+              "title": {
+                "en": "Open",
+                "nl": "Open"
+              }
+            },
+            {
+              "id": "DAY_LOCK",
+              "title": {
+                "en": "Unlock",
+                "nl": "Ontgrendel"
+              }
+            },
+            {
+              "id": "NIGHT_LOCK",
+              "title": {
+                "en": "Lock",
+                "nl": "Vergrendel"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "triggers": [
+    {
+      "id": "lock_state_changed",
+      "title": {
+        "en": "Lock state changed",
+        "nl": "Slot status gewijzigd"
+      },
+      "hint": {
+        "en": "Lock status is changed.",
+        "nl": "Slot status is gewijzigd."
+      },
+      "tokens": [
+        {
+          "type": "string",
+          "name": "lockState",
+          "title": {
+            "en": "Lock state",
+            "nl": "Slot status"
+          },
+          "example": {
+            "en": "OPEN, DAYLOCK, NIGHTLOCK",
+            "nl": "OPEN, DAYLOCK, NIGHTLOCK"
+          }
+        },
+        {
+          "type": "string",
+          "name": "keyAccountEmail",
+          "title": {
+            "en": "Email address",
+            "nl": "E-mailadres"
+          },
+          "example": {
+            "en": "john@example.com",
+            "nl": "jan@voorbeeld.nl"
+          }
+        }
+      ]
+    }
+  ]
+}

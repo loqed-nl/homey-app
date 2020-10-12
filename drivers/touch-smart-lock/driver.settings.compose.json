@@ -1,0 +1,41 @@
+[
+  {
+    "type": "group",
+    "label": {
+      "en": "LOQED Settings",
+      "en": "LOQED Instellingen"
+    },
+    "children": [
+      {
+        "id": "apiKey",
+        "type": "text",
+        "label": {
+          "en": "API Key"
+        },
+        "hint": {
+          "en": "The API key of the homey outgoing webhook"
+        }
+      },
+      {
+        "id": "apiToken",
+        "type": "text",
+        "label": {
+          "en": "API Token"
+        },
+        "hint": {
+          "en": "The API token of the homey outgoing webhook"
+        }
+      },
+      {
+        "id": "localKeyId",
+        "type": "number",
+        "label": {
+          "en": "Local key id"
+        },
+        "hint": {
+          "en": "The local key id used in in the outgoing webhook"
+        }
+      }
+    ]
+  }
+]

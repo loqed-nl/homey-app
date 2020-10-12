@@ -1,0 +1,1 @@
+Met het LOQED Touch Smart Lock open je vanaf nu je deur simpelweg met een aanraking. Je houdt je Bluetooth telefoon in je zak. Open, sluit en geef toegang aan vrienden, familie en gasten waar je ook bent met de LOQED app. Codetoegang en noodstroom zorgen ervoor dat je binnenkomt wat er ook gebeurt.

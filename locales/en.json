@@ -1,0 +1,6 @@
+{
+  "pair":  {
+    "setup": "Setup",
+    "setup_description": "Connection is being setup, this takes about 15 seconds."
+  }
+}
