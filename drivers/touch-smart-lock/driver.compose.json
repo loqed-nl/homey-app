@@ -6,8 +6,14 @@
   },
   "class": "lock",
   "capabilities": [
-    "locked"
+    "locked",
+    "lock_state"
   ],
+  "capabilitiesOptions": {
+    "lock_state": {
+      "preventTag": true
+    }
+  },
   "images": {
     "large": "/drivers/touch-smart-lock/assets/images/large.jpg",
     "small": "/drivers/touch-smart-lock/assets/images/small.jpg"

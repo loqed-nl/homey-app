@@ -1,0 +1,33 @@
+{
+  "title": {
+    "en": "Lock state",
+    "nl": "Slot status"
+  },
+  "uiComponent": "picker",
+  "getable": true,
+  "setable": true,
+  "type": "enum",
+  "values": [
+    {
+      "id": "OPEN",
+      "title": {
+        "en": "Open",
+        "nl": "Open"
+      }
+    },
+    {
+      "id": "DAY_LOCK",
+      "title": {
+        "en": "Unlock",
+        "nl": "Ontgrendel"
+      }
+    },
+    {
+      "id": "NIGHT_LOCK",
+      "title": {
+        "en": "Lock",
+        "nl": "Vergrendel"
+      }
+    }
+  ]
+}

@@ -15,6 +15,10 @@ class TouchSmartLockDevice extends Homey.Device {
 
     this.log('TouchSmartLockDevice has been initialized');
 
+    if (! this.hasCapability('lock_state')) {
+      await this.addCapability('lock_state');
+    }
+
     this.registerCapabilityListener('locked', async (value) => {
       const currentLockValue = this.getCapabilityValue('locked');
       const lockState = value ? STATE_NIGHT_LOCK : STATE_OPEN;
@@ -28,9 +32,25 @@ class TouchSmartLockDevice extends Homey.Device {
         return resolve();
       });
     });
+
+    this.registerCapabilityListener('lock_state', async (value) => {
+      const currentLockState = this.getCapabilityValue('lock_state');
+
+      return new Promise(resolve => {
+        if (value === currentLockState) {
+          return resolve();
+        }
+
+        this.changeLockState(value);
+
+        return resolve();
+      });
+    });
   }
 
   triggerLockStateChange(lockState, keyAccountEmail) {
+    this.setCapabilityValue('lock_state', lockState);
+
     this._flowLockStateChanged
       .trigger(this, {
         lockState: lockState,
