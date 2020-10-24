@@ -1,0 +1,14 @@
+name: Validate Homey
+
+on: push
+
+jobs:
+  publish-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+      - name: Validate homey
+        uses: aivus/homey-validate-action@v1
