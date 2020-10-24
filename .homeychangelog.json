@@ -1,5 +1,8 @@
 {
   "1.0.0": {
     "en": "Control your LOQED Smart Touch Lock from within Homey"
+  },
+  "1.1.0": {
+    "en": "Added lock state picker capability"
   }
 }
