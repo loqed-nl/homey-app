@@ -21,7 +21,8 @@ class TouchSmartLockDevice extends Homey.Device {
 
     this.registerCapabilityListener('locked', async (value) => {
       const currentLockValue = this.getCapabilityValue('locked');
-      const lockState = value ? STATE_NIGHT_LOCK : STATE_OPEN;
+      const lockState = value ? STATE_NIGHT_LOCK : STATE_LATCH;
+
       return new Promise(resolve => {
         if (value === currentLockValue) {
           return resolve();
