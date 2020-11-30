@@ -4,9 +4,9 @@
   },
   "1.1.0": {
     "en": "Added lock state picker capability"
-  }
+  },
   "1.2.0": {
-    "en": "Unlock puts the lock in latch instead of opening the lock,",
+    "en": "Unlock puts the lock in latch instead of opening the lock.",
     "nl": "Het slot gaat niet meer naar open als bij ontgrendelen."
   }
 }
