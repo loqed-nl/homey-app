@@ -12,5 +12,9 @@
   "1.2.1": {
     "en": "Unlock puts the lock in latch instead of opening the lock.",
     "nl": "Het slot gaat niet meer naar open bij ontgrendelen."
+  },
+  "1.3.0": {
+    "en": "Fixed a lock just locked/unlocked flow. Lock state changes are now called with the correct values.",
+    "nl": "De flows een slot werd vergrendeld/ontgrendeld werken nu naar behoren. Slot status wijzigingen worden nu correct uitgevoerd."
   }
 }

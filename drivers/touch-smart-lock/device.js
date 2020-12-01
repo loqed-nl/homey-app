@@ -69,23 +69,15 @@ class TouchSmartLockDevice extends Homey.Device {
 
     const webhookUrl = `https://production.loqed.com:8080/v1/locks/${deviceId}/state?lock_api_key=${apiKey}&api_token=${apiToken}&lock_state=${lockState}&local_key_id=${localKeyId}`;
     https.get(webhookUrl);
-
-    console.log(`Value: ${lockState}`);
-    console.log(apiKey, apiToken, webhookUrl);
-
-    this.triggerLockStateChange(lockState, 'Homey');
   }
 
   async setState(lockState, keyAccountEmail) {
     switch (lockState) {
-      case STATE_OPEN:
-        await this.setCapabilityValue('locked', false);
-        break;
       case STATE_NIGHT_LOCK:
         await this.setCapabilityValue('locked', true);
         break;
       case STATE_LATCH:
-        await this.setCapabilityValue('locked', true);
+        await this.setCapabilityValue('locked', false);
         break;
     }
 
