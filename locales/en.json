@@ -1,6 +1,6 @@
 {
   "pair":  {
     "setup": "Setup",
-    "setup_description": "Connection is being setup, this takes about 15 seconds."
+    "setup_description": "Connection is being setup, this takes about 15 seconds. You are automatically logged out in the app on your phone. After the connection was successful you should again login on your phone."
   }
 }
