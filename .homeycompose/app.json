@@ -1,6 +1,6 @@
 {
   "id": "com.loqed.touch-smart-lock",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "compatibility": ">= 4.0.0",
   "brandColor": "#002746",
   "sdk": 2,

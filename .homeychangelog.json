@@ -20,5 +20,9 @@
   "1.4.0": {
     "en": "Show warning that you should login again on your phone after you have setup a new connection.",
     "nl": "Melding toegevoegd dat je opnieuw moet inloggen op je telefoon als het toevoegen van het apparaat is gelukt."
+  },
+  "1.4.1": {
+    "en": "Show warning that you should login again on your phone after you have setup a new connection.",
+    "nl": "Melding toegevoegd dat je opnieuw op je telefoon moet inloggen als het toevoegen van het apparaat is gelukt."
   }
 }

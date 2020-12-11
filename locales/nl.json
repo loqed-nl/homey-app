@@ -1,6 +1,6 @@
 {
   "pair":  {
     "setup": "Installatie",
-    "setup_description": "Connectie wordt gemaakt, dit duurt ongeveer 15 seconden. Je wordt automatisch uitgelogd in de app op je telefoon. Als de connectie geslaagd is dien je hier opnieuw in te loggen."
+    "setup_description": "Connectie wordt gemaakt, dit duurt ongeveer 15 seconden. Je wordt automatisch uitgelogd in de app op je telefoon. Als de connectie is geslaagd dien je hier opnieuw in te loggen."
   }
 }
