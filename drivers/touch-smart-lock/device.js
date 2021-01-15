@@ -11,7 +11,7 @@ const STATE_NIGHT_LOCK = 'NIGHT_LOCK';
 class TouchSmartLockDevice extends Homey.Device {
   async onInit() {
     this.util = new Util({ homey: this.homey });
-    this._flowLockStateChanged = new Homey.FlowCardTriggerDevice('lock_state_changed').register();
+    this._flowLockStateChanged = this.homey.flow.getDeviceTriggerCard('lock_state_changed');
 
     this.log('TouchSmartLockDevice has been initialized');
 

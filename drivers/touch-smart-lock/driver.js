@@ -1,7 +1,6 @@
 'use strict';
 
 const Homey = require('homey');
-const {ManagerCloud} = require('homey');
 const SHA256 = require('crypto-js/sha256');
 const Base64 = require('crypto-js/enc-base64');
 const cheerio = require('cheerio')
@@ -9,24 +8,26 @@ const Util = require('/lib/util');
 
 class TouchSmartLockDriver extends Homey.Driver {
   async onInit() {
-    const homeyId = await ManagerCloud.getHomeyId();
-    this.util = new Util({ homey: this.homey });
+    const homeyId = await this.homey.cloud.getHomeyId();
+
+    this.util = new Util({homey: this.homey});
     this.webhookUrl = `https://${(homeyId)}.connect.athom.com/API/app/com.loqed.touch-smart-lock`;
 
-    new Homey.FlowCardAction('change_lock_state').register().registerRunListener(args => {
-      args.device.changeLockState(args.lockState);
+    this.homey.flow.getActionCard('change_lock_state')
+      .registerRunListener(args => {
+        args.device.changeLockState(args.lockState);
 
-      return Promise.resolve();
-    });
+        return Promise.resolve();
+      });
   }
 
-  async onPair(socket) {
+  async onPair(session) {
     let encryptedPassword = '';
     let password = '';
     let email = '';
     let foundDevices = [];
 
-    socket.on('login', (data, callback) => {
+    socket.setHandler('login', (data, callback) => {
       password = data.password.trim();
       encryptedPassword = Base64.stringify(SHA256(password));
       email = data.username.trim();
@@ -40,14 +41,15 @@ class TouchSmartLockDriver extends Homey.Driver {
         .catch(_ => callback(null, false));
     });
 
-    socket.on('list_devices', function (data, callback) {
+    socket.setHandler('list_devices', function (data, callback) {
       callback(null, foundDevices);
     });
 
-    socket.on('create_hooks', (data, callback) => {
+    socket.setHandler('create_hooks', (data, callback) => {
       const device = data[0];
 
       this.createWebhook(device.data.id, email, encryptedPassword, password);
+
       setTimeout(_ => {
         this.createKey(device.data.id, email, encryptedPassword, password);
         this.getDeviceAuthData(device, email, encryptedPassword, password)
