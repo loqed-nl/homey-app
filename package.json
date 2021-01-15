@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "main": "app.js",
   "devDependencies": {
-    "homey": "^2.7.0"
+    "homey": "^2.9.5"
   },
   "dependencies": {
-    "axios": "^0.20.0",
-    "cheerio": "^1.0.0-rc.3",
+    "axios": "^0.21.1",
+    "cheerio": "^1.0.0-rc.5",
     "crypto-js": "^4.0.0",
     "form-data": "^3.0.0"
   }
