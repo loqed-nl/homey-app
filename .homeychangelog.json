@@ -24,5 +24,17 @@
   "1.4.1": {
     "en": "Show warning that you should login again on your phone after you have setup a new connection.",
     "nl": "Melding toegevoegd dat je opnieuw op je telefoon moet inloggen als het toevoegen van het apparaat is gelukt."
+  },
+  "1.5.0": {
+    "en": "Increased timeout from when adding lock.",
+    "nl": "Timeout verhoogd bij een nieuw slot."
+  },
+  "2.0.0": {
+    "en": "Apps sdk 3.0 updated to version 3.0.",
+    "nl": "Apps sdk geüpdatet naar versie 3.0."
+  },
+  "2.0.1": {
+    "en": "Apps sdk updated to version 3.0.",
+    "nl": "Apps sdk geüpdatet naar versie 3.0."
   }
 }

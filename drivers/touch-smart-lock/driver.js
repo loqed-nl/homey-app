@@ -113,7 +113,7 @@ class TouchSmartLockDriver extends Homey.Driver {
 
             return resolve(device);
           });
-      }, 15000);
+      }, 25000);
     })
   }
 
