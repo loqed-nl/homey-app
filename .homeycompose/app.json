@@ -1,9 +1,9 @@
 {
   "id": "com.loqed.touch-smart-lock",
   "version": "1.4.1",
-  "compatibility": ">= 4.0.0",
+  "compatibility": ">= 5.0.0",
   "brandColor": "#002746",
-  "sdk": 2,
+  "sdk": 3,
   "name": {
     "en": "LOQED",
     "nl": "LOQED"
@@ -47,5 +47,12 @@
   "source": "https://github.com/loqed-nl/homey-app",
   "bugs": {
     "url": "https://github.com/loqed-nl/homey-app/issues"
+  },
+  "api": {
+    "updateLockState": {
+      "method": "post",
+      "path": "/",
+      "public": true
+    }
   }
 }
