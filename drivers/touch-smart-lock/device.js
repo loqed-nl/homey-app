@@ -3,6 +3,7 @@
 const Homey = require('homey');
 const https = require("https");
 const Util = require('./../../lib/util');
+const fetch = require('node-fetch');
 
 const STATE_OPEN = 'OPEN';
 const STATE_LATCH = 'DAY_LOCK';
@@ -23,29 +24,13 @@ class TouchSmartLockDevice extends Homey.Device {
       const currentLockValue = this.getCapabilityValue('locked');
       const lockState = value ? STATE_NIGHT_LOCK : STATE_LATCH;
 
-      return new Promise(resolve => {
-        if (value === currentLockValue) {
-          return resolve();
-        }
-
-        this.changeLockState(lockState)
-
-        return resolve();
-      });
+      return this.changeLockState(lockState);
     });
 
-    this.registerCapabilityListener('lock_state', async (value) => {
+    this.registerCapabilityListener('lock_state', async (lockState) => {
       const currentLockState = this.getCapabilityValue('lock_state');
 
-      return new Promise(resolve => {
-        if (value === currentLockState) {
-          return resolve();
-        }
-
-        this.changeLockState(value);
-
-        return resolve();
-      });
+      return this.changeLockState(lockState);
     });
   }
 
@@ -61,14 +46,15 @@ class TouchSmartLockDevice extends Homey.Device {
       .catch(this.error)
   }
 
-  changeLockState(lockState) {
+  async changeLockState(lockState) {
     const deviceId = this.getData().id;
     const apiKey = this.getSetting('apiKey');
     const apiToken = this.getSetting('apiToken');
     const localKeyId = this.getSetting('localKeyId');
 
     const webhookUrl = `https://production.loqed.com:8080/v1/locks/${deviceId}/state?lock_api_key=${apiKey}&api_token=${apiToken}&lock_state=${lockState}&local_key_id=${localKeyId}`;
-    https.get(webhookUrl);
+
+    return fetch(webhookUrl);
   }
 
   async setState(lockState, keyAccountEmail) {
