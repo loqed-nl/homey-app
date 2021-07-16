@@ -36,5 +36,9 @@
   "2.0.1": {
     "en": "Apps sdk updated to version 3.0.",
     "nl": "Apps sdk geüpdatet naar versie 3.0."
+  },
+  "2.0.2": {
+    "en": "Apps sdk updated to version 3.0. A lock with a handle on the outside now reports open when unlocked. Increased speed of adding a new lock.",
+    "nl": "Apps sdk geüpdatet naar versie 3.0. Een slot met een handgreep aan de buitenkant geeft nu de status open weer. Het toevoegen van een slot is een stuk sneller geworden."
   }
 }

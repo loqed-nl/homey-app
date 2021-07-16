@@ -3,8 +3,12 @@
     {
       "id": "change_lock_state",
       "title": {
-        "en": "Change lock state",
-        "nl": "Verander slot status"
+        "en": "Set lock state to ...",
+        "nl": "Slot status wijzigen in ..."
+      },
+      "titleFormatted": {
+        "en": "[[lockState]] the door",
+        "nl": "[[lockState]] de deur"
       },
       "args": [
         {

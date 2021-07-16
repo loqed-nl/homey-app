@@ -2,7 +2,7 @@
 
 const Homey = require('homey');
 const https = require("https");
-const Util = require('/lib/util');
+const Util = require('./../../lib/util');
 
 const STATE_OPEN = 'OPEN';
 const STATE_LATCH = 'DAY_LOCK';
@@ -72,13 +72,12 @@ class TouchSmartLockDevice extends Homey.Device {
   }
 
   async setState(lockState, keyAccountEmail) {
-    switch (lockState) {
-      case STATE_NIGHT_LOCK:
-        await this.setCapabilityValue('locked', true);
-        break;
-      case STATE_LATCH:
-        await this.setCapabilityValue('locked', false);
-        break;
+    if (this.getSetting('lockType') === 'CYLINDER_OPERATED_WITH_HANDLE' && lockState === STATE_OPEN) {
+      await this.setCapabilityValue('locked', false);
+    } else if (lockState === STATE_NIGHT_LOCK) {
+      await this.setCapabilityValue('locked', true);
+    } else if (lockState === STATE_LATCH) {
+      await this.setCapabilityValue('locked', false);
     }
 
     this.triggerLockStateChange(lockState, keyAccountEmail);

@@ -4,7 +4,7 @@ const Homey = require('homey');
 const SHA256 = require('crypto-js/sha256');
 const Base64 = require('crypto-js/enc-base64');
 const cheerio = require('cheerio')
-const Util = require('/lib/util');
+const Util = require('./../../lib/util');
 
 class TouchSmartLockDriver extends Homey.Driver {
   async onInit() {
@@ -21,41 +21,49 @@ class TouchSmartLockDriver extends Homey.Driver {
       });
   }
 
-  async onPair(session) {
+  onPair(session) {
     let encryptedPassword = '';
-    let password = '';
+    let passwordOrig = '';
     let email = '';
     let foundDevices = [];
 
-    socket.setHandler('login', (data, callback) => {
-      password = data.password.trim();
+    const onLogin = async ({ username, password }) => {
+      passwordOrig = password.trim();
       encryptedPassword = Base64.stringify(SHA256(password));
-      email = data.username.trim();
+      email = username.trim().toLowerCase();
 
-      this.getLocks(email, encryptedPassword)
+      return this.getLocks(email, encryptedPassword)
         .then(devices => {
           foundDevices = devices;
 
-          callback(null, true);
+          return true;
         })
-        .catch(_ => callback(null, false));
-    });
+        .catch(_ => false);
+    }
 
-    socket.setHandler('list_devices', function (data, callback) {
-      callback(null, foundDevices);
-    });
+    const onListDevices = async data => {
+      return foundDevices;
+    }
 
-    socket.setHandler('create_hooks', (data, callback) => {
+    const onCreateHooks = async data => {
       const device = data[0];
 
-      this.createWebhook(device.data.id, email, encryptedPassword, password);
+      return this.createWebhook(device.data.id, email, encryptedPassword, passwordOrig)
+        .then(() => {
+          return this.createKey(device.data.id, email, encryptedPassword, passwordOrig);
+        })
+        .then(() => {
+          return this.getDeviceAuthData(device, email, encryptedPassword, passwordOrig);
+        })
+        .then((device) => {
+          return device;
+        });
+    }
 
-      setTimeout(_ => {
-        this.createKey(device.data.id, email, encryptedPassword, password);
-        this.getDeviceAuthData(device, email, encryptedPassword, password)
-          .then(device => callback(null, device));
-      }, 1000)
-    })
+    session.setHandler('login', onLogin)
+      .setHandler('list_devices', onListDevices)
+      .setHandler('create_hooks', onCreateHooks);
+
   }
 
   async getLocks(email, encryptedPassword) {
@@ -89,8 +97,8 @@ class TouchSmartLockDriver extends Homey.Driver {
   }
 
   async getDeviceAuthData(device, email, encryptedPassword, password) {
-    return new Promise((resolve, reject) => {
-      setTimeout(_ => {
+    return this.retry(_ => {
+      return new Promise((resolve, reject) => {
         this.util
           .callLoqedSite('webhook-list', {
             email: email,
@@ -101,11 +109,12 @@ class TouchSmartLockDriver extends Homey.Driver {
             const $ = cheerio.load(response.data);
             const webhookData = $(`table[data-id="${device.data.id}"]`).data();
 
-            if (webhookData === undefined) {
-              reject();
+            if (typeof webhookData === undefined || ! webhookData) {
+              return reject('reject');
             }
 
             device.settings = {
+              lockType: webhookData.lockType,
               apiKey: webhookData.apiKey,
               apiToken: webhookData.apiToken,
               localKeyId: webhookData.localKeyId
@@ -113,12 +122,12 @@ class TouchSmartLockDriver extends Homey.Driver {
 
             return resolve(device);
           });
-      }, 25000);
+      });
     })
   }
 
-  createKey(deviceId, email, encryptedPassword, password) {
-    this.util
+  async createKey(deviceId, email, encryptedPassword, password) {
+    await this.util
       .callLoqedSite('key-update', {
         email: email,
         password: encryptedPassword,
@@ -132,13 +141,11 @@ class TouchSmartLockDriver extends Homey.Driver {
         p_touch: '',
         p_valid_from: '',
         p_valid_to: '',
-      })
-      .then(data => console.log(data))
-      .catch(data => console.log(data));
+      });
   }
 
-  createWebhook(deviceId, email, encryptedPassword, password) {
-    this.util
+  async createWebhook(deviceId, email, encryptedPassword, password) {
+    await this.util
       .callLoqedSite('webhook-update', {
         email: email,
         password: encryptedPassword,
@@ -148,8 +155,19 @@ class TouchSmartLockDriver extends Homey.Driver {
         trigger_state_changed_open: 'checked',
         trigger_state_changed_latch: 'checked',
         trigger_state_changed_night_lock: 'checked',
-      })
-      .then(data => console.log(data));
+      });
+  }
+
+  async retry(fn, retries = 10) {
+    if (! retries) {
+      return Promise.reject();
+    }
+
+    return fn().catch(async err => {
+      await new Promise(r => setTimeout(r, 2000));
+
+      return this.retry(fn, (retries - 1));
+    });
   }
 }
 
