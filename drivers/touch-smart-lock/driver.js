@@ -8,10 +8,7 @@ const Util = require('./../../lib/util');
 
 class TouchSmartLockDriver extends Homey.Driver {
   async onInit() {
-    const homeyId = await this.homey.cloud.getHomeyId();
-
     this.util = new Util({homey: this.homey});
-    this.webhookUrl = `https://${(homeyId)}.connect.athom.com/API/app/com.loqed.touch-smart-lock`;
 
     this.homey.flow.getActionCard('change_lock_state')
       .registerRunListener(args => {
@@ -47,15 +44,19 @@ class TouchSmartLockDriver extends Homey.Driver {
 
     const onCreateHooks = async data => {
       const device = data[0];
+      console.log(device);
 
       return this.createWebhook(device.data.id, email, encryptedPassword, passwordOrig)
         .then(() => {
+          console.log(device);
           return this.createKey(device.data.id, email, encryptedPassword, passwordOrig);
         })
         .then(() => {
+          console.log(device);
           return this.getDeviceAuthData(device, email, encryptedPassword, passwordOrig);
         })
         .then((device) => {
+          console.log(device);
           return device;
         });
     }
@@ -145,13 +146,16 @@ class TouchSmartLockDriver extends Homey.Driver {
   }
 
   async createWebhook(deviceId, email, encryptedPassword, password) {
+    const homeyId = await this.homey.cloud.getHomeyId();
+    const webhookUrl = `https://webhooks.athom.com/webhook/${Homey.env.WEBHOOK_ID}?homey=${homeyId}`;
+
     await this.util
       .callLoqedSite('webhook-update', {
         email: email,
         password: encryptedPassword,
         password_orig: password,
         lock_id: deviceId,
-        url: this.webhookUrl,
+        url: webhookUrl,
         trigger_state_changed_open: 'checked',
         trigger_state_changed_latch: 'checked',
         trigger_state_changed_night_lock: 'checked',

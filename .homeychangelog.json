@@ -44,5 +44,9 @@
   "2.0.3": {
     "en": "Only change lock state when web request succeeds.",
     "nl": "Slot status wordt alleen gewijzigd als verbinding met het slot gelukt is."
+  },
+  "2.0.4": {
+    "en": "Lock state is reported using the new webhook flow.",
+    "nl": "Slot status wordt gewijzigd met de nieuwe webhook flow."
   }
 }
