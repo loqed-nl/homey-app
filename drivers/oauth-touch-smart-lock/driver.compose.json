@@ -1,0 +1,27 @@
+{
+  "id": "touch-smart-lock",
+  "name": {
+    "en": "Touch Smart Lock",
+    "nl": "Touch Smart Lock"
+  },
+  "platforms": [
+    "local",
+    "cloud"
+  ],
+  "class": "lock",
+  "capabilities": [
+    "locked",
+    "measure_battery"
+  ],
+  "capabilitiesOptions": {
+    "lock_state": {
+      "preventTag": true
+    }
+  },
+  "images": {
+    "large": "/drivers/touch-smart-lock/assets/images/large.jpg",
+    "small": "/drivers/touch-smart-lock/assets/images/small.jpg"
+  },
+  "icon": "/drivers/touch-smart-lock/assets/images/icon.svg",
+  "$extends": "loqed"
+}

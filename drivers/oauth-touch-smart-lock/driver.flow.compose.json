@@ -1,0 +1,61 @@
+{
+  "triggers": [
+    {
+      "id": "opened",
+      "title": {
+        "en": "Opened",
+        "nl": "Geopened"
+      },
+      "titleFormatted": {
+        "en": "Opened",
+        "nl": "Geopened"
+      }
+    },
+    {
+      "id": "key_state",
+      "title": {
+        "en": "Key changes bolt state",
+        "nl": "Sleutel veranderd vergrendeling"
+      },
+      "titleFormatted": {
+        "en": "Key [[key]] did [[boltState]] the door",
+        "nl": "Sleutel [[key]] heeft de deur [[boltState]]"
+      },
+      "args": [
+        {
+          "type": "autocomplete",
+          "name": "key",
+          "title": { "en": "name", "nl": "name" },
+          "placeholder": { "en": "John", "nl": "Jan" }
+        },
+        {
+          "type": "dropdown",
+          "name": "boltState",
+          "title": {
+            "en": "opens",
+            "nl": "opent"
+          },
+          "values": [
+            { "id": "NIGHT_LOCK", "title": { "en": "lock", "nl": "vergrendeld" } },
+            { "id": "DAY_LOCK", "title": { "en": "unlocked", "nl": "ontgrendeld" } },
+            { "id": "OPEN", "title": { "en": "opened", "nl": "geopend" } }
+          ]
+        }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "highlight": true,
+      "id": "open",
+      "title": {
+        "en": "Opened",
+        "nl": "Geopened"
+      },
+      "titleFormatted": {
+        "en": "Opened",
+        "nl": "Geopened"
+      }
+    }
+  ]
+}

@@ -48,5 +48,25 @@
   "2.0.4": {
     "en": "Lock state is reported using the new webhook flow.",
     "nl": "Slot status wordt gewijzigd met de nieuwe webhook flow."
+  },
+  "2.0.5": {
+    "en": "Increase speed of adding a new lock.",
+    "nl": "Toevoegen van het slot is sneller geworden."
+  },
+  "2.1.0": {
+    "en": "Prevent sending duplicate lock action.",
+    "nl": "Het slot zal een slot actie maar 1 keer sturen."
+  },
+  "2.1.1": {
+    "en": "Prevent sending duplicate lock action.",
+    "nl": "Het slot zal een slot actie maar 1 keer sturen."
+  },
+  "2.1.2": {
+    "en": "Prevent sending duplicate lock action.",
+    "nl": "Het slot zal een slot actie maar 1 keer sturen."
+  },
+  "2.1.3": {
+    "en": "Prevent lock action from being executed twice.",
+    "nl": "Voorkom dat de vergrendelingsactie twee keer wordt uitgevoerd."
   }
 }
