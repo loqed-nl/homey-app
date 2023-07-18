@@ -5,6 +5,7 @@
     "local",
     "cloud"
   ],
+  "connectivity": ["cloud"],
   "name": {
     "en": "Touch Smart Lock",
     "nl": "Touch Smart Lock"

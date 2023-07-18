@@ -8,11 +8,16 @@
     "local",
     "cloud"
   ],
+  "connectivity": ["cloud"],
   "class": "lock",
   "capabilities": [
     "locked",
-    "measure_battery"
+    "measure_battery",
+    "lock_state"
   ],
+  "energy": {
+    "batteries": ["AAA", "AAA","AAA", "AAA","AAA", "AAA","AAA", "AAA"]
+  },
   "capabilitiesOptions": {
     "lock_state": {
       "preventTag": true

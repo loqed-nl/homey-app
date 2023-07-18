@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "com.loqed.touch-smart-lock",
-  "version": "2.1.3",
+  "version": "3.3.0",
   "compatibility": ">= 5.0.0",
   "platforms": [
     "local",
@@ -112,8 +112,8 @@
             "type": "dropdown",
             "name": "boltState",
             "title": {
-              "en": "opens",
-              "nl": "opent"
+              "en": "Bolt state",
+              "nl": "Vergrendeling"
             },
             "values": [
               {
@@ -135,6 +135,48 @@
                 "title": {
                   "en": "opened",
                   "nl": "geopend"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "open_house_mode",
+        "title": {
+          "en": "Open house mode",
+          "nl": "Open huis mode"
+        },
+        "titleFormatted": {
+          "en": "Open house mode [[mode]]",
+          "nl": "Open huis mode [[mode]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=oauth-touch-smart-lock"
+          },
+          {
+            "type": "dropdown",
+            "name": "mode",
+            "title": {
+              "en": "enabled/disabled",
+              "nl": "ingeschakeld/uitgeschakeld"
+            },
+            "values": [
+              {
+                "id": "enabled",
+                "title": {
+                  "en": "enabled",
+                  "nl": "ingeschakeld"
+                }
+              },
+              {
+                "id": "disabled",
+                "title": {
+                  "en": "disabled",
+                  "nl": "uitgeschakeld"
                 }
               }
             ]
@@ -191,12 +233,12 @@
         "highlight": true,
         "id": "open",
         "title": {
-          "en": "Opened",
-          "nl": "Geopened"
+          "en": "Open",
+          "nl": "Open"
         },
         "titleFormatted": {
-          "en": "Opened",
-          "nl": "Geopened"
+          "en": "Open",
+          "nl": "Open"
         },
         "args": [
           {
@@ -224,6 +266,10 @@
           },
           {
             "type": "dropdown",
+            "title": {
+              "en": "Bolt state",
+              "nl": "Vergrendeling"
+            },
             "name": "lockState",
             "placeholder": {
               "en": "Lock state",
@@ -296,10 +342,26 @@
         "local",
         "cloud"
       ],
+      "connectivity": [
+        "cloud"
+      ],
       "capabilities": [
         "locked",
-        "measure_battery"
+        "measure_battery",
+        "lock_state"
       ],
+      "energy": {
+        "batteries": [
+          "AAA",
+          "AAA",
+          "AAA",
+          "AAA",
+          "AAA",
+          "AAA",
+          "AAA",
+          "AAA"
+        ]
+      },
       "capabilitiesOptions": {
         "lock_state": {
           "preventTag": true
@@ -312,6 +374,9 @@
       "deprecated": true,
       "platforms": [
         "local",
+        "cloud"
+      ],
+      "connectivity": [
         "cloud"
       ],
       "name": {

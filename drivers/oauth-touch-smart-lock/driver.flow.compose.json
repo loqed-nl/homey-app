@@ -32,13 +32,35 @@
           "type": "dropdown",
           "name": "boltState",
           "title": {
-            "en": "opens",
-            "nl": "opent"
+            "en": "Bolt state",
+            "nl": "Vergrendeling"
           },
           "values": [
             { "id": "NIGHT_LOCK", "title": { "en": "lock", "nl": "vergrendeld" } },
             { "id": "DAY_LOCK", "title": { "en": "unlocked", "nl": "ontgrendeld" } },
             { "id": "OPEN", "title": { "en": "opened", "nl": "geopend" } }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "open_house_mode",
+      "title": {
+        "en": "Open house mode",
+        "nl": "Open huis mode"
+      },
+      "titleFormatted": {
+        "en": "Open house mode [[mode]]",
+        "nl": "Open huis mode [[mode]]"
+      },
+      "args": [
+        {
+          "type": "dropdown",
+          "name": "mode",
+          "title": { "en": "enabled/disabled", "nl": "ingeschakeld/uitgeschakeld" },
+          "values": [
+            { "id": "enabled", "title": { "en": "enabled", "nl": "ingeschakeld" } },
+            { "id": "disabled", "title": { "en": "disabled", "nl": "uitgeschakeld"} }
           ]
         }
       ]
@@ -49,12 +71,12 @@
       "highlight": true,
       "id": "open",
       "title": {
-        "en": "Opened",
-        "nl": "Geopened"
+        "en": "Open",
+        "nl": "Open"
       },
       "titleFormatted": {
-        "en": "Opened",
-        "nl": "Geopened"
+        "en": "Open",
+        "nl": "Open"
       }
     }
   ]

@@ -41,11 +41,19 @@ export default class LoqedOAuth2Client extends OAuth2Client {
     'list-webhooks',
     'create-webhooks',
   ];
+  private getLockPromise: Promise<{ data: Lock[] }> | undefined = undefined;
 
   public async getLocks(): Promise<{ data: Lock[] }> {
-    return this.get({
-      path: '/api/locks',
-    });
+    if (!this.getLockPromise) {
+      return this.getLockPromise = this.get({
+        path: '/api/locks',
+      })
+        .finally(() => {
+          this.getLockPromise = undefined;
+        });
+    }
+
+    return this.getLockPromise;
   }
 
   public async createWebhook(lockId: string): Promise<{ data: { id: string } }> {
@@ -56,7 +64,8 @@ export default class LoqedOAuth2Client extends OAuth2Client {
       path: `/api/locks/${ lockId }/webhooks`,
       json: {
         url: webhookUrl,
-        info: true
+        info: true,
+        guest_access_mode: true,
       }
     });
   };
