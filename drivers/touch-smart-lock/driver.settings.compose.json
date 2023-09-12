@@ -33,7 +33,7 @@
           "en": "Local key id"
         },
         "hint": {
-          "en": "The local key id used in in the outgoing webhook"
+          "en": "The local key id used in the outgoing webhook"
         }
       }
     ]

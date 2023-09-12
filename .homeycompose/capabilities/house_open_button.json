@@ -1,0 +1,11 @@
+{
+"type": "boolean" ,
+  "title": {
+    "en": "House Open Mode",
+    "nl": "Touwtje uit de brievenbus"
+  },
+  "uiComponent": "button",
+  "uiQuickAction": true,
+  "getable": true,
+  "setable": true 
+}

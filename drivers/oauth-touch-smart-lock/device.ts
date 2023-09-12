@@ -1,4 +1,4 @@
-import LoqedOAuth2Client, { BoltState } from "../../lib/LoqedOAuth2Client";
+import LoqedOAuth2Client, { BoltState, OpenHouseMode as OpenHouseMode } from "../../lib/LoqedOAuth2Client";
 import { WebhookMessage } from "../../lib/LoqedApp";
 
 const {OAuth2Device} = require('homey-oauth2app');
@@ -32,6 +32,12 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
       return oAuth2Client.changeBoltState(id, value);
     });
 
+    
+    this.registerCapabilityListener('house_open_button', async (value: OpenHouseMode) => {
+      return oAuth2Client.changeOpenHouseMode(id, value);
+    });
+
+
     await this.sync(true);
     this.syncInterval = setInterval(async () => await this.sync(false), SYNC_INTERVAL);
   }
@@ -44,24 +50,32 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
   }
 
   async onWebhook(body: WebhookMessage) {
+    this.log('webhook body', body);
     const lockState = body.requested_state;
     const batteryPercentage = body.battery_percentage;
     const keyNameAdmin = body.key_name_admin;
     const openedTrigger = this.homey.flow.getTriggerCard('opened');
 
-    if (lockState && keyNameAdmin) {
-      await this.changeLockState(lockState);
-      await this.driver.triggerUserStateFlow(this, {key: {name: keyNameAdmin}, boltState: lockState});
+    if(lockState) {
+      await this.changeLockState(lockState);      
     }
 
     if (lockState && (lockState === BoltState.OPEN || lockState === BoltState.DAY_LOCK)) {
-      await openedTrigger.trigger(this)
       await this.setCapabilityValue('locked', false);
     }
 
     if (lockState && lockState === BoltState.NIGHT_LOCK) {
       await this.setCapabilityValue('locked', true);
     }
+
+    if (lockState && keyNameAdmin) {
+      await this.driver.triggerUserStateFlow(this, {key: {name: keyNameAdmin}, boltState: lockState});
+    }
+
+    if (lockState && (lockState === BoltState.OPEN)) {
+      await this.driver.triggerOpenedFlow(this);
+    }
+
 
     if (batteryPercentage) {
       await this.setCapabilityValue('measure_battery', batteryPercentage);

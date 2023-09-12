@@ -26,6 +26,11 @@ export enum BoltState {
   OPEN = 'OPEN'
 }
 
+export enum OpenHouseMode {
+  DISABLED = 0,
+  ENABLED = 1
+}
+
 export interface Key {
   name: string,
   administrator_name: string
@@ -76,9 +81,18 @@ export default class LoqedOAuth2Client extends OAuth2Client {
     })
   }
 
+  
+  public async changeOpenHouseMode(lockId: string, openHouseMode: OpenHouseMode) {
+    return this.get({
+      //path: `/api/locks/${ lockId }/guest_access_mode/${ guestAccessMode }`
+      path: `/api/locks/${ lockId }/open_house_mode/${ openHouseMode }`
+    })
+  }
+
+
   public async getKeys(lockId: string): Promise<{ data: Key[] }> {
     return this.get({
-      path: `/api/locks/${ lockId }/keys`
+      path: `/api/locks/${lockId }/keys`
     });
   }
 }

@@ -26,6 +26,17 @@ module.exports = class LoqedApp extends OAuth2App {
   static OAUTH2_DRIVERS = ['oauth-touch-smart-lock']
 
   async onOAuth2Init() {
+
+    
+    if (process.env.DEBUG === '1' || false) {
+      try {
+        require('inspector').waitForDebugger();
+      }
+      catch (error) {
+        require('inspector').open(9101, '0.0.0.0', true);
+      }
+    }
+
     const homeyId = await this.homey.cloud.getHomeyId();
     const webhook = await this.homey.cloud.createWebhook(Homey.env.WEBHOOK_ID, Homey.env.WEBHOOK_SECRET, {homeyId});
 

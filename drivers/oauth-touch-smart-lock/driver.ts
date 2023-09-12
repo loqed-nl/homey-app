@@ -2,7 +2,7 @@ import SmartLockDevice from "./device";
 import LoqedOAuth2Client, { BoltState, Lock } from "../../lib/LoqedOAuth2Client";
 import { Device, FlowCardAction, FlowCardTriggerDevice } from "homey";
 
-const {OAuth2Driver} = require('homey-oauth2app');
+const { OAuth2Driver } = require('homey-oauth2app');
 
 interface KeyStateParams {
   key: {
@@ -34,10 +34,16 @@ module.exports = class TouchSmartLockDriver extends OAuth2Driver {
     }
   };
   private keyStateTrigger: FlowCardTriggerDevice | undefined;
+  private openedTrigger: FlowCardTriggerDevice | undefined;
   private openHouseModeTrigger: FlowCardTriggerDevice | undefined;
   private openAction: FlowCardAction | undefined;
 
   async onOAuth2Init() {
+    this.openedTrigger = this.homey.flow.getDeviceTriggerCard("opened")
+      .registerRunListener(async (args: undefined, state: undefined) => {
+        return true;
+      });
+      
     this.keyStateTrigger = this.homey.flow.getDeviceTriggerCard("key_state")
       .registerRunListener(async (args: KeyStateParams, state: KeyStateParams) => {
         return args.key.name === state.key.name && args.boltState === state.boltState;
@@ -49,10 +55,10 @@ module.exports = class TouchSmartLockDriver extends OAuth2Driver {
           const oauth2Client: LoqedOAuth2Client = device.oAuth2Client;
           const deviceId = device.getData().id;
           const keys = await oauth2Client.getKeys(deviceId);
-
-          return keys.data.filter((key) => key.administrator_name.toLowerCase().includes(query.toLowerCase())).map((key) => {
+          this.log('keys', keys);
+          return keys.data.filter((key) => (key.administrator_name || key.name).toLowerCase().includes(query.toLowerCase())).map((key) => {
             return {
-              name: key.administrator_name,
+              name: (key.administrator_name || key.name),
               id: key.name
             };
           })
@@ -66,7 +72,7 @@ module.exports = class TouchSmartLockDriver extends OAuth2Driver {
       })
 
     this.openAction = this.homey.flow.getActionCard('open')
-      .registerRunListener(async (args: { device: typeof SmartLockDevice}, state: any) => {
+      .registerRunListener(async (args: { device: typeof SmartLockDevice }, state: any) => {
         const device: typeof SmartLockDevice = args.device;
 
         await device.changeLockState(BoltState.OPEN);
@@ -75,11 +81,11 @@ module.exports = class TouchSmartLockDriver extends OAuth2Driver {
       });
   }
 
-  async onPairListDevices({oAuth2Client}: OnPairListProps) {
+  async onPairListDevices({ oAuth2Client }: OnPairListProps) {
     const devices: { data: Lock[] } = await oAuth2Client.getLocks();
 
     return devices.data.map(device => {
-      const capabilities = device.supported_lock_states.length > 2 ? ['locked', 'measure_battery', 'lock_state'] : ['locked', 'measure_battery'];
+      const capabilities = device.supported_lock_states.length > 2 ? ['locked', 'measure_battery', 'lock_state', 'house_open_button'] : ['locked', 'measure_battery', 'house_open_button'];
 
       return {
         name: device.name,
@@ -103,6 +109,12 @@ module.exports = class TouchSmartLockDriver extends OAuth2Driver {
       .catch(this.error);
   }
 
+  async triggerOpenedFlow(device: Device, state: undefined) {
+    this.openedTrigger
+      ?.trigger(device, {}, state)
+      .then(this.log)
+      .catch(this.error);
+  }
   async triggerOpenHouseModeFlow(device: Device, state: OpenHouseModeParams) {
     return this.openHouseModeTrigger
       ?.trigger(device, {}, state);

@@ -78,6 +78,25 @@
         "en": "Open",
         "nl": "Open"
       }
+    },
+    {
+      "highlight": true,
+      "id": "set_open_house_mode",
+      "title": {
+        "en": "Set Open House Mode",
+        "nl": "Stel de Open Huis-modus in"
+      },
+      "titleFormatted": {
+        "en": "Set Open House Mode to [[open_house_mode]]",
+        "nl": "Stel de Open Huis-modus in op [[open_house_mode]]"
+      },
+      "args": [
+        {
+          "type": "checkbox",
+          "name": "open_house_mode",
+          "title": { "en": "enabled/disabled", "nl": "ingeschakeld/uitgeschakeld" }
+        }
+      ]
     }
   ]
 }
