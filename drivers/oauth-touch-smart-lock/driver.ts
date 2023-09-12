@@ -83,6 +83,7 @@ module.exports = class TouchSmartLockDriver extends OAuth2Driver {
 
   async onPairListDevices({ oAuth2Client }: OnPairListProps) {
     const devices: { data: Lock[] } = await oAuth2Client.getLocks();
+    this.log('devices', devices);
 
     return devices.data.map(device => {
       const capabilities = device.supported_lock_states.length > 2 ? ['locked', 'measure_battery', 'lock_state', 'house_open_button'] : ['locked', 'measure_battery', 'house_open_button'];
