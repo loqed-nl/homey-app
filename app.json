@@ -66,17 +66,17 @@
         "id": "opened",
         "title": {
           "en": "Opened",
-          "nl": "Geopened"
+          "nl": "Geopend"
         },
         "titleFormatted": {
           "en": "Opened",
-          "nl": "Geopened"
+          "nl": "Geopend"
         },
         "args": [
           {
             "type": "device",
             "name": "device",
-            "filter": "driver_id=oauth-touch-smart-lock"
+            "filter": "driver_id=oauth-touch-smart-lock&capabilities=open"
           }
         ]
       },
@@ -142,14 +142,14 @@
         ]
       },
       {
-        "id": "open_house_mode",
+        "id": "guest_access_mode_changed",
         "title": {
           "en": "Open house mode",
           "nl": "Open huis mode"
         },
         "titleFormatted": {
-          "en": "Open house mode [[mode]]",
-          "nl": "Open huis mode [[mode]]"
+          "en": "Open house mode [[guest_access_mode]]",
+          "nl": "Open huis mode [[guest_access_mode]]"
         },
         "args": [
           {
@@ -159,12 +159,23 @@
           },
           {
             "type": "dropdown",
-            "name": "mode",
+            "name": "guest_access_mode",
+            "placeholder": {
+              "en": "Open House Mode",
+              "nl": "Touwtje uit brievenbus modus"
+            },
             "title": {
-              "en": "enabled/disabled",
-              "nl": "ingeschakeld/uitgeschakeld"
+              "en": "enabled or disabled",
+              "nl": "ingeschakeld of uitgeschakeld"
             },
             "values": [
+              {
+                "id": "enabled_or_disabled",
+                "title": {
+                  "en": "enabled or disabled",
+                  "nl": "ingeschakeld of uitgeschakeld"
+                }
+              },
               {
                 "id": "enabled",
                 "title": {
@@ -180,6 +191,17 @@
                 }
               }
             ]
+          }
+        ],
+        "tokens": [
+          {
+            "name": "guest_access_mode",
+            "type": "boolean",
+            "title": {
+              "en": "Open House Mode",
+              "nl": "Touwtje uit brievenbus modus"
+            },
+            "example": true
           }
         ]
       },
@@ -244,20 +266,21 @@
           {
             "type": "device",
             "name": "device",
-            "filter": "driver_id=oauth-touch-smart-lock"
+            "filter": "driver_id=oauth-touch-smart-lock&capabilities=open"
           }
         ]
       },
       {
+        "deprecated": true,
         "highlight": true,
-        "id": "set_open_house_mode",
+        "id": "set_guest_access_mode",
         "title": {
           "en": "Set Open House Mode",
           "nl": "Stel de Open Huis-modus in"
         },
         "titleFormatted": {
-          "en": "Set Open House Mode to [[open_house_mode]]",
-          "nl": "Stel de Open Huis-modus in op [[open_house_mode]]"
+          "en": "Set Open House Mode to [[guest_access_mode]]",
+          "nl": "Stel de Open Huis-modus in op [[guest_access_mode]]"
         },
         "args": [
           {
@@ -267,7 +290,7 @@
           },
           {
             "type": "checkbox",
-            "name": "open_house_mode",
+            "name": "guest_access_mode",
             "title": {
               "en": "enabled/disabled",
               "nl": "ingeschakeld/uitgeschakeld"
@@ -374,9 +397,7 @@
       ],
       "capabilities": [
         "locked",
-        "measure_battery",
-        "lock_state",
-        "house_open_button"
+        "measure_battery"
       ],
       "energy": {
         "batteries": [
@@ -390,11 +411,7 @@
           "AAA"
         ]
       },
-      "capabilitiesOptions": {
-        "--lock_state": {
-          "preventTag": true
-        }
-      },
+      "capabilitiesOptions": {},
       "icon": "/drivers/touch-smart-lock/assets/images/icon.svg"
     },
     {
@@ -546,6 +563,26 @@
           }
         }
       ]
+    },
+    "open": {
+      "type": "boolean",
+      "title": {
+        "en": "Open",
+        "nl": "Open"
+      },
+      "icon": "./assets/icons/open.svg",
+      "uiComponent": "button",
+      "getable": true,
+      "setable": true,
+      "insights": true,
+      "insightsTitleTrue": {
+        "en": "Opened",
+        "nl": "Geopend"
+      },
+      "insightsTitleFalse": {
+        "en": "Unlocked",
+        "nl": "Ontgrendeld"
+      }
     }
   }
 }

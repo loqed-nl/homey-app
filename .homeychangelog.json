@@ -87,5 +87,9 @@
   "3.3.0": {
     "en": "Open lock action is fixed",
     "nl": "Open slot actie is gefixt"
+  },
+  "3.3.1": {
+    "en": "Rebuild of version 3.",
+    "nl": "Herbouwde versie 3."
   }
 }

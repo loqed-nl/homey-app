@@ -168,7 +168,7 @@ class TouchSmartLockDriver extends Homey.Driver {
     }
 
     return fn().catch(async err => {
-      await new Promise(r => setTimeout(r, 2000));
+      await new Promise(r => this.homey.setTimeout(r, 2000));
 
       return this.retry(fn, (retries - 1));
     });

@@ -14,9 +14,7 @@
   "class": "lock",
   "capabilities": [
     "locked",
-    "measure_battery",
-    "lock_state",
-    "house_open_button"
+    "measure_battery"    
   ],
   "energy": {
     "batteries": [
@@ -31,9 +29,6 @@
     ]
   },
   "capabilitiesOptions": {
-    "--lock_state": {
-      "preventTag": true
-    }    
   },
   "images": {
     "large": "/drivers/touch-smart-lock/assets/images/large.jpg",

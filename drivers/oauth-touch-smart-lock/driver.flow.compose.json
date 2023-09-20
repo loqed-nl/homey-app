@@ -2,13 +2,14 @@
   "triggers": [
     {
       "id": "opened",
+      "$filter": "capabilities=open",
       "title": {
         "en": "Opened",
-        "nl": "Geopened"
+        "nl": "Geopend"
       },
       "titleFormatted": {
         "en": "Opened",
-        "nl": "Geopened"
+        "nl": "Geopend"
       }
     },
     {
@@ -25,8 +26,14 @@
         {
           "type": "autocomplete",
           "name": "key",
-          "title": { "en": "name", "nl": "name" },
-          "placeholder": { "en": "John", "nl": "Jan" }
+          "title": {
+            "en": "name",
+            "nl": "name"
+          },
+          "placeholder": {
+            "en": "John",
+            "nl": "Jan"
+          }
         },
         {
           "type": "dropdown",
@@ -36,32 +43,87 @@
             "nl": "Vergrendeling"
           },
           "values": [
-            { "id": "NIGHT_LOCK", "title": { "en": "lock", "nl": "vergrendeld" } },
-            { "id": "DAY_LOCK", "title": { "en": "unlocked", "nl": "ontgrendeld" } },
-            { "id": "OPEN", "title": { "en": "opened", "nl": "geopend" } }
+            {
+              "id": "NIGHT_LOCK",
+              "title": {
+                "en": "lock",
+                "nl": "vergrendeld"
+              }
+            },
+            {
+              "id": "DAY_LOCK",
+              "title": {
+                "en": "unlocked",
+                "nl": "ontgrendeld"
+              }
+            },
+            {
+              "id": "OPEN",
+              "title": {
+                "en": "opened",
+                "nl": "geopend"
+              }
+            }
           ]
         }
       ]
     },
     {
-      "id": "open_house_mode",
+      "id": "guest_access_mode_changed",
       "title": {
         "en": "Open house mode",
         "nl": "Open huis mode"
       },
       "titleFormatted": {
-        "en": "Open house mode [[mode]]",
-        "nl": "Open huis mode [[mode]]"
+        "en": "Open house mode [[guest_access_mode]]",
+        "nl": "Open huis mode [[guest_access_mode]]"
       },
       "args": [
         {
           "type": "dropdown",
-          "name": "mode",
-          "title": { "en": "enabled/disabled", "nl": "ingeschakeld/uitgeschakeld" },
+          "name": "guest_access_mode",
+          "placeholder": {
+            "en": "Open House Mode",
+            "nl": "Touwtje uit brievenbus modus"
+          },
+          "title": {
+            "en": "enabled or disabled",
+            "nl": "ingeschakeld of uitgeschakeld"
+          },
           "values": [
-            { "id": "enabled", "title": { "en": "enabled", "nl": "ingeschakeld" } },
-            { "id": "disabled", "title": { "en": "disabled", "nl": "uitgeschakeld"} }
+            {
+              "id": "enabled_or_disabled",
+              "title": {
+                "en": "enabled or disabled",
+                "nl": "ingeschakeld of uitgeschakeld"
+              }
+            },
+            {
+              "id": "enabled",
+              "title": {
+                "en": "enabled",
+                "nl": "ingeschakeld"
+              }
+            },
+            {
+              "id": "disabled",
+              "title": {
+                "en": "disabled",
+                "nl": "uitgeschakeld"
+              }
+            }
           ]
+        }
+      ],
+      "tokens": [
+        {
+          "name": "guest_access_mode",
+          "type": "boolean",
+          "title": {
+            "en": "Open House Mode",
+            "nl": "Touwtje uit brievenbus modus"
+          },
+          "example": true
         }
       ]
     }
@@ -70,6 +132,7 @@
     {
       "highlight": true,
       "id": "open",
+      "$filter": "capabilities=open",
       "title": {
         "en": "Open",
         "nl": "Open"
@@ -80,21 +143,25 @@
       }
     },
     {
+      "deprecated": true,
       "highlight": true,
-      "id": "set_open_house_mode",
+      "id": "set_guest_access_mode",
       "title": {
         "en": "Set Open House Mode",
         "nl": "Stel de Open Huis-modus in"
       },
       "titleFormatted": {
-        "en": "Set Open House Mode to [[open_house_mode]]",
-        "nl": "Stel de Open Huis-modus in op [[open_house_mode]]"
+        "en": "Set Open House Mode to [[guest_access_mode]]",
+        "nl": "Stel de Open Huis-modus in op [[guest_access_mode]]"
       },
       "args": [
         {
           "type": "checkbox",
-          "name": "open_house_mode",
-          "title": { "en": "enabled/disabled", "nl": "ingeschakeld/uitgeschakeld" }
+          "name": "guest_access_mode",
+          "title": {
+            "en": "enabled/disabled",
+            "nl": "ingeschakeld/uitgeschakeld"
+          }
         }
       ]
     }
