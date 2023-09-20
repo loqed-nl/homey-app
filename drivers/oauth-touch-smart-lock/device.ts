@@ -11,7 +11,7 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
 
   onAdded() {
     const savedSessions = this.homey.app.getSavedOAuth2Sessions();
-    
+
     const {
       OAuth2SessionId,
       OAuth2ConfigId,
@@ -20,9 +20,9 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
     let sessionIds = Object.keys(savedSessions);
     for (let i = 0; i < sessionIds.length; i++) {
       const sessionId = sessionIds[i];
-      if(sessionId!==OAuth2SessionId) {
+      if (sessionId !== OAuth2SessionId) {
         this.setStoreValue('OAuth2SessionId', sessionId);
-        this.homey.app.deleteOAuth2Client({sessionId:OAuth2SessionId})
+        this.homey.app.deleteOAuth2Client({ sessionId: OAuth2SessionId })
       }
     }
   }
@@ -46,10 +46,12 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
     });
 
 
-    if (this.hasCapability('open')) this.registerCapabilityListener('open', async (value: BoltState) => {
-      await this.setCapabilityValue('locked', false);
+    if (this.hasCapability('open')) this.registerCapabilityListener('open', async (value: Boolean) => {
+      if (value) {
+        await this.setCapabilityValue('locked', false);
 
-      return oAuth2Client.changeBoltState(id, BoltState.OPEN);
+        return oAuth2Client.changeBoltState(id, BoltState.OPEN);
+      }
     });
 
 
