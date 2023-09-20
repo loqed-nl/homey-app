@@ -2,7 +2,7 @@ import LoqedOAuth2Client, { BoltState, GuestAccessMode as GuestAccessMode } from
 import { WebhookMessage } from "../../lib/LoqedApp";
 
 const { OAuth2Device } = require('homey-oauth2app');
-const HAS_WEBHOOK_KEY = 'has_webhook';
+const WEBHOOK_KEY = 'webhookId';
 const SYNC_INTERVAL = 1000 * 60 * 5;
 
 const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
@@ -32,9 +32,11 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
     const oAuth2Client: LoqedOAuth2Client = this.oAuth2Client;
     const { id } = this.getData();
 
-    if (!this.getStoreValue(HAS_WEBHOOK_KEY)) {
-      await oAuth2Client.createWebhook(id).then(() => {
-        this.setStoreValue(HAS_WEBHOOK_KEY, true);
+    //this.unsetStoreValue(WEBHOOK_KEY);
+
+    if (!this.getStoreValue(WEBHOOK_KEY)) {
+      await oAuth2Client.createWebhook(id).then((x) => {
+        this.setStoreValue(WEBHOOK_KEY, x.data.id);
       });
     }
 
@@ -51,7 +53,7 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
         await this.setCapabilityValue('locked', false);
 
         return oAuth2Client.changeBoltState(id, BoltState.OPEN);
-      }
+      } else return false;
     });
 
 
@@ -70,16 +72,34 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
     this.sync(true);
     this.syncInterval = this.homey.setInterval(async () => await this.sync(false), SYNC_INTERVAL);
   }
-  async onOAuth2Deleted() {
-    await this.setStoreValue(HAS_WEBHOOK_KEY, false)
+
+  async onOAuth2Uninit() {
+    // this.log('onOAuth2Uninit');
+    // await this.setStoreValue(HAS_WEBHOOK_KEY, false);
 
     if (this.syncInterval) {
       this.homey.clearInterval(this.syncInterval);
     }
   }
 
+  async onOAuth2Deleted() {
+    let webHookId = this.getStoreValue(WEBHOOK_KEY);
+
+    const oAuth2Client: LoqedOAuth2Client = this.oAuth2Client;
+    const { id } = this.getData();
+
+    if (webHookId) {
+      await oAuth2Client.deleteWebhook(id, webHookId).then(async () => {
+        await this.unsetStoreValue(WEBHOOK_KEY);
+      });
+    }
+
+    if (this.syncInterval) {
+      this.homey.clearInterval(this.syncInterval);
+    }
+  }
   async onWebhook(body: WebhookMessage) {
-    //this.log('webhook body', body);
+    this.log('webhook body', body);
     const boltState = body.requested_state;
     const batteryPercentage = body.battery_percentage;
     const keyNameAdmin = body.key_name_admin;

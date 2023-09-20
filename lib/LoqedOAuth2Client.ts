@@ -1,5 +1,5 @@
 const Homey = require('homey');
-const {OAuth2Client} = require('homey-oauth2app');
+const { OAuth2Client } = require('homey-oauth2app');
 
 export interface Lock {
   id: string
@@ -38,8 +38,8 @@ export interface Key {
 
 export default class LoqedOAuth2Client extends OAuth2Client {
   static API_URL = 'https://integrations.production.loqed.com';
-  static TOKEN_URL = `${ LoqedOAuth2Client.API_URL }/oauth/token`;
-  static AUTHORIZATION_URL = `${ LoqedOAuth2Client.API_URL }/oauth/authorize`;
+  static TOKEN_URL = `${LoqedOAuth2Client.API_URL}/oauth/token`;
+  static AUTHORIZATION_URL = `${LoqedOAuth2Client.API_URL}/oauth/authorize`;
   static SCOPES = [
     'list-locks',
     'operate-locks',
@@ -61,13 +61,31 @@ export default class LoqedOAuth2Client extends OAuth2Client {
     return this.getLockPromise;
   }
 
+  static getRandomId() {
+    return 'xxxxxxxxxxxxxxxxxxxx'.replace(/[xy]/g, c => {
+      const r = Math.random() * 16 | 0; const
+        // eslint-disable-next-line no-mixed-operators
+        v = c === 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+  }
+
+
   public async createWebhook(lockId: string): Promise<{ data: { id: string } }> {
     const homeyId = await this.homey.cloud.getHomeyId();
-    const webhookUrl = `https://webhooks.athom.com/webhook/${ Homey.env.WEBHOOK_ID }?homey=${ homeyId }`;
+    const webhookUrl = `https://webhooks.athom.com/webhook/${Homey.env.WEBHOOK_ID}?homey=${homeyId}`;
+    
+    // this.log('json', {
+    //   id: LoqedOAuth2Client.getRandomId(),
+    //   url: webhookUrl,
+    //   info: true,
+    //   guest_access_mode: true,
+    // });
 
     return this.post({
-      path: `/api/locks/${ lockId }/webhooks`,
+      path: `/api/locks/${lockId}/webhooks`,
       json: {
+        //id: LoqedOAuth2Client.getRandomId(),
         url: webhookUrl,
         info: true,
         guest_access_mode: true,
@@ -75,16 +93,24 @@ export default class LoqedOAuth2Client extends OAuth2Client {
     });
   };
 
+  public async deleteWebhook(lockId: string, webhookId: string): Promise<{ data: { id: string } }> {
+    const homeyId = await this.homey.cloud.getHomeyId();
+    const webhookUrl = `https://webhooks.athom.com/webhook/${Homey.env.WEBHOOK_ID}?homey=${homeyId}`;
+
+    return this.delete({
+      path: `/api/locks/${lockId}/webhooks/${webhookId}`
+    });
+  };
   public async changeBoltState(lockId: string, boltState: BoltState) {
     return this.get({
-      path: `/api/locks/${ lockId }/bolt_state/${ boltState }`
+      path: `/api/locks/${lockId}/bolt_state/${boltState}`
     })
   }
 
-  
+
   public async changeGuestAccessMode(lockId: string, guestAccessMode: GuestAccessMode) {
     return this.get({
-      path: `/api/locks/${ lockId }/guest_access_mode/${ guestAccessMode }`
+      path: `/api/locks/${lockId}/guest_access_mode/${guestAccessMode}`
       //path: `/api/locks/${ lockId }/open_house_mode/${ openHouseMode }`
     })
   }
@@ -92,7 +118,7 @@ export default class LoqedOAuth2Client extends OAuth2Client {
 
   public async getKeys(lockId: string): Promise<{ data: Key[] }> {
     return this.get({
-      path: `/api/locks/${lockId }/keys`
+      path: `/api/locks/${lockId}/keys`
     });
   }
 }
