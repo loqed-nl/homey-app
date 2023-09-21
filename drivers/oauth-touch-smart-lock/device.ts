@@ -32,7 +32,7 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
     const oAuth2Client: LoqedOAuth2Client = this.oAuth2Client;
     const { id } = this.getData();
 
-    //this.unsetStoreValue(WEBHOOK_KEY);
+    this.unsetStoreValue(WEBHOOK_KEY);
 
     if (!this.getStoreValue(WEBHOOK_KEY)) {
       await oAuth2Client.createWebhook(id).then((x) => {
@@ -56,6 +56,11 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
       } else return false;
     });
 
+    // if(this.hasCapability('garagedoor_closed')) this.removeCapability('garagedoor_closed');
+
+    if (this.hasCapability('button.open')) this.removeCapability('button.open');
+    if (this.hasCapability('button')) this.removeCapability('button');
+    //if(!this.hasCapability('button')) this.addCapability('button');
 
     // this.registerCapabilityListener('lock_state', async (value: BoltState) => {
     //   await this.setCapabilityValue('locked', value === BoltState.NIGHT_LOCK);
@@ -138,21 +143,28 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
   }
 
   async sync(init: boolean) {
-    const { battery_percentage, supported_lock_states, guest_access_mode, online, bolt_state } = await this.driver.getDeviceInfo(this);
+    try {
+      let deviceInfo = await this.driver.getDeviceInfo(this);
+      if (!deviceInfo) return;
+      let { battery_percentage, supported_lock_states, guest_access_mode, online, bolt_state } = deviceInfo;
 
-    await (online ? this.setAvailable() : this.setUnavailable('The device is offline'));
+      await (online ? this.setAvailable() : this.setUnavailable('The device is offline'));
 
-    if (battery_percentage) {
-      await this.setCapabilityValue('measure_battery', battery_percentage);
-    }
+      if (battery_percentage !== undefined && battery_percentage !== null) {
+        if (battery_percentage < 0) battery_percentage = 0;
+        await this.setCapabilityValue('measure_battery', battery_percentage);
+      }
 
-    if (bolt_state && this.getStoreValue('bolt_state') !== bolt_state) {
-      await this.setBoltState(bolt_state, undefined);
-    }
+      if (bolt_state && this.getStoreValue('bolt_state') !== bolt_state) {
+        await this.setBoltState(bolt_state, undefined);
+      }
 
-    if (this.getStoreValue('guest_access_mode') !== guest_access_mode) {
-      this.setStoreValue('guest_access_mode', guest_access_mode);
-      this.driver.triggerGuestAccessModeFlow(this, { mode: guest_access_mode ? 'enabled' : 'disabled' }, { guest_access_mode }); //No need to await
+      if (this.getStoreValue('guest_access_mode') !== guest_access_mode) {
+        this.setStoreValue('guest_access_mode', guest_access_mode);
+        this.driver.triggerGuestAccessModeFlow(this, { mode: guest_access_mode ? 'enabled' : 'disabled' }, { guest_access_mode }); //No need to await
+      }
+    } catch (error) {
+      this.error(error);
     }
   }
 

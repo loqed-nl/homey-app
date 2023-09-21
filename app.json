@@ -412,7 +412,11 @@
           "AAA"
         ]
       },
-      "capabilitiesOptions": {},
+      "capabilitiesOptions": {
+        "garagedoor_closed": {
+          "uiComponent": "button"
+        }
+      },
       "icon": "/drivers/touch-smart-lock/assets/images/icon.svg"
     },
     {

@@ -30,19 +30,19 @@ interface OnPairListProps {
 // }
 
 module.exports = class TouchSmartLockDriver extends OAuth2Driver {
-  
+
   //static OAUTH2_CONFIG_ID = '$new';
-  
+
   private keyStateTrigger: FlowCardTriggerDevice | undefined;
   private openedTrigger: FlowCardTriggerDevice | undefined;
   private guestAccessModeChangedTrigger: FlowCardTriggerDevice | undefined;
-  
+
   async onOAuth2Init() {
     this.openedTrigger = this.homey.flow.getDeviceTriggerCard("opened")
       .registerRunListener(async (args: undefined, state: undefined) => {
         return true;
       });
-      
+
     this.keyStateTrigger = this.homey.flow.getDeviceTriggerCard("key_state")
       .registerRunListener(async (args: KeyStateParams, state: KeyStateParams) => {
         return args.key.name === state.key.name && args.boltState === state.boltState;
@@ -67,14 +67,14 @@ module.exports = class TouchSmartLockDriver extends OAuth2Driver {
     this.guestAccessModeChangedTrigger = this.homey.flow.getDeviceTriggerCard("guest_access_mode_changed")
       .registerRunListener(async (args: GuestAccessModeParams, state: GuestAccessModeParams) => {
         console.log('run listener guest_access_mode_changed', args.guest_access_mode, state.guest_access_mode)
-        return args.guest_access_mode=== "enabled_or_disabled" || args.guest_access_mode === state.guest_access_mode;
+        return args.guest_access_mode === "enabled_or_disabled" || args.guest_access_mode === state.guest_access_mode;
       })
 
     this.openAction = this.homey.flow.getActionCard('open')
       .registerRunListener(async (args: { device: typeof SmartLockDevice }, state: any) => {
         const device: typeof SmartLockDevice = args.device;
 
-        await device.changeLockState(BoltState.OPEN);
+        await device.changeOpen(BoltState.OPEN);
         await device.setCapabilityValue('locked', false);
         await device.oAuth2Client.changeBoltState(device.getData().id, BoltState.OPEN);
       });
@@ -85,20 +85,20 @@ module.exports = class TouchSmartLockDriver extends OAuth2Driver {
     //this.log('devices', devices);
 
     return devices.data.map(device => {
-      const capabilities = device.supported_lock_states.length > 2 ? 
-      ['locked', 'measure_battery', 'open'] :
-      ['locked', 'measure_battery'];
+      const capabilities = device.supported_lock_states.length > 2 ?
+        ['locked', 'measure_battery', 'open'] :
+        ['locked', 'measure_battery'];
 
       return {
         name: device.name,
         data: {
-          id:device.id
+          id: device.id
         },
         store: {
-          guest_access_mode:device.guest_acces_mode,
-          bolt_state:device.bolt_state,
-          touch_to_connect:device.touch_to_connect,
-          twist_assist:device.twist_assist
+          guest_access_mode: device.guest_acces_mode,
+          bolt_state: device.bolt_state,
+          touch_to_connect: device.touch_to_connect,
+          twist_assist: device.twist_assist
         },
         capabilities
       };
@@ -110,27 +110,27 @@ module.exports = class TouchSmartLockDriver extends OAuth2Driver {
     const getLocks = await oauth2Client.getLocks();
 
     const result = getLocks.data?.find((lock: Lock) => lock.id === device.getData().id);
-    if(result && result.bolt_state) result.bolt_state = <BoltState>result.bolt_state.toUpperCase();
+    if (result && result.bolt_state) result.bolt_state = <BoltState>result.bolt_state.toUpperCase();
     return result;
   }
 
   async triggerUserStateFlow(device: Device, state: KeyStateParams) {
     this.keyStateTrigger
       ?.trigger(device, {}, state)
-      .then(()=>{})
+      .then(() => { })
       .catch(this.error);
   }
 
   async triggerOpenedFlow(device: Device, state: undefined) {
     this.openedTrigger
       ?.trigger(device, {}, state)
-      .then(()=>{})
+      .then(() => { })
       .catch(this.error);
   }
-  async triggerGuestAccessModeFlow(device: Device, state: GuestAccessModeParams, tokens:GuestAccessModeTokens) {
+  async triggerGuestAccessModeFlow(device: Device, state: GuestAccessModeParams, tokens: GuestAccessModeTokens) {
     this.guestAccessModeChangedTrigger
       ?.trigger(device, tokens, state)
-      .then(()=>{})
+      .then(() => { })
       .catch(this.error);
   }
 }

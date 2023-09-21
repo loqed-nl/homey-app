@@ -29,6 +29,9 @@
     ]
   },
   "capabilitiesOptions": {
+    "garagedoor_closed": {
+      "uiComponent":"button"
+    }
   },
   "images": {
     "large": "/drivers/touch-smart-lock/assets/images/large.jpg",
