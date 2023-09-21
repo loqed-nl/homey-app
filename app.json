@@ -45,6 +45,10 @@
   "contributors": {
     "developers": [
       {
+        "name": "Bert van Hoekelen",
+        "email": "bert@magwel.nl"
+      },
+      {
         "name": "Arie J. Godschalk",
         "email": "arie@qluster-it.nl"
       }
