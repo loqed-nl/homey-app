@@ -70,23 +70,23 @@
     "nl": "Voorkom dat de vergrendelingsactie twee keer wordt uitgevoerd."
   },
   "3.0.0": {
-    "en": "Using the new API. Added battery info and optimized flow cards",
+    "en": "Using the new API. Added battery info and optimized flow cards.",
     "nl": "Gebruik van de nieuwe API. Batterij informatie toegevoegd en flow kaarten geoptimaliseerd."
   },
   "3.1.0": {
-    "en": "Add open house mode trigger, sync device state"
+    "en": "Add open house mode trigger, sync device state."
   },
   "3.1.1": {
-    "en": "Add open house mode trigger, sync device state",
-    "nl": "Open huis modus trigger toegevoegd, apparaat status synchroniseren"
+    "en": "Add open house mode trigger, sync device state.",
+    "nl": "Open huis modus trigger toegevoegd, apparaat status synchroniseren."
   },
   "3.2.0": {
-    "en": "Add device availability",
-    "nl": "Apparaat beschikbaarheid toegevoegd"
+    "en": "Add device availability.",
+    "nl": "Apparaat beschikbaarheid toegevoegd."
   },
   "3.3.0": {
-    "en": "Open lock action is fixed",
-    "nl": "Open slot actie is gefixt"
+    "en": "Open lock action is fixed.",
+    "nl": "Open slot actie is gefixt."
   },
   "3.3.1": {
     "en": "Rebuild of version 3.",

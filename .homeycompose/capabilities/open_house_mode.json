@@ -1,0 +1,19 @@
+{
+"type": "boolean" ,
+  "title": {
+    "en": "Open House Mode",
+    "nl": "Touwtje uit de brievenbus"
+  },
+  "icon":"./assets/icons/open_house_mode.svg",
+  "uiComponent": "button",
+  "getable": true,
+  "setable": true,
+  "insightsTitleTrue":{
+    "en": "Open House Mode enabled",    
+    "nl": "Touwtje uit de brievenbus aangezet"
+  },  
+  "insightsTitleFalse":{
+    "en": "Open House Mode disabled",
+    "nl": "Touwtje uit de brievenbus uitgezet"
+  }
+}

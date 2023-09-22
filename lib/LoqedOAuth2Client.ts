@@ -8,7 +8,8 @@ export interface Lock {
   battery_type: string,
   bolt_state: BoltState,
   party_mode: boolean,
-  guest_acces_mode: boolean,
+  guest_access_mode: boolean,
+  open_house_mode: boolean,
   twist_assist: boolean,
   touch_to_connect: boolean,
   lock_direction: 'clockwise' | 'counter_clockwise',
@@ -26,7 +27,7 @@ export enum BoltState {
   OPEN = 'OPEN'
 }
 
-export enum GuestAccessMode {
+export enum OpenHouseMode {
   DISABLED = 0,
   ENABLED = 1
 }
@@ -75,13 +76,6 @@ export default class LoqedOAuth2Client extends OAuth2Client {
     const homeyId = await this.homey.cloud.getHomeyId();
     const webhookUrl = `https://webhooks.athom.com/webhook/${Homey.env.WEBHOOK_ID}?homey=${homeyId}`;
     
-    // this.log('json', {
-    //   id: LoqedOAuth2Client.getRandomId(),
-    //   url: webhookUrl,
-    //   info: true,
-    //   guest_access_mode: true,
-    // });
-
     return this.post({
       path: `/api/locks/${lockId}/webhooks`,
       json: {
@@ -108,9 +102,9 @@ export default class LoqedOAuth2Client extends OAuth2Client {
   }
 
 
-  public async changeGuestAccessMode(lockId: string, guestAccessMode: GuestAccessMode) {
+  public async changeOpenHouseMode(lockId: string, openHouseMode: OpenHouseMode) {
     return this.get({
-      path: `/api/locks/${lockId}/guest_access_mode/${guestAccessMode}`
+      path: `/api/locks/${lockId}/guest_access_mode/${openHouseMode}`
       //path: `/api/locks/${ lockId }/open_house_mode/${ openHouseMode }`
     })
   }

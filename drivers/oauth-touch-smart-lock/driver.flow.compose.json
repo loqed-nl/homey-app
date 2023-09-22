@@ -69,19 +69,19 @@
       ]
     },
     {
-      "id": "guest_access_mode_changed",
+      "id": "open_house_mode_changed",
       "title": {
         "en": "Open house mode",
         "nl": "Open huis mode"
       },
       "titleFormatted": {
-        "en": "Open house mode [[guest_access_mode]]",
-        "nl": "Open huis mode [[guest_access_mode]]"
+        "en": "Open house mode [[open_house_mode]]",
+        "nl": "Open huis mode [[open_house_mode]]"
       },
       "args": [
         {
           "type": "dropdown",
-          "name": "guest_access_mode",
+          "name": "open_house_mode",
           "placeholder": {
             "en": "Open House Mode",
             "nl": "Touwtje uit brievenbus modus"
@@ -117,7 +117,7 @@
       ],
       "tokens": [
         {
-          "name": "guest_access_mode",
+          "name": "open_house_mode",
           "type": "boolean",
           "title": {
             "en": "Open House Mode",
@@ -145,19 +145,19 @@
     {
       "deprecated": true,
       "highlight": true,
-      "id": "set_guest_access_mode",
+      "id": "set_open_house_mode",
       "title": {
         "en": "Set Open House Mode",
-        "nl": "Stel de Open Huis-modus in"
+        "nl": "Stel het Touwtje uit de brievenbus in"
       },
       "titleFormatted": {
-        "en": "Set Open House Mode to [[guest_access_mode]]",
-        "nl": "Stel de Open Huis-modus in op [[guest_access_mode]]"
+        "en": "Set Open House Mode to [[open_house_mode]]",
+        "nl": "Stel het Touwtje uit de brievenbus in op [[open_house_mode]]"
       },
       "args": [
         {
           "type": "checkbox",
-          "name": "guest_access_mode",
+          "name": "open_house_mode",
           "title": {
             "en": "enabled/disabled",
             "nl": "ingeschakeld/uitgeschakeld"

@@ -11,31 +11,24 @@ interface KeyStateParams {
   boltState: BoltState
 }
 
-interface GuestAccessModeParams {
-  guest_access_mode: 'enabled' | 'disabled' | 'enabled_or_disabled'
+interface OpenHouseModeParams {
+  open_house_mode: 'enabled' | 'disabled' | 'enabled_or_disabled'
 }
 
-interface GuestAccessModeTokens {
-  guest_access_mode: boolean
+interface OpenHouseModeTokens {
+  open_house_mode: boolean
 }
 interface OnPairListProps {
   oAuth2Client: typeof LoqedOAuth2Client;
 }
 
-// interface Cache {
-//   locks: {
-//     data: Lock[] | null,
-//     date: number | null
-//   }
-// }
 
 module.exports = class TouchSmartLockDriver extends OAuth2Driver {
 
-  //static OAUTH2_CONFIG_ID = '$new';
 
   private keyStateTrigger: FlowCardTriggerDevice | undefined;
   private openedTrigger: FlowCardTriggerDevice | undefined;
-  private guestAccessModeChangedTrigger: FlowCardTriggerDevice | undefined;
+  private openHouseModeChangedTrigger: FlowCardTriggerDevice | undefined;
 
   async onOAuth2Init() {
     this.openedTrigger = this.homey.flow.getDeviceTriggerCard("opened")
@@ -64,10 +57,10 @@ module.exports = class TouchSmartLockDriver extends OAuth2Driver {
         }
       );
 
-    this.guestAccessModeChangedTrigger = this.homey.flow.getDeviceTriggerCard("guest_access_mode_changed")
-      .registerRunListener(async (args: GuestAccessModeParams, state: GuestAccessModeParams) => {
-        console.log('run listener guest_access_mode_changed', args.guest_access_mode, state.guest_access_mode)
-        return args.guest_access_mode === "enabled_or_disabled" || args.guest_access_mode === state.guest_access_mode;
+    this.openHouseModeChangedTrigger = this.homey.flow.getDeviceTriggerCard("open_house_mode_changed")
+      .registerRunListener(async (args: OpenHouseModeParams, state: OpenHouseModeParams) => {
+        console.log('run listener open_house_mode_changed', args.open_house_mode, state.open_house_mode)
+        return args.open_house_mode === "enabled_or_disabled" || args.open_house_mode === state.open_house_mode;
       })
 
     this.openAction = this.homey.flow.getActionCard('open')
@@ -82,23 +75,16 @@ module.exports = class TouchSmartLockDriver extends OAuth2Driver {
 
   async onPairListDevices({ oAuth2Client }: OnPairListProps) {
     const devices: { data: Lock[] } = await oAuth2Client.getLocks();
-    //this.log('devices', devices);
 
     return devices.data.map(device => {
       const capabilities = device.supported_lock_states.length > 2 ?
-        ['locked', 'measure_battery', 'open'] :
-        ['locked', 'measure_battery'];
+        ['locked', 'measure_battery', 'open', 'open_house_mode', 'twist_assist', 'touch_to_connect'] :
+        ['locked', 'measure_battery', 'open_house_mode', 'twist_assist', 'touch_to_connect'];
 
       return {
         name: device.name,
         data: {
           id: device.id
-        },
-        store: {
-          guest_access_mode: device.guest_acces_mode,
-          bolt_state: device.bolt_state,
-          touch_to_connect: device.touch_to_connect,
-          twist_assist: device.twist_assist
         },
         capabilities
       };
@@ -110,7 +96,10 @@ module.exports = class TouchSmartLockDriver extends OAuth2Driver {
     const getLocks = await oauth2Client.getLocks();
 
     const result = getLocks.data?.find((lock: Lock) => lock.id === device.getData().id);
-    if (result && result.bolt_state) result.bolt_state = <BoltState>result.bolt_state.toUpperCase();
+    if(result) {
+      if (result.bolt_state) result.bolt_state = <BoltState>result.bolt_state.toUpperCase();
+      result.open_house_mode = result.guest_access_mode;
+    }
     return result;
   }
 
@@ -127,8 +116,8 @@ module.exports = class TouchSmartLockDriver extends OAuth2Driver {
       .then(() => { })
       .catch(this.error);
   }
-  async triggerGuestAccessModeFlow(device: Device, state: GuestAccessModeParams, tokens: GuestAccessModeTokens) {
-    this.guestAccessModeChangedTrigger
+  async triggerOpenHouseModeFlow(device: Device, state: OpenHouseModeParams, tokens: OpenHouseModeTokens) {
+    this.openHouseModeChangedTrigger
       ?.trigger(device, tokens, state)
       .then(() => { })
       .catch(this.error);

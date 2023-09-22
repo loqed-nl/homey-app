@@ -1,4 +1,4 @@
-import LoqedOAuth2Client, { BoltState, GuestAccessMode as GuestAccessMode } from "../../lib/LoqedOAuth2Client";
+import LoqedOAuth2Client, { BoltState, OpenHouseMode as OpenHouseMode } from "../../lib/LoqedOAuth2Client";
 import { WebhookMessage } from "../../lib/LoqedApp";
 
 const { OAuth2Device } = require('homey-oauth2app');
@@ -7,8 +7,7 @@ const SYNC_INTERVAL = 1000 * 60 * 5;
 
 const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
   private syncInterval: NodeJS.Timer | undefined;
-  private guestAccessMode: boolean = false;
-
+  
   onAdded() {
     const savedSessions = this.homey.app.getSavedOAuth2Sessions();
 
@@ -32,7 +31,7 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
     const oAuth2Client: LoqedOAuth2Client = this.oAuth2Client;
     const { id } = this.getData();
 
-    this.unsetStoreValue(WEBHOOK_KEY);
+    //this.unsetStoreValue(WEBHOOK_KEY);
 
     if (!this.getStoreValue(WEBHOOK_KEY)) {
       await oAuth2Client.createWebhook(id).then((x) => {
@@ -41,6 +40,7 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
     }
 
     this.registerCapabilityListener('locked', async (value: any) => {
+      //this.log('locked', value);
       const lockState = (value ? BoltState.NIGHT_LOCK : BoltState.DAY_LOCK);
 
       await this.changeOpen(lockState);
@@ -58,8 +58,8 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
 
     // if(this.hasCapability('garagedoor_closed')) this.removeCapability('garagedoor_closed');
 
-    if (this.hasCapability('button.open')) this.removeCapability('button.open');
-    if (this.hasCapability('button')) this.removeCapability('button');
+    // if (this.hasCapability('button.open')) this.removeCapability('button.open');
+    // if (this.hasCapability('button')) this.removeCapability('button');
     //if(!this.hasCapability('button')) this.addCapability('button');
 
     // this.registerCapabilityListener('lock_state', async (value: BoltState) => {
@@ -69,9 +69,9 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
     // });
 
 
-    // this.registerCapabilityListener('house_open_button', async (value: GuestAccessMode) => {
-    //   return oAuth2Client.changeGuestAccessMode(id, value);
-    // });
+    this.registerCapabilityListener('open_house_mode', async (value: OpenHouseMode) => {
+      return oAuth2Client.changeOpenHouseMode(id, value);
+    });
 
 
     this.sync(true);
@@ -79,8 +79,6 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
   }
 
   async onOAuth2Uninit() {
-    // this.log('onOAuth2Uninit');
-    // await this.setStoreValue(HAS_WEBHOOK_KEY, false);
 
     if (this.syncInterval) {
       this.homey.clearInterval(this.syncInterval);
@@ -118,18 +116,10 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
     }
   }
 
-  async setBoltState(boltState: BoltState | undefined, keyNameAdmin: string | undefined) {
+  async setBoltState(boltState: BoltState | undefined, keyNameAdmin: string | undefined) {    
     if (boltState) {
-      this.setStoreValue('bolt_state', boltState);
+      await this.setCapabilityValue('locked', boltState === BoltState.NIGHT_LOCK);
       await this.changeOpen(boltState);
-    }
-
-    if (boltState && (boltState === BoltState.OPEN || boltState === BoltState.DAY_LOCK)) {
-      await this.setCapabilityValue('locked', false);
-    }
-
-    if (boltState && boltState === BoltState.NIGHT_LOCK) {
-      await this.setCapabilityValue('locked', true);
     }
 
     if (boltState && keyNameAdmin) {
@@ -146,7 +136,7 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
     try {
       let deviceInfo = await this.driver.getDeviceInfo(this);
       if (!deviceInfo) return;
-      let { battery_percentage, supported_lock_states, guest_access_mode, online, bolt_state } = deviceInfo;
+      let { battery_percentage, supported_lock_states, open_house_mode, online, bolt_state, twist_assist, touch_to_connect } = deviceInfo;
 
       await (online ? this.setAvailable() : this.setUnavailable('The device is offline'));
 
@@ -154,14 +144,27 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
         if (battery_percentage < 0) battery_percentage = 0;
         await this.setCapabilityValue('measure_battery', battery_percentage);
       }
+      
+      let lockedCapabilityValue = this.getCapabilityValue('locked');
+      let oldBoltState = lockedCapabilityValue === true ? BoltState.NIGHT_LOCK : lockedCapabilityValue === false ? BoltState.DAY_LOCK : undefined;
 
-      if (bolt_state && this.getStoreValue('bolt_state') !== bolt_state) {
+      if(this.hasCapability('open') && this.getCapabilityValue('open')===true) oldBoltState = BoltState.OPEN;
+
+      if (bolt_state && oldBoltState !== bolt_state) {
         await this.setBoltState(bolt_state, undefined);
       }
 
-      if (this.getStoreValue('guest_access_mode') !== guest_access_mode) {
-        this.setStoreValue('guest_access_mode', guest_access_mode);
-        this.driver.triggerGuestAccessModeFlow(this, { mode: guest_access_mode ? 'enabled' : 'disabled' }, { guest_access_mode }); //No need to await
+      if (this.getCapabilityValue('open_house_mode') !== open_house_mode) {
+        this.getCapabilityValue('open_house_mode', open_house_mode);
+        this.driver.triggerOpenHouseModeFlow(this, { open_house_mode: open_house_mode ? 'enabled' : 'disabled' }, { open_house_mode }); //No need to await
+      }
+      
+      if(this.getCapabilityValue('twist_assist')!==twist_assist) {
+        this.setCapabilityValue('twist_assist', twist_assist);
+      }
+      
+      if(this.getCapabilityValue('touch_to_connect')!==touch_to_connect) {
+        this.setCapabilityValue('touch_to_connect', touch_to_connect);
       }
     } catch (error) {
       this.error(error);

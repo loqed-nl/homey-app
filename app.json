@@ -47,6 +47,10 @@
       {
         "name": "Arie J. Godschalk",
         "email": "arie@qluster-it.nl"
+      },
+      {
+        "name": "Bert van Hoekelen",
+        "email": "bert@magwel.nl"
       }
     ]
   },
@@ -143,14 +147,14 @@
         ]
       },
       {
-        "id": "guest_access_mode_changed",
+        "id": "open_house_mode_changed",
         "title": {
           "en": "Open house mode",
           "nl": "Open huis mode"
         },
         "titleFormatted": {
-          "en": "Open house mode [[guest_access_mode]]",
-          "nl": "Open huis mode [[guest_access_mode]]"
+          "en": "Open house mode [[open_house_mode]]",
+          "nl": "Open huis mode [[open_house_mode]]"
         },
         "args": [
           {
@@ -160,7 +164,7 @@
           },
           {
             "type": "dropdown",
-            "name": "guest_access_mode",
+            "name": "open_house_mode",
             "placeholder": {
               "en": "Open House Mode",
               "nl": "Touwtje uit brievenbus modus"
@@ -196,7 +200,7 @@
         ],
         "tokens": [
           {
-            "name": "guest_access_mode",
+            "name": "open_house_mode",
             "type": "boolean",
             "title": {
               "en": "Open House Mode",
@@ -274,14 +278,14 @@
       {
         "deprecated": true,
         "highlight": true,
-        "id": "set_guest_access_mode",
+        "id": "set_open_house_mode",
         "title": {
           "en": "Set Open House Mode",
-          "nl": "Stel de Open Huis-modus in"
+          "nl": "Stel het Touwtje uit de brievenbus in"
         },
         "titleFormatted": {
-          "en": "Set Open House Mode to [[guest_access_mode]]",
-          "nl": "Stel de Open Huis-modus in op [[guest_access_mode]]"
+          "en": "Set Open House Mode to [[open_house_mode]]",
+          "nl": "Stel het Touwtje uit de brievenbus in op [[open_house_mode]]"
         },
         "args": [
           {
@@ -291,7 +295,7 @@
           },
           {
             "type": "checkbox",
-            "name": "guest_access_mode",
+            "name": "open_house_mode",
             "title": {
               "en": "enabled/disabled",
               "nl": "ingeschakeld/uitgeschakeld"
@@ -398,7 +402,8 @@
       ],
       "capabilities": [
         "locked",
-        "measure_battery"
+        "measure_battery",
+        "open_house_mode"
       ],
       "energy": {
         "batteries": [
@@ -412,11 +417,7 @@
           "AAA"
         ]
       },
-      "capabilitiesOptions": {
-        "garagedoor_closed": {
-          "uiComponent": "button"
-        }
-      },
+      "capabilitiesOptions": {},
       "icon": "/drivers/touch-smart-lock/assets/images/icon.svg"
     },
     {
@@ -525,17 +526,6 @@
     }
   ],
   "capabilities": {
-    "house_open_button": {
-      "type": "boolean",
-      "title": {
-        "en": "House Open Mode",
-        "nl": "Touwtje uit de brievenbus"
-      },
-      "uiComponent": "button",
-      "uiQuickAction": true,
-      "getable": true,
-      "setable": true
-    },
     "lock_state": {
       "title": {
         "en": "Lock state",
@@ -587,6 +577,65 @@
       "insightsTitleFalse": {
         "en": "Unlocked",
         "nl": "Ontgrendeld"
+      }
+    },
+    "open_house_mode": {
+      "type": "boolean",
+      "title": {
+        "en": "Open House Mode",
+        "nl": "Touwtje uit de brievenbus"
+      },
+      "icon": "./assets/icons/open_house_mode.svg",
+      "uiComponent": "button",
+      "getable": true,
+      "setable": true,
+      "insightsTitleTrue": {
+        "en": "Open House Mode enabled",
+        "nl": "Touwtje uit de brievenbus aangezet"
+      },
+      "insightsTitleFalse": {
+        "en": "Open House Mode disabled",
+        "nl": "Touwtje uit de brievenbus uitgezet"
+      }
+    },
+    "touch_to_connect": {
+      "type": "boolean",
+      "title": {
+        "en": "Touch to Connect",
+        "nl": "Touch to Connect"
+      },
+      "icon": "./assets/icons/touch_to_connect.svg",
+      "uiComponent": "sensor",
+      "getable": true,
+      "setable": false,
+      "insights": true,
+      "insightsTitleTrue": {
+        "en": "Touch to Connect enabled",
+        "nl": "Touch to Connect aangezet"
+      },
+      "insightsTitleFalse": {
+        "en": "Touch to Connect disabled",
+        "nl": "Touch to Connect uitgezet"
+      }
+    },
+    "twist_assist": {
+      "type": "boolean",
+      "title": {
+        "en": "Twist assist",
+        "nl": "Twist assist"
+      },
+      "icon": "./assets/icons/twist_assist.svg",
+      "uiComponent": "sensor",
+      "getable": true,
+      "setable": false,
+      "insights": true,
+      "insightsTitleTrue": {
+        "en": "Twist assist enabled",
+        "nl": "Twist assist aangezet"
+      },
+      "insightsTitleFalse": {
+        "en": "Twist assist disabled",
+        "nl": "Twist assist uitgezet"
       }
     }
   }
