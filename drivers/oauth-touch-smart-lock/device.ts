@@ -40,7 +40,6 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
     }
 
     this.registerCapabilityListener('locked', async (value: any) => {
-      //this.log('locked', value);
       const lockState = (value ? BoltState.NIGHT_LOCK : BoltState.DAY_LOCK);
 
       await this.changeOpen(lockState);
@@ -53,7 +52,7 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
         await this.setCapabilityValue('locked', false);
 
         return oAuth2Client.changeBoltState(id, BoltState.OPEN);
-      } else return false;
+      } throw new Error(this.homey.__('errors.open_readonly'));
     });
 
     // if(this.hasCapability('garagedoor_closed')) this.removeCapability('garagedoor_closed');
@@ -102,7 +101,7 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
     }
   }
   async onWebhook(body: WebhookMessage) {
-    this.log('webhook body', body);
+    //this.log('webhook body', body);
     const boltState = body.requested_state;
     const batteryPercentage = body.battery_percentage;
     const keyNameAdmin = body.key_name_admin;
@@ -155,7 +154,7 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
       }
 
       if (this.getCapabilityValue('open_house_mode') !== open_house_mode) {
-        this.getCapabilityValue('open_house_mode', open_house_mode);
+        this.setCapabilityValue('open_house_mode', open_house_mode);
         this.driver.triggerOpenHouseModeFlow(this, { open_house_mode: open_house_mode ? 'enabled' : 'disabled' }, { open_house_mode }); //No need to await
       }
       

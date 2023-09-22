@@ -59,7 +59,6 @@ module.exports = class TouchSmartLockDriver extends OAuth2Driver {
 
     this.openHouseModeChangedTrigger = this.homey.flow.getDeviceTriggerCard("open_house_mode_changed")
       .registerRunListener(async (args: OpenHouseModeParams, state: OpenHouseModeParams) => {
-        console.log('run listener open_house_mode_changed', args.open_house_mode, state.open_house_mode)
         return args.open_house_mode === "enabled_or_disabled" || args.open_house_mode === state.open_house_mode;
       })
 

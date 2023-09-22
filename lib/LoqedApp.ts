@@ -57,7 +57,7 @@ module.exports = class LoqedApp extends OAuth2App {
     });
 
     if (!await this.homey.settings.get('notification_version_3_rewrite')) {
-			this.homey.notifications.createNotification({ excerpt: "LOQED version 3 has been rewriten.\nVersion 3 uses OAuth to connect to the devices for improved functionalities.\nYou are adviced to remove existing locks and pair them again in the Homey App for the best experience.\nIf you had the test version 3 installed, you need to remove and re-pair devices." });
+			this.homey.notifications.createNotification({ excerpt: this.homey.__('notifications.notification_version_3_rewrite') });
 			this.homey.settings.set('notification_version_3_rewrite', true);
 		}
 

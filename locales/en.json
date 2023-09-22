@@ -2,5 +2,12 @@
   "pair":  {
     "setup": "Setup",
     "setup_description": "Connection is being setup. You are automatically logged out in the app on your phone. After the connection was successful you should again login on your phone."
+  },
+  "errors": {
+    "open_readonly": "You cannot close the door through the open button.\nThe status will automaticly updated."
+  },
+  "notifications" :
+  {
+    "notification_version_3_rewrite":"LOQED version 3 has been rewriten.\nVersion 3 uses OAuth to connect to the devices for improved functionalities.\nYou are advised to remove existing locks and pair them again in the Homey App for the best experience.\nIf you had the test version 3 installed, you need to remove and re-pair devices."
   }
 }

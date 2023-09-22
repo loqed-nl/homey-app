@@ -45,10 +45,6 @@
   "contributors": {
     "developers": [
       {
-        "name": "Bert van Hoekelen",
-        "email": "bert@magwel.nl"
-      },
-      {
         "name": "Arie J. Godschalk",
         "email": "arie@qluster-it.nl"
       },
@@ -96,7 +92,7 @@
           "nl": "Sleutel veranderd vergrendeling"
         },
         "titleFormatted": {
-          "en": "Key [[key]] did [[boltState]] the door",
+          "en": "Key [[key]] [[boltState]] the door",
           "nl": "Sleutel [[key]] heeft de deur [[boltState]]"
         },
         "args": [
@@ -128,7 +124,7 @@
               {
                 "id": "NIGHT_LOCK",
                 "title": {
-                  "en": "lock",
+                  "en": "locked",
                   "nl": "vergrendeld"
                 }
               },
@@ -157,8 +153,8 @@
           "nl": "Open huis mode"
         },
         "titleFormatted": {
-          "en": "Open house mode [[open_house_mode]]",
-          "nl": "Open huis mode [[open_house_mode]]"
+          "en": "Open house mode is [[open_house_mode]]",
+          "nl": "Touwtje uit de brievenbus is [[open_house_mode]]"
         },
         "args": [
           {
@@ -208,7 +204,7 @@
             "type": "boolean",
             "title": {
               "en": "Open House Mode",
-              "nl": "Touwtje uit brievenbus modus"
+              "nl": "Touwtje uit brievenbus"
             },
             "example": true
           }
