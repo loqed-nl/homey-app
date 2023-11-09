@@ -5,9 +5,9 @@
     "nl": "Twist assist"
   },
   "icon":"./assets/icons/twist_assist.svg",
-  "uiComponent": "button",
+  "uiComponent": "sensor",
   "getable": true,
-  "setable": true,
+  "setable": false,
   "insights":true,
   "insightsTitleTrue":{
     "en": "Twist assist enabled",    

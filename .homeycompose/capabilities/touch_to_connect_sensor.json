@@ -5,9 +5,9 @@
     "nl": "Touch to Connect"
   },
   "icon":"./assets/icons/touch_to_connect.svg",
-  "uiComponent": "button",
+  "uiComponent": "sensor",
   "getable": true,
-  "setable": true,
+  "setable": false,
   "insights":true,
   "insightsTitleTrue":{
     "en": "Touch to Connect enabled",    

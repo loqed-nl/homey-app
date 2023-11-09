@@ -38,7 +38,7 @@ export interface Key {
 }
 
 export default class LoqedOAuth2Client extends OAuth2Client {
-  static API_URL = 'https://integrations.production.loqed.com';
+  static API_URL = 'https://integrations.acceptance.loqed.com';
   static TOKEN_URL = `${LoqedOAuth2Client.API_URL}/oauth/token`;
   static AUTHORIZATION_URL = `${LoqedOAuth2Client.API_URL}/oauth/authorize`;
   static SCOPES = [
@@ -75,9 +75,9 @@ export default class LoqedOAuth2Client extends OAuth2Client {
   public async createWebhook(lockId: string): Promise<{ data: { id: string } }> {
     const homeyId = await this.homey.cloud.getHomeyId();
     const webhookUrl = `https://webhooks.athom.com/webhook/${Homey.env.WEBHOOK_ID}?homey=${homeyId}`;
-    
+
     return this.post({
-      path: `/api/locks/${lockId}/webhooks`,
+      path: `/api/locks/${lockId}/webhooks/many`,
       json: {
         //id: LoqedOAuth2Client.getRandomId(),
         url: webhookUrl,
@@ -103,8 +103,13 @@ export default class LoqedOAuth2Client extends OAuth2Client {
 
 
   public async changeOpenHouseMode(lockId: string, openHouseMode: OpenHouseMode) {
-    return this.get({
-      path: `/api/locks/${lockId}/guest_access_mode/${openHouseMode}`
+    return this.post({
+      path: `/api/locks/${lockId}/setting`,
+      json: {
+        "setting_name": "open_house_mode",
+        "setting_value": openHouseMode
+      }
+      //path: `/api/locks/${lockId}/guest_access_mode/${openHouseMode}`
       //path: `/api/locks/${ lockId }/open_house_mode/${ openHouseMode }`
     })
   }

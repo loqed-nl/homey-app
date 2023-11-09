@@ -5,9 +5,9 @@
     "nl": "Touwtje uit de brievenbus"
   },
   "icon":"./assets/icons/open_house_mode.svg",
-  "uiComponent": "button",
+  "uiComponent": "sensor",
   "getable": true,
-  "setable": true,
+  "setable": false,
   "insights":true,
   "insightsTitleTrue":{
     "en": "Open House Mode enabled",    
