@@ -418,7 +418,42 @@
         ]
       },
       "capabilitiesOptions": {},
-      "icon": "/drivers/touch-smart-lock/assets/images/icon.svg"
+      "icon": "/drivers/touch-smart-lock/assets/images/icon.svg",
+      "settings": [
+        {
+          "id": "open_house_mode_button",
+          "type": "checkbox",
+          "label": {
+            "en": "Open House Mode as button"
+          },
+          "value": true,
+          "hint": {
+            "en": "When set to true, the Open House Mode will be setable through a button; Otherwise, it will be displayed as a sensor."
+          }
+        },
+        {
+          "id": "twist_assist_button",
+          "type": "checkbox",
+          "label": {
+            "en": "Twist as button"
+          },
+          "value": true,
+          "hint": {
+            "en": "When set to true, the Twist Assist will be setable through a button; Otherwise, it will be displayed as a sensor."
+          }
+        },
+        {
+          "id": "touch_to_connect_button",
+          "type": "checkbox",
+          "label": {
+            "en": "Touch To Connect as button"
+          },
+          "value": true,
+          "hint": {
+            "en": "When set to true, the Touch To Connect will be setable through a button; Otherwise, it will be displayed as a sensor."
+          }
+        }
+      ]
     },
     {
       "id": "touch-smart-lock",
@@ -589,6 +624,27 @@
       "uiComponent": "button",
       "getable": true,
       "setable": true,
+      "insights": true,
+      "insightsTitleTrue": {
+        "en": "Open House Mode enabled",
+        "nl": "Touwtje uit de brievenbus aangezet"
+      },
+      "insightsTitleFalse": {
+        "en": "Open House Mode disabled",
+        "nl": "Touwtje uit de brievenbus uitgezet"
+      }
+    },
+    "open_house_mode_sensor": {
+      "type": "boolean",
+      "title": {
+        "en": "Open House Mode",
+        "nl": "Touwtje uit de brievenbus"
+      },
+      "icon": "./assets/icons/open_house_mode.svg",
+      "uiComponent": "sensor",
+      "getable": true,
+      "setable": false,
+      "insights": true,
       "insightsTitleTrue": {
         "en": "Open House Mode enabled",
         "nl": "Touwtje uit de brievenbus aangezet"
@@ -599,6 +655,26 @@
       }
     },
     "touch_to_connect": {
+      "type": "boolean",
+      "title": {
+        "en": "Touch to Connect",
+        "nl": "Touch to Connect"
+      },
+      "icon": "./assets/icons/touch_to_connect.svg",
+      "uiComponent": "button",
+      "getable": true,
+      "setable": true,
+      "insights": true,
+      "insightsTitleTrue": {
+        "en": "Touch to Connect enabled",
+        "nl": "Touch to Connect aangezet"
+      },
+      "insightsTitleFalse": {
+        "en": "Touch to Connect disabled",
+        "nl": "Touch to Connect uitgezet"
+      }
+    },
+    "touch_to_connect_sensor": {
       "type": "boolean",
       "title": {
         "en": "Touch to Connect",
@@ -619,6 +695,26 @@
       }
     },
     "twist_assist": {
+      "type": "boolean",
+      "title": {
+        "en": "Twist assist",
+        "nl": "Twist assist"
+      },
+      "icon": "./assets/icons/twist_assist.svg",
+      "uiComponent": "button",
+      "getable": true,
+      "setable": true,
+      "insights": true,
+      "insightsTitleTrue": {
+        "en": "Twist assist enabled",
+        "nl": "Twist assist aangezet"
+      },
+      "insightsTitleFalse": {
+        "en": "Twist assist disabled",
+        "nl": "Twist assist uitgezet"
+      }
+    },
+    "twist_assist_sensor": {
       "type": "boolean",
       "title": {
         "en": "Twist assist",

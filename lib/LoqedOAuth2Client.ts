@@ -32,9 +32,33 @@ export enum OpenHouseMode {
   ENABLED = 1
 }
 
+export enum TwistAssistMode {
+  DISABLED = 0,
+  ENABLED = 1
+}
+
+export enum TouchToConnectMode {
+  DISABLED = 0,
+  ENABLED = 1
+}
+
+
 export interface Key {
   name: string,
   administrator_name: string
+}
+export interface SettingArgument {
+  oldSettings: {
+    open_house_mode_button: Boolean,
+    twist_assist_button: Boolean,
+    touch_to_connect_button: Boolean,
+  },
+  newSettings: {
+    open_house_mode_button: Boolean,
+    twist_assist_button: Boolean,
+    touch_to_connect_button: Boolean,
+  },
+  changedKeys: String[]
 }
 
 export default class LoqedOAuth2Client extends OAuth2Client {
@@ -103,14 +127,38 @@ export default class LoqedOAuth2Client extends OAuth2Client {
 
 
   public async changeOpenHouseMode(lockId: string, openHouseMode: OpenHouseMode) {
+    console.log('json: \n', {
+      "setting_name": "open_house_mode",
+      "setting_value": openHouseMode ? 1 : 0
+    });
     return this.post({
       path: `/api/locks/${lockId}/setting`,
       json: {
         "setting_name": "open_house_mode",
-        "setting_value": openHouseMode
+        "setting_value": openHouseMode ? 1 : 0
       }
-      //path: `/api/locks/${lockId}/guest_access_mode/${openHouseMode}`
-      //path: `/api/locks/${ lockId }/open_house_mode/${ openHouseMode }`
+    })
+  }
+
+
+  public async changeTwistAssist(lockId: string, twistAssistMode: TwistAssistMode) {
+    return this.post({
+      path: `/api/locks/${lockId}/setting`,
+      json: {
+        "setting_name": "twist_assist",
+        "setting_value": twistAssistMode ? 1 : 0
+      }
+    })
+  }
+
+
+  public async changeTouchToConnect(lockId: string, touchToConnectMode: TouchToConnectMode) {
+    return this.post({
+      path: `/api/locks/${lockId}/setting`,
+      json: {
+        "setting_name": "touch_to_connect",
+        "setting_value": touchToConnectMode ? 1 : 0
+      }
     })
   }
 

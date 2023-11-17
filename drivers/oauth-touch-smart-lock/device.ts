@@ -1,4 +1,4 @@
-import LoqedOAuth2Client, { BoltState, OpenHouseMode as OpenHouseMode } from "../../lib/LoqedOAuth2Client";
+import LoqedOAuth2Client, { BoltState, OpenHouseMode, SettingArgument, TouchToConnectMode, TwistAssistMode } from "../../lib/LoqedOAuth2Client";
 import { WebhookMessage } from "../../lib/LoqedApp";
 
 const { OAuth2Device } = require('homey-oauth2app');
@@ -26,11 +26,37 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
     }
   }
 
+  async onSettings({ oldSettings, newSettings, changedKeys }:SettingArgument) {
+    if(newSettings.open_house_mode_button) {
+      if(this.hasCapability('open_house_mode_sensor')) await this.removeCapability('open_house_mode_sensor');
+      if(!this.hasCapability('open_house_mode')) await this.addCapability('open_house_mode');
+    } else {
+      if(!this.hasCapability('open_house_mode_sensor')) await this.addCapability('open_house_mode_sensor');
+      if(this.hasCapability('open_house_mode')) await this.removeCapability('open_house_mode');
+    }
+
+    if(newSettings.twist_assist_button) {
+      if(this.hasCapability('twist_assist_sensor')) await this.removeCapability('twist_assist_sensor');
+      if(!this.hasCapability('twist_assist')) await this.addCapability('twist_assist');
+    } else {
+      if(!this.hasCapability('twist_assist_sensor')) await this.addCapability('twist_assist_sensor');
+      if(this.hasCapability('twist_assist')) await this.removeCapability('twist_assist');
+    }
+
+    if(newSettings.touch_to_connect_button) {
+      if(this.hasCapability('touch_to_connect_sensor')) await this.removeCapability('touch_to_connect_sensor');
+      if(!this.hasCapability('touch_to_connect')) await this.addCapability('touch_to_connect');
+    } else {
+      if(!this.hasCapability('touch_to_connect_sensor')) await this.addCapability('touch_to_connect_sensor');
+      if(this.hasCapability('touch_to_connect')) await this.removeCapability('touch_to_connect');
+    }
+  }
+
   async onOAuth2Init() {
 
     const oAuth2Client: LoqedOAuth2Client = this.oAuth2Client;
     const { id } = this.getData();
-
+    //console.log(id);
     //this.unsetStoreValue(WEBHOOK_KEY);
 
     if (!this.getStoreValue(WEBHOOK_KEY)) {
@@ -68,8 +94,16 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
     // });
 
 
-    this.registerCapabilityListener('open_house_mode', async (value: OpenHouseMode) => {
-      return oAuth2Client.changeOpenHouseMode(id, value);
+    if(this.hasCapability('open_house_mode')) this.registerCapabilityListener('open_house_mode', async (value: OpenHouseMode) => {
+      return await oAuth2Client.changeOpenHouseMode(id, value);
+    });
+
+    if(this.hasCapability('twist_assist')) this.registerCapabilityListener('twist_assist', async (value: TwistAssistMode) => {
+      return await oAuth2Client.changeTwistAssist(id, value);
+    });
+
+    if(this.hasCapability('touch_to_connect')) this.registerCapabilityListener('touch_to_connect', async (value: TouchToConnectMode) => {
+      return await oAuth2Client.changeTouchToConnect(id, value);
     });
 
 
@@ -153,18 +187,36 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
         await this.setBoltState(bolt_state, undefined);
       }
 
-      if (this.getCapabilityValue('open_house_mode') !== open_house_mode) {
-        this.setCapabilityValue('open_house_mode', open_house_mode);
-        this.driver.triggerOpenHouseModeFlow(this, { open_house_mode: open_house_mode ? 'enabled' : 'disabled' }, { open_house_mode }); //No need to await
+      let varOpenHouseMode = this.hasCapability('open_house_mode') ? this.getCapabilityValue('open_house_mode') : this.getCapabilityValue('open_house_mode_sensor');
+      if ( varOpenHouseMode !== open_house_mode) {
+        if(this.hasCapability('open_house_mode')) await this.setCapabilityValue('open_house_mode', open_house_mode);
+        if(this.hasCapability('open_house_mode_sensor')) await this.setCapabilityValue('open_house_mode_sensor', open_house_mode);
+        this.driver.triggerOpenHouseModeFlow(this, { open_house_mode: open_house_mode ? 'enabled' : 'disabled' }, { open_house_mode });
       }
       
-      if(this.getCapabilityValue('twist_assist')!==twist_assist) {
-        this.setCapabilityValue('twist_assist', twist_assist);
+      
+      let varTwistAssist = this.hasCapability('twist_assist') ? this.getCapabilityValue('twist_assist') : this.getCapabilityValue('twist_assist_sensor');
+      if ( varTwistAssist !== twist_assist) {
+        if(this.hasCapability('twist_assist')) await this.setCapabilityValue('twist_assist', twist_assist);
+        if(this.hasCapability('twist_assist_sensor')) await this.setCapabilityValue('twist_assist_sensor', twist_assist);
       }
       
-      if(this.getCapabilityValue('touch_to_connect')!==touch_to_connect) {
-        this.setCapabilityValue('touch_to_connect', touch_to_connect);
+
+      
+      let varTouchToConnect = this.hasCapability('touch_to_connect') ? this.getCapabilityValue('touch_to_connect') : this.getCapabilityValue('touch_to_connect_sensor');
+      if ( varTouchToConnect !== touch_to_connect) {
+        if(this.hasCapability('touch_to_connect')) await this.setCapabilityValue('touch_to_connect', touch_to_connect);
+        if(this.hasCapability('touch_to_connect_sensor')) await this.setCapabilityValue('touch_to_connect_sensor', touch_to_connect);
       }
+      
+
+      // if(this.getCapabilityValue('twist_assist')!==twist_assist) {
+      //   this.setCapabilityValue('twist_assist', twist_assist);
+      // }
+      
+      // if(this.getCapabilityValue('touch_to_connect')!==touch_to_connect) {
+      //   this.setCapabilityValue('touch_to_connect', touch_to_connect);
+      // }
     } catch (error) {
       this.error(error);
     }

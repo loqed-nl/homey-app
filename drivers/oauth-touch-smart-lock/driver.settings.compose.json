@@ -1,0 +1,35 @@
+[
+  {
+    "id": "open_house_mode_button",
+    "type": "checkbox",
+    "label": {
+      "en": "Open House Mode as button"
+    },
+    "value": true,
+    "hint": {
+      "en": "When set to true, the Open House Mode will be setable through a button; Otherwise, it will be displayed as a sensor."
+    }
+  },
+  {
+    "id": "twist_assist_button",
+    "type": "checkbox",
+    "label": {
+      "en": "Twist as button"
+    },
+    "value": true,
+    "hint": {
+      "en": "When set to true, the Twist Assist will be setable through a button; Otherwise, it will be displayed as a sensor."
+    }
+  },
+  {
+    "id": "touch_to_connect_button",
+    "type": "checkbox",
+    "label": {
+      "en": "Touch To Connect as button"
+    },
+    "value": true,
+    "hint": {
+      "en": "When set to true, the Touch To Connect will be setable through a button; Otherwise, it will be displayed as a sensor."
+    }
+  }
+]

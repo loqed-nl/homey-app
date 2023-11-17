@@ -75,7 +75,7 @@
 			"request": "attach",
 			"address": "192.168.1.239",
 			"port": 9101,
-			"localRoot": "${workspaceFolder}",
+			"localRoot": "${workspaceFolder}/.homeybuild",
 			"remoteRoot": "/app/",
 			"restart": true
 		},
