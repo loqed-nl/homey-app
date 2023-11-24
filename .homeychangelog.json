@@ -89,7 +89,7 @@
     "nl": "Open slot actie is gefixt."
   },
   "3.3.1": {
-    "en": "Rebuild of version 3.",
-    "nl": "Herbouwde versie 3."
+    "en": "Rebuild of version 3.\nAdded Open House Mode, Twist Assist and Touch to Connect.\nYou are advised to remove existing locks and pair them again in the Homey App for the best experience.\nIf you had the test version 3 installed, you need to remove and re-pair devices.",
+    "nl": "Herbouwde versie 3.\nTouwtje uit de brievenbus, Twist Assist en Touch to Connect zijn toegevoegd.\nVoor de beste ervaring wordt u geadviseerd om bestaande sloten te verwijderen en deze opnieuw te koppelen in de Homey App.\nAls u de testversie 3 had geïnstalleerd, moet u apparaten verwijderen en opnieuw koppelen."
   }
 }

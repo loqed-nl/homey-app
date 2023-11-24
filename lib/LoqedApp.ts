@@ -43,13 +43,15 @@ module.exports = class LoqedApp extends OAuth2App {
     this.webhook = await this.homey.cloud.createWebhook(Homey.env.WEBHOOK_ID, Homey.env.WEBHOOK_SECRET, {homeyId});
 
     this.webhook.on('message', ({body, query, headers}: { body: WebhookMessage, query:object, headers:object }) => {
-      // this.log('webhook body', body);
+      this.log('webhook body', body);
       // this.log('webhook query', query);
       // this.log('webhook headers', headers);
       const driver = this.homey.drivers.getDriver('oauth-touch-smart-lock');
       const devices = driver.getDevices();
+      //this.log('devices:\n', devices);
       if(body.key_name_admin === 'Homey') return;
       const device: typeof SmartLockDevice = devices.find((device: Device) => {
+        this.log('device id:\n', device.getData().id);
         return String(device.getData().id) === String(body.lock_id);
       });
       if (!device) return;

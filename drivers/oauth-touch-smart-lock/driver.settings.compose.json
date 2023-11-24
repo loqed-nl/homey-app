@@ -3,33 +3,39 @@
     "id": "open_house_mode_button",
     "type": "checkbox",
     "label": {
-      "en": "Open House Mode as button"
+      "en": "Open House Mode as button",
+      "nl": "Touwtje uit de Brievenbus als knop"
     },
     "value": true,
     "hint": {
-      "en": "When set to true, the Open House Mode will be setable through a button; Otherwise, it will be displayed as a sensor."
+      "en": "When checked, the Open House Mode will be setable through a button; Otherwise, it will be displayed as a sensor (if applicable for this lock).",
+      "nl": "Indien aangevinkt, kan de Touwtje uit de Brievenbus worden ingesteld via een knop; Anders wordt het weergegeven als een sensor (indien van toepassing voor dit slot)."
     }
   },
   {
     "id": "twist_assist_button",
     "type": "checkbox",
     "label": {
-      "en": "Twist as button"
+      "en": "Twist Assist as button",
+      "nl": "Twist Assist als knop"
     },
     "value": true,
     "hint": {
-      "en": "When set to true, the Twist Assist will be setable through a button; Otherwise, it will be displayed as a sensor."
+      "en": "When checked, the Twist Assist will be setable through a button; Otherwise, it will be displayed as a sensor.",
+      "nl": "Indien aangevinkt, kan de Twist Assist worden ingesteld via een knop; Anders wordt het weergegeven als een sensor."
     }
   },
   {
     "id": "touch_to_connect_button",
     "type": "checkbox",
     "label": {
-      "en": "Touch To Connect as button"
+      "en": "Touch To Connect as button",
+      "nl": "Touch To Connect als knop"
     },
     "value": true,
     "hint": {
-      "en": "When set to true, the Touch To Connect will be setable through a button; Otherwise, it will be displayed as a sensor."
+      "en": "When checked, the Touch To Connect will be setable through a button; Otherwise, it will be displayed as a sensor.",
+      "nl": "Indien aangevinkt, kan de Touch To Connect worden ingesteld via een knop; Anders wordt het weergegeven als een sensor."
     }
   }
 ]

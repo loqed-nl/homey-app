@@ -4,7 +4,8 @@
     "setup_description": "Er word verbinding gemaakt met het slot, even geduld. Je wordt automatisch uitgelogd in de app op je telefoon. Als de connectie is geslaagd dien je hier opnieuw in te loggen."
   },
   "errors": {
-    "open_readonly": "Je kunt de deur niet sluiten via de openknop.\nDe status wordt automatisch bijgewerkt."
+    "open_readonly": "Je kunt de deur niet sluiten via de openknop.\nDe status wordt automatisch bijgewerkt.",
+    "cannot_set_open_house_mode_button":"U kunt de knop Touwtje uit de Brievenbus niet instellen voor dit slot."
   },
   "notifications" :
   {

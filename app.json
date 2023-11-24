@@ -149,8 +149,8 @@
       {
         "id": "open_house_mode_changed",
         "title": {
-          "en": "Open house mode",
-          "nl": "Open huis mode"
+          "en": "Open house mode changed",
+          "nl": "Open huis mode is veranderd"
         },
         "titleFormatted": {
           "en": "Open house mode is [[open_house_mode]]",
@@ -160,7 +160,7 @@
           {
             "type": "device",
             "name": "device",
-            "filter": "driver_id=oauth-touch-smart-lock"
+            "filter": "driver_id=oauth-touch-smart-lock&capabilities=open"
           },
           {
             "type": "dropdown",
@@ -205,6 +205,134 @@
             "title": {
               "en": "Open House Mode",
               "nl": "Touwtje uit brievenbus"
+            },
+            "example": true
+          }
+        ]
+      },
+      {
+        "id": "twist_assist_changed",
+        "title": {
+          "en": "Twist Assist changed",
+          "nl": "Twist Assist is veranderd"
+        },
+        "titleFormatted": {
+          "en": "Twist Assist [[twist_assist]]",
+          "nl": "Twist Assist [[twist_assist]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=oauth-touch-smart-lock"
+          },
+          {
+            "type": "dropdown",
+            "name": "twist_assist",
+            "placeholder": {
+              "en": "Twist Assist",
+              "nl": "Twist Assist"
+            },
+            "title": {
+              "en": "enabled or disabled",
+              "nl": "ingeschakeld of uitgeschakeld"
+            },
+            "values": [
+              {
+                "id": "enabled_or_disabled",
+                "title": {
+                  "en": "enabled or disabled",
+                  "nl": "ingeschakeld of uitgeschakeld"
+                }
+              },
+              {
+                "id": "enabled",
+                "title": {
+                  "en": "enabled",
+                  "nl": "ingeschakeld"
+                }
+              },
+              {
+                "id": "disabled",
+                "title": {
+                  "en": "disabled",
+                  "nl": "uitgeschakeld"
+                }
+              }
+            ]
+          }
+        ],
+        "tokens": [
+          {
+            "name": "twist_assist",
+            "type": "boolean",
+            "title": {
+              "en": "Twist Assist",
+              "nl": "Twist Assist"
+            },
+            "example": true
+          }
+        ]
+      },
+      {
+        "id": "touch_to_connect_changed",
+        "title": {
+          "en": "Touch to Connect changed",
+          "nl": "Touch to Connect is veranderd"
+        },
+        "titleFormatted": {
+          "en": "Touch to Connect [[touch_to_connect]]",
+          "nl": "Touch to Connect [[touch_to_connect]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=oauth-touch-smart-lock"
+          },
+          {
+            "type": "dropdown",
+            "name": "touch_to_connect",
+            "placeholder": {
+              "en": "Touch to Connect",
+              "nl": "Touch to Connect"
+            },
+            "title": {
+              "en": "enabled or disabled",
+              "nl": "ingeschakeld of uitgeschakeld"
+            },
+            "values": [
+              {
+                "id": "enabled_or_disabled",
+                "title": {
+                  "en": "enabled or disabled",
+                  "nl": "ingeschakeld of uitgeschakeld"
+                }
+              },
+              {
+                "id": "enabled",
+                "title": {
+                  "en": "enabled",
+                  "nl": "ingeschakeld"
+                }
+              },
+              {
+                "id": "disabled",
+                "title": {
+                  "en": "disabled",
+                  "nl": "uitgeschakeld"
+                }
+              }
+            ]
+          }
+        ],
+        "tokens": [
+          {
+            "name": "touch_to_connect",
+            "type": "boolean",
+            "title": {
+              "en": "Touch to Connect",
+              "nl": "Touch to Connect"
             },
             "example": true
           }
@@ -276,7 +404,6 @@
         ]
       },
       {
-        "deprecated": true,
         "highlight": true,
         "id": "set_open_house_mode",
         "title": {
@@ -291,11 +418,65 @@
           {
             "type": "device",
             "name": "device",
-            "filter": "driver_id=oauth-touch-smart-lock"
+            "filter": "driver_id=oauth-touch-smart-lock&capabilities=open"
           },
           {
             "type": "checkbox",
             "name": "open_house_mode",
+            "title": {
+              "en": "enabled/disabled",
+              "nl": "ingeschakeld/uitgeschakeld"
+            }
+          }
+        ]
+      },
+      {
+        "highlight": true,
+        "id": "set_twist_assist",
+        "title": {
+          "en": "Set Twist Assist",
+          "nl": "Stel Twist Assist in"
+        },
+        "titleFormatted": {
+          "en": "Set Twist Assist to [[twist_assist]]",
+          "nl": "Stel Twist Assist in op [[twist_assist]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=oauth-touch-smart-lock"
+          },
+          {
+            "type": "checkbox",
+            "name": "twist_assist",
+            "title": {
+              "en": "enabled/disabled",
+              "nl": "ingeschakeld/uitgeschakeld"
+            }
+          }
+        ]
+      },
+      {
+        "highlight": true,
+        "id": "set_touch_to_connect",
+        "title": {
+          "en": "Set Touch to Connect",
+          "nl": "Stel Touch to Connect in"
+        },
+        "titleFormatted": {
+          "en": "Set Touch to Connect to [[touch_to_connect]]",
+          "nl": "Stel Touch to Connect in op [[touch_to_connect]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=oauth-touch-smart-lock"
+          },
+          {
+            "type": "checkbox",
+            "name": "touch_to_connect",
             "title": {
               "en": "enabled/disabled",
               "nl": "ingeschakeld/uitgeschakeld"
@@ -424,33 +605,39 @@
           "id": "open_house_mode_button",
           "type": "checkbox",
           "label": {
-            "en": "Open House Mode as button"
+            "en": "Open House Mode as button",
+            "nl": "Touwtje uit de Brievenbus als knop"
           },
           "value": true,
           "hint": {
-            "en": "When set to true, the Open House Mode will be setable through a button; Otherwise, it will be displayed as a sensor."
+            "en": "When checked, the Open House Mode will be setable through a button; Otherwise, it will be displayed as a sensor (if applicable for this lock).",
+            "nl": "Indien aangevinkt, kan de Touwtje uit de Brievenbus worden ingesteld via een knop; Anders wordt het weergegeven als een sensor (indien van toepassing voor dit slot)."
           }
         },
         {
           "id": "twist_assist_button",
           "type": "checkbox",
           "label": {
-            "en": "Twist as button"
+            "en": "Twist Assist as button",
+            "nl": "Twist Assist als knop"
           },
           "value": true,
           "hint": {
-            "en": "When set to true, the Twist Assist will be setable through a button; Otherwise, it will be displayed as a sensor."
+            "en": "When checked, the Twist Assist will be setable through a button; Otherwise, it will be displayed as a sensor.",
+            "nl": "Indien aangevinkt, kan de Twist Assist worden ingesteld via een knop; Anders wordt het weergegeven als een sensor."
           }
         },
         {
           "id": "touch_to_connect_button",
           "type": "checkbox",
           "label": {
-            "en": "Touch To Connect as button"
+            "en": "Touch To Connect as button",
+            "nl": "Touch To Connect als knop"
           },
           "value": true,
           "hint": {
-            "en": "When set to true, the Touch To Connect will be setable through a button; Otherwise, it will be displayed as a sensor."
+            "en": "When checked, the Touch To Connect will be setable through a button; Otherwise, it will be displayed as a sensor.",
+            "nl": "Indien aangevinkt, kan de Touch To Connect worden ingesteld via een knop; Anders wordt het weergegeven als een sensor."
           }
         }
       ]
