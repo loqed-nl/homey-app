@@ -144,7 +144,7 @@ module.exports = class TouchSmartLockDriver extends OAuth2Driver {
   async getDeviceInfo(device: typeof SmartLockDevice) {
     const oauth2Client: LoqedOAuth2Client = device.oAuth2Client;
     const getLocks = await oauth2Client.getLocks();
-    this.log('getDeviceInfo:\n', getLocks);
+    //this.log('getDeviceInfo:\n', getLocks);
 
     const result = getLocks.data?.find((lock: Lock) => lock.id === device.getData().id);
     if (result) {
@@ -169,7 +169,7 @@ module.exports = class TouchSmartLockDriver extends OAuth2Driver {
   }
 
   async triggerOpenHouseModeFlow(device: Device, state: OpenHouseModeParams, tokens: OpenHouseModeTokens) {
-    if(this.openHouseModeChangedTrigger) this.openHouseModeChangedTrigger
+    if(this.openHouseModeChangedTrigger && device.hasCapability('open')) this.openHouseModeChangedTrigger
       ?.trigger(device, tokens, state)
       .then(() => { })
       .catch(this.error);

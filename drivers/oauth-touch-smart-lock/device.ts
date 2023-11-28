@@ -149,7 +149,7 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
     }
   }
   async onWebhook(body: WebhookMessage) {
-    this.log('webhook body:\n', body);
+    //this.log('webhook body:\n', body);
     const boltState = body.requested_state;
     const batteryPercentage = body.battery_percentage;
     const keyNameAdmin = body.key_name_admin;
@@ -183,7 +183,7 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
     try {
       let deviceInfo = await this.driver.getDeviceInfo(this);
       if (!deviceInfo) return;
-      this.log('deviceInfo:\n', deviceInfo);
+      //this.log('deviceInfo:\n', deviceInfo);
       let { battery_percentage, supported_lock_states, open_house_mode, online, bolt_state, twist_assist, touch_to_connect } = deviceInfo;
 
       await (online ? this.setAvailable() : this.setUnavailable('The device is offline'));
