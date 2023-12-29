@@ -121,6 +121,9 @@ export default class LoqedOAuth2Client extends OAuth2Client {
     });
   };
   public async changeBoltState(lockId: string, boltState: BoltState) {
+    this.homey.log('changeBoltState', {
+      path: `/api/locks/${lockId}/bolt_state/${boltState}`
+    });
     return this.get({
       path: `/api/locks/${lockId}/bolt_state/${boltState}`
     })
