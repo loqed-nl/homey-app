@@ -95,5 +95,9 @@
   "3.3.2": {
     "en": "Fixed: Flowcards.",
     "nl": "Opgelost: flowkaarten."
+  },
+  "3.3.3": {
+    "en": "Resolved: Authorization was refreshed correctly.",
+    "nl": "Opgelost: Authorizatie werd niet correct onderhouden."
   }
 }

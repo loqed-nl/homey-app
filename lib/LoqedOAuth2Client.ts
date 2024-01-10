@@ -77,6 +77,7 @@ export default class LoqedOAuth2Client extends OAuth2Client {
     if (!this.getLockPromise) {
       return this.getLockPromise = this.get({
         path: '/api/locks',
+        headers:[{"Accept":"application/json"}]
       })
         .finally(() => {
           this.getLockPromise = undefined;
