@@ -24,7 +24,8 @@ export interface Lock {
 export enum BoltState {
   NIGHT_LOCK = 'NIGHT_LOCK',
   DAY_LOCK = 'DAY_LOCK',
-  OPEN = 'OPEN'
+  OPEN = 'OPEN',
+  UNKNOWN = 'UNKNOWN'
 }
 
 export enum OpenHouseMode {
@@ -76,8 +77,8 @@ export default class LoqedOAuth2Client extends OAuth2Client {
   public async getLocks(): Promise<{ data: Lock[] }> {
     if (!this.getLockPromise) {
       return this.getLockPromise = this.get({
+        headers: { Accept: "application/json" },
         path: '/api/locks',
-        headers:[{"Accept":"application/json"}]
       })
         .finally(() => {
           this.getLockPromise = undefined;
@@ -103,9 +104,9 @@ export default class LoqedOAuth2Client extends OAuth2Client {
     const webhookUrl = `https://webhooks.athom.com/webhook/${Homey.env.WEBHOOK_ID}?homey=${homeyId}`;
 
     return this.post({
+      headers: { Accept: "application/json" },
       path: `/api/locks/${lockId}/webhooks/many`,
       json: {
-        //id: LoqedOAuth2Client.getRandomId(),
         url: webhookUrl,
         info: true,
         guest_access_mode: true,
@@ -118,14 +119,14 @@ export default class LoqedOAuth2Client extends OAuth2Client {
     const webhookUrl = `https://webhooks.athom.com/webhook/${Homey.env.WEBHOOK_ID}?homey=${homeyId}`;
 
     return this.delete({
+      headers: { Accept: "application/json" },
       path: `/api/locks/${lockId}/webhooks/${webhookId}`
     });
   };
+
   public async changeBoltState(lockId: string, boltState: BoltState) {
-    // this.homey.log('changeBoltState', {
-    //   path: `/api/locks/${lockId}/bolt_state/${boltState}`
-    // });
     return this.get({
+      headers: { Accept: "application/json" },
       path: `/api/locks/${lockId}/bolt_state/${boltState}`
     })
   }
@@ -133,6 +134,7 @@ export default class LoqedOAuth2Client extends OAuth2Client {
 
   public async changeOpenHouseMode(lockId: string, openHouseMode: OpenHouseMode) {
     return this.post({
+      headers: { Accept: "application/json" },
       path: `/api/locks/${lockId}/setting`,
       json: {
         "setting_name": "open_house_mode",
@@ -144,6 +146,7 @@ export default class LoqedOAuth2Client extends OAuth2Client {
 
   public async changeTwistAssist(lockId: string, twistAssistMode: TwistAssistMode) {
     return this.post({
+      headers: { Accept: "application/json" },
       path: `/api/locks/${lockId}/setting`,
       json: {
         "setting_name": "twist_assist",
@@ -155,6 +158,7 @@ export default class LoqedOAuth2Client extends OAuth2Client {
 
   public async changeTouchToConnect(lockId: string, touchToConnectMode: TouchToConnectMode) {
     return this.post({
+      headers: { Accept: "application/json" },
       path: `/api/locks/${lockId}/setting`,
       json: {
         "setting_name": "touch_to_connect",
@@ -165,8 +169,17 @@ export default class LoqedOAuth2Client extends OAuth2Client {
 
 
   public async getKeys(lockId: string): Promise<{ data: Key[] }> {
-    return this.get({
+    return this._get({
+      headers: { Accept: "application/json" },
       path: `/api/locks/${lockId}/keys`
     });
   }
+
+
+  // private async _get(opts:Object) {
+  //   if(!opts) opts = {};
+  //   if(!opts.headers)opts.headers = [{"Accept":"application/json"}];
+
+  //   return this.get(opts);
+  // }
 }

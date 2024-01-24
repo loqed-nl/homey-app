@@ -5,7 +5,8 @@
   },
   "errors": {
     "open_readonly": "You cannot close the door through the open button.\nThe status will automaticly updated.",
-    "cannot_set_open_house_mode_button":"You cannot set the Open House Mode button for this lock."
+    "cannot_set_open_house_mode_button":"You cannot set the Open House Mode button for this lock.",
+    "lock_unknown_warning":"The status of this lock is unknown."
   },
   "notifications" :
   {

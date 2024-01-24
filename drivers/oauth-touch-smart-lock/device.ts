@@ -43,7 +43,7 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
         }
         if (this.hasCapability('open_house_mode')) await this.removeCapability('open_house_mode');
       }
-    } else if(newSettings.open_house_mode_button) throw new Error(this.homey.__('errors.cannot_set_open_house_mode_button'));
+    } else if (newSettings.open_house_mode_button) throw new Error(this.homey.__('errors.cannot_set_open_house_mode_button'));
 
     let varTwistAssist = this.hasCapability('twist_assist') ? this.getCapabilityValue('twist_assist') : this.getCapabilityValue('twist_assist_sensor');
     if (newSettings.twist_assist_button) {
@@ -82,7 +82,7 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
     const { id } = this.getData();
     //console.log(id);
     //this.unsetStoreValue(WEBHOOK_KEY);
-    if(!this.hasCapability('open')) await this.setSettings({open_house_mode_button:false});
+    if (!this.hasCapability('open')) await this.setSettings({ open_house_mode_button: false });
 
     if (!this.getStoreValue(WEBHOOK_KEY)) {
       await oAuth2Client.createWebhook(id).then((x) => {
@@ -95,7 +95,10 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
       const lockState = (value ? BoltState.NIGHT_LOCK : BoltState.DAY_LOCK);
 
       await this.changeOpen(lockState);
-      return oAuth2Client.changeBoltState(id, lockState);
+      var r = await oAuth2Client.changeBoltState(id, lockState);
+      this.log('r', r);
+      await this.unsetWarning();
+      return r;
     });
 
 
@@ -103,7 +106,9 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
       if (value) {
         await this.setCapabilityValue('locked', false);
 
-        return oAuth2Client.changeBoltState(id, BoltState.OPEN);
+        var r = await oAuth2Client.changeBoltState(id, BoltState.OPEN);
+        await this.unsetWarning();
+        return r;
       } throw new Error(this.homey.__('errors.open_readonly'));
     });
 
@@ -164,6 +169,13 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
   }
 
   async setBoltState(boltState: BoltState | undefined, keyNameAdmin: string | undefined) {
+    if (boltState === BoltState.UNKNOWN) {
+      await this.setWarning(this.homey.__('errors.lock_unknown_warning'));
+      return;
+    } else {
+      await this.unsetWarning();
+    }
+
     if (boltState) {
       await this.setCapabilityValue('locked', boltState === BoltState.NIGHT_LOCK);
       await this.changeOpen(boltState);
