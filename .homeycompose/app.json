@@ -1,6 +1,6 @@
 {
   "id": "com.loqed.touch-smart-lock",
-  "version": "3.3.3",
+  "version": "3.4.0",
   "compatibility": ">= 5.0.0",
   "platforms": [
     "local",

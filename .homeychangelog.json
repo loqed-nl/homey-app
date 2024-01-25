@@ -97,7 +97,11 @@
     "nl": "Opgelost: flowkaarten."
   },
   "3.3.3": {
-    "en": "Resolved: Authorization was refreshed correctly.",
+    "en": "Resolved: Authorization was refreshed incorrectly.",
     "nl": "Opgelost: Authorizatie werd niet correct onderhouden."
+  },
+  "3.4.0": {
+    "en": "Resolved: Authorization was refreshing incorrectly.\nExtra options didn't always work correctly.\nWhen a device is offline (bridge) the device will be set to unavailable.\nWhen the lock status is unknown, nothing will be triggered and a warning is shown on the device.",
+    "nl": "Opgelost: Autorisatie werd onjuist vernieuwd.\nExtra opties werkten niet altijd correct.\nWanneer een apparaat offline is (bridge), wordt het apparaat ingesteld op niet beschikbaar.\nAls de vergrendelingsstatus onbekend is, wordt er niets geactiveerd en wordt er een waarschuwing weergegeven op het apparaat."
   }
 }

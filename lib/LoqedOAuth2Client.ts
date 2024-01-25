@@ -169,7 +169,7 @@ export default class LoqedOAuth2Client extends OAuth2Client {
 
 
   public async getKeys(lockId: string): Promise<{ data: Key[] }> {
-    return this._get({
+    return this.get({
       headers: { Accept: "application/json" },
       path: `/api/locks/${lockId}/keys`
     });

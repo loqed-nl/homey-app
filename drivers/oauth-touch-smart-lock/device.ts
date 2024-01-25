@@ -1,7 +1,9 @@
 import LoqedOAuth2Client, { BoltState, OpenHouseMode, SettingArgument, TouchToConnectMode, TwistAssistMode } from "../../lib/LoqedOAuth2Client";
 import { WebhookMessage } from "../../lib/LoqedApp";
 
-const { OAuth2Device } = require('homey-oauth2app');
+
+const { OAuth2Device, OAuth2Token  } = require('homey-oauth2app');
+
 const WEBHOOK_KEY = 'webhookId';
 const SYNC_INTERVAL = 1000 * 60 * 5;
 
@@ -10,20 +12,26 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
 
   onAdded() {
     const savedSessions = this.homey.app.getSavedOAuth2Sessions();
-
     const {
       OAuth2SessionId,
       OAuth2ConfigId,
     } = this.getStore();
+    let token = new OAuth2Token(savedSessions[OAuth2SessionId].token);
 
     let sessionIds = Object.keys(savedSessions);
     for (let i = 0; i < sessionIds.length; i++) {
       const sessionId = sessionIds[i];
       if (sessionId !== OAuth2SessionId) {
         this.setStoreValue('OAuth2SessionId', sessionId);
+        let oauthClient = this.homey.app.getOAuth2Client({ sessionId: sessionId, configId: savedSessions[sessionId].configId });
+        if (oauthClient) {
+          oauthClient.setToken({ token });
+          this.homey.app.saveOAuth2Client({ sessionId: sessionId, configId: savedSessions[sessionId].configId, client: oauthClient })
+        }
         this.homey.app.deleteOAuth2Client({ sessionId: OAuth2SessionId })
       }
     }
+
   }
 
   async onSettings({ oldSettings, newSettings, changedKeys }: SettingArgument) {
@@ -96,7 +104,6 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
 
       await this.changeOpen(lockState);
       var r = await oAuth2Client.changeBoltState(id, lockState);
-      this.log('r', r);
       await this.unsetWarning();
       return r;
     });
@@ -209,6 +216,8 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
       let oldBoltState = lockedCapabilityValue === true ? BoltState.NIGHT_LOCK : lockedCapabilityValue === false ? BoltState.DAY_LOCK : undefined;
 
       if (this.hasCapability('open') && this.getCapabilityValue('open') === true) oldBoltState = BoltState.OPEN;
+
+      if (bolt_state !== BoltState.UNKNOWN) await this.unsetWarning();
 
       if (bolt_state && oldBoltState !== bolt_state) {
         await this.setBoltState(bolt_state, undefined);
