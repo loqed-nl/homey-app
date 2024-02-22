@@ -102,7 +102,8 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
     this.registerCapabilityListener('locked', async (value: any) => {
       const lockState = (value ? BoltState.NIGHT_LOCK : BoltState.DAY_LOCK);
 
-      await this.changeOpen(lockState);
+      await this.changeOpen(lockState);      
+      //await this.driver.triggerLockedStateChangedFlow(this, undefined, lockState, '');
       var r = await oAuth2Client.changeBoltState(id, lockState);
       await this.unsetWarning();
       return r;
@@ -113,6 +114,7 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
       if (value) {
         await this.setCapabilityValue('locked', false);
 
+        //await this.driver.triggerLockedStateChangedFlow(this, undefined, BoltState.OPEN, '');
         var r = await oAuth2Client.changeBoltState(id, BoltState.OPEN);
         await this.unsetWarning();
         return r;
@@ -165,17 +167,18 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
     const boltState = body.requested_state;
     const batteryPercentage = body.battery_percentage;
     const keyNameAdmin = body.key_name_admin;
+    const keyAccountMail = body.key_account_email;
     const event_type = body.event_type;
 
     if (event_type && event_type.startsWith('STATE_CHANGED_'))
-      await this.setBoltState(boltState, keyNameAdmin);
+      await this.setBoltState(boltState, keyNameAdmin, keyAccountMail);
 
     if (batteryPercentage) {
       await this.setCapabilityValue('measure_battery', batteryPercentage);
     }
   }
 
-  async setBoltState(boltState: BoltState | undefined, keyNameAdmin: string | undefined) {
+  async setBoltState(boltState: BoltState | undefined, keyNameAdmin: string | undefined, keyAccountMail: string | undefined) {
     if (boltState === BoltState.UNKNOWN) {
       await this.setWarning(this.homey.__('errors.lock_unknown_warning'));
       return;
@@ -190,6 +193,10 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
 
     if (boltState && keyNameAdmin) {
       await this.driver.triggerUserStateFlow(this, { key: { name: keyNameAdmin }, boltState: boltState });
+    }
+
+    if (boltState) {
+      await this.driver.triggerLockedStateChangedFlow(this, undefined, boltState, (keyAccountMail || keyNameAdmin || ''));
     }
 
     if (boltState && (boltState === BoltState.OPEN)) {
@@ -220,7 +227,7 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
       if (bolt_state !== BoltState.UNKNOWN) await this.unsetWarning();
 
       if (bolt_state && oldBoltState !== bolt_state) {
-        await this.setBoltState(bolt_state, undefined);
+        await this.setBoltState(bolt_state, undefined, '');
       }
 
       await this.setOpenHouseMode(open_house_mode, true);

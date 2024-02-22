@@ -50,23 +50,11 @@ module.exports = class LoqedApp extends OAuth2App {
         this.log('webhook headers', headers);
       }
 
-      //New drivers
-      const driver = this.homey.drivers.getDriver('oauth-touch-smart-lock');
-      const devices = driver.getDevices();
-
-      if (body.key_name_admin === 'Homey') return;
-      const device: typeof SmartLockDevice = devices.find((device: Device) => {
-        //'device id:\n', device.getData().id);
-        return String(device.getData().id) === String(body.lock_id);
-      });
-      if (device) device.onWebhook(body).catch(this.error);
-
-
       // Legacy driver
       try {
 
         let id = body.value1?.match('LockID: ([0-9]*)');
-        this.log('id', id);
+        //this.log('id', id);
         if (id && id.length > 0) {
           const deviceLegacy: SmartLockDeviceLegacy = this.homey
             .drivers
@@ -80,6 +68,22 @@ module.exports = class LoqedApp extends OAuth2App {
           this.error('webhook legacy error', error);
       }
 
+
+
+      //New drivers
+      const driver = this.homey.drivers.getDriver('oauth-touch-smart-lock');
+      const devices = driver.getDevices();
+
+      //if (body.key_name_admin === 'Homey') return;
+      
+      const device: typeof SmartLockDevice = devices.find((device: Device) => {
+        //'device id:\n', device.getData().id);
+        return String(device.getData().id) === String(body.lock_id);
+      });
+      if (device) device.onWebhook(body).catch(this.error);
+
+
+      
 
     });
 

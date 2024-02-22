@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "com.loqed.touch-smart-lock",
-  "version": "3.4.3",
+  "version": "3.4.5",
   "compatibility": ">= 5.0.0",
   "platforms": [
     "local",
@@ -36,7 +36,7 @@
     "small": "/assets/images/small.jpg"
   },
   "homepage": "https://loqed.com",
-  "support": "mailto:support@loqed.com",
+  "support": "mailto:homey@loqed.com",
   "author": {
     "name": "LOQED B.V.",
     "email": "support@loqed.com",
@@ -67,6 +67,50 @@
   },
   "flow": {
     "triggers": [
+      {
+        "id": "oauth_lock_state_changed",
+        "title": {
+          "en": "Lock state changed",
+          "nl": "Slot status gewijzigd"
+        },
+        "hint": {
+          "en": "Lock status is changed.",
+          "nl": "Slot status is gewijzigd."
+        },
+        "tokens": [
+          {
+            "type": "string",
+            "name": "lockState",
+            "title": {
+              "en": "Lock state",
+              "nl": "Slot status"
+            },
+            "example": {
+              "en": "OPEN, DAYLOCK, NIGHTLOCK",
+              "nl": "OPEN, DAYLOCK, NIGHTLOCK"
+            }
+          },
+          {
+            "type": "string",
+            "name": "keyAccountEmail",
+            "title": {
+              "en": "Email address",
+              "nl": "E-mailadres"
+            },
+            "example": {
+              "en": "john@example.com",
+              "nl": "jan@voorbeeld.nl"
+            }
+          }
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=oauth-touch-smart-lock"
+          }
+        ]
+      },
       {
         "id": "opened",
         "title": {

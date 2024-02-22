@@ -111,5 +111,13 @@
   "3.4.3": {
     "en": "Resolved: Legacy devices were not updated anymore.",
     "nl": "Opgelost: Oudere apparaten werden niet meer bijgewerkt."
+  },
+  "3.4.4": {
+    "en": "Resolved: Flowcard lock status changed would not trigger when changed in Homey.",
+    "nl": "Opgelost: De flowkaart Slot status veranderd werd niet geactiveerd wanneer deze in Homey wordt gewijzigd."
+  },
+  "3.4.5": {
+    "en": "Added: The OAuth device now has a Lock Status Changed flowcard.",
+    "nl": "Opgelost: Het OAuth apparaat heeft nu een Flowkaart Slot status gewijzigd."
   }
 }

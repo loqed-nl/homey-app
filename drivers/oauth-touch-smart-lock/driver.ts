@@ -44,6 +44,8 @@ module.exports = class TouchSmartLockDriver extends OAuth2Driver {
   private keyStateTrigger: FlowCardTriggerDevice | undefined;
   private openedTrigger: FlowCardTriggerDevice | undefined;
   private openHouseModeChangedTrigger: FlowCardTriggerDevice | undefined;
+  private lockStateChangedTrigger: FlowCardTriggerDevice | undefined;
+
 
   async onOAuth2Init() {
     this.openedTrigger = this.homey.flow.getDeviceTriggerCard("opened")
@@ -80,6 +82,13 @@ module.exports = class TouchSmartLockDriver extends OAuth2Driver {
     } catch (error) {
 
     }
+
+    this.lockStateChangedTrigger = this.homey.flow.getDeviceTriggerCard("oauth_lock_state_changed")
+      .registerRunListener(async (args: undefined, state: undefined) => {
+        return true;
+      });
+
+
 
     this.twistAssistChangedTrigger = this.homey.flow.getDeviceTriggerCard("twist_assist_changed")
       .registerRunListener(async (args: TwistAssistParams, state: TwistAssistParams) => {
@@ -160,6 +169,18 @@ module.exports = class TouchSmartLockDriver extends OAuth2Driver {
       .then(() => { })
       .catch(this.error);
   }
+
+  
+  async triggerLockedStateChangedFlow(device: Device, state: undefined, lockState:string, keyAccountEmail:string) {
+    this.lockStateChangedTrigger
+      ?.trigger(device, {
+        lockState: lockState,
+        keyAccountEmail: keyAccountEmail
+      }, state)
+      .then(() => { })
+      .catch(this.error);
+  }
+
 
   async triggerOpenedFlow(device: Device, state: undefined) {
     this.openedTrigger
