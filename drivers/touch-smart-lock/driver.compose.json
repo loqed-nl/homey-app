@@ -1,14 +1,13 @@
 {
   "id": "touch-smart-lock",
-  "deprecated": true,
   "platforms": [
     "local",
     "cloud"
   ],
   "connectivity": ["cloud"],
   "name": {
-    "en": "Touch Smart Lock",
-    "nl": "Touch Smart Lock"
+    "en": "Touch Smart Lock (legacy)",
+    "nl": "Touch Smart Lock (legacy)"
   },
   "class": "lock",
   "capabilities": [
