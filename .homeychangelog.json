@@ -107,5 +107,9 @@
   "3.4.2": {
     "en": "Resolved: Extra settings like Twist Assist or Guest Mode didn't work for everyone. Now it should work correctly after a repair of any device.",
     "nl": "Opgelost: Extra instellingen zoals Twist Assist of Touwtje uit de Brievenbus werkten niet voor iedereen. Nu zou het wel moeten werken na het herstellen van een apparaat."
+  },
+  "3.4.3": {
+    "en": "Resolved: Legacy devices were not updated anymore.",
+    "nl": "Opgelost: Oudere apparaten werden niet meer bijgewerkt."
   }
 }

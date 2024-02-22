@@ -1,5 +1,6 @@
 {
   "id": "touch-smart-lock",
+  "deprecated": true,  
   "platforms": [
     "local",
     "cloud"

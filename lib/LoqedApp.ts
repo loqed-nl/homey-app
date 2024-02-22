@@ -1,6 +1,7 @@
 import { Device, FlowCard } from "homey";
 import LoqedOAuth2Client, { BoltState, Lock } from "./LoqedOAuth2Client";
 import SmartLockDevice from "../drivers/oauth-touch-smart-lock/device";
+import SmartLockDeviceLegacy from "../drivers/touch-smart-lock/device";
 
 const Homey = require('homey');
 const { OAuth2App } = require('homey-oauth2app');
@@ -48,17 +49,38 @@ module.exports = class LoqedApp extends OAuth2App {
         this.log('webhook query', query);
         this.log('webhook headers', headers);
       }
+
+      //New drivers
       const driver = this.homey.drivers.getDriver('oauth-touch-smart-lock');
       const devices = driver.getDevices();
-      //this.log('devices:\n', devices);
+
       if (body.key_name_admin === 'Homey') return;
       const device: typeof SmartLockDevice = devices.find((device: Device) => {
         //'device id:\n', device.getData().id);
         return String(device.getData().id) === String(body.lock_id);
       });
-      if (!device) return;
+      if (device) device.onWebhook(body).catch(this.error);
 
-      device.onWebhook(body).catch(this.error);
+
+      // Legacy driver
+      try {
+
+        let id = body.value1?.match('LockID: ([0-9]*)');
+        this.log('id', id);
+        if (id && id.length > 0) {
+          const deviceLegacy: SmartLockDeviceLegacy = this.homey
+            .drivers
+            .getDriver('touch-smart-lock')
+            .getDevice({ "id": parseInt(id[1]) });
+
+          if (deviceLegacy) deviceLegacy.setState(body.requested_state, body.key_account_email).catch(this.error);;
+        }
+      } catch (error) {
+        if (LoqedApp.OAUTH2_DEBUG) 
+          this.error('webhook legacy error', error);
+      }
+
+
     });
 
     if (!await this.homey.settings.get('notification_version_3_rewrite')) {

@@ -1,6 +1,6 @@
 {
   "id": "com.loqed.touch-smart-lock",
-  "version": "3.4.2",
+  "version": "3.4.3",
   "compatibility": ">= 5.0.0",
   "platforms": [
     "local",
@@ -35,7 +35,7 @@
     "small": "/assets/images/small.jpg"
   },
   "homepage": "https://loqed.com",
-  "support": "mailto:support@loqed.com",
+  "support": "mailto:homey@loqed.com",
   "author": {
     "name": "LOQED B.V.",
     "email": "support@loqed.com",
