@@ -119,5 +119,9 @@
   "3.4.5": {
     "en": "Added: The OAuth device now has a Lock Status Changed flowcard.",
     "nl": "Opgelost: Het OAuth apparaat heeft nu een Flowkaart Slot status gewijzigd."
+  },
+  "3.4.6": {
+    "en": "Debug version: Enabled extensive logging.",
+    "nl": "Foutopsporingsversie: uitgebreide logboekregistratie ingeschakeld."
   }
 }

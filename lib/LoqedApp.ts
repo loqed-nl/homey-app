@@ -23,7 +23,7 @@ export interface WebhookMessage {
 
 module.exports = class LoqedApp extends OAuth2App {
   static OAUTH2_CLIENT = LoqedOAuth2Client;
-  static OAUTH2_DEBUG = process.env.DEBUG === '1';
+  static OAUTH2_DEBUG = true;//process.env.DEBUG === '1';
   static OAUTH2_DRIVERS = ['oauth-touch-smart-lock'];
   static OAUTH2_MULTI_SESSION = true;
   //static webhook = null;
