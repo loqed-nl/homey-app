@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "com.loqed.touch-smart-lock",
-  "version": "3.4.6",
+  "version": "3.4.7",
   "compatibility": ">= 5.0.0",
   "platforms": [
     "local",
@@ -150,7 +150,7 @@
             "name": "key",
             "title": {
               "en": "name",
-              "nl": "name"
+              "nl": "naam"
             },
             "placeholder": {
               "en": "John",
@@ -682,6 +682,19 @@
           "hint": {
             "en": "When checked, the Touch To Connect will be setable through a button; Otherwise, it will be displayed as a sensor.",
             "nl": "Indien aangevinkt, kan de Touch To Connect worden ingesteld via een knop; Anders wordt het weergegeven als een sensor."
+          }
+        },
+        {
+          "id": "unlock_also_opens",
+          "type": "checkbox",
+          "label": {
+            "en": "Unlock also opens the lock",
+            "nl": "Ontgrendelen opent ook het slot"
+          },
+          "value": false,
+          "hint": {
+            "en": "When checked, unlocking the lock will also open the lock.",
+            "nl": "Indien aangevinkt, zal het ontgrendelen van het slot ook het slot openen."
           }
         }
       ]

@@ -37,5 +37,18 @@
       "en": "When checked, the Touch To Connect will be setable through a button; Otherwise, it will be displayed as a sensor.",
       "nl": "Indien aangevinkt, kan de Touch To Connect worden ingesteld via een knop; Anders wordt het weergegeven als een sensor."
     }
+  },
+  {
+    "id": "unlock_also_opens",
+    "type": "checkbox",
+    "label": {
+      "en": "Unlock also opens the lock",
+      "nl": "Ontgrendelen opent ook het slot"
+    },
+    "value": false,
+    "hint": {
+      "en": "When checked, unlocking the lock will also open the lock.",
+      "nl": "Indien aangevinkt, zal het ontgrendelen van het slot ook het slot openen."
+    }
   }
 ]

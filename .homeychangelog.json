@@ -123,5 +123,9 @@
   "3.4.6": {
     "en": "Debug version: Enabled extensive logging.",
     "nl": "Foutopsporingsversie: uitgebreide logboekregistratie ingeschakeld."
+  },
+  "3.4.7": {
+    "en": "Setting added: When unlocking a lock the lock is also opened.",
+    "nl": "Instelling toegevoegd: Bij het ontgrendelen van een slot wordt het slot ook geopend."
   }
 }

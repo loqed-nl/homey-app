@@ -109,21 +109,21 @@ module.exports = class TouchSmartLockDriver extends OAuth2Driver {
         await device.oAuth2Client.changeBoltState(device.getData().id, BoltState.OPEN);
       });
 
-    this.openAction = this.homey.flow.getActionCard('set_open_house_mode')
+    this.set_open_house_modeAction = this.homey.flow.getActionCard('set_open_house_mode')
       .registerRunListener(async (args: { device: typeof SmartLockDevice, open_house_mode: Boolean }, state: any) => {
         const device: typeof SmartLockDevice = args.device;
         await device.setOpenHouseMode(args.open_house_mode, false);
         await device.oAuth2Client.changeOpenHouseMode(device.getData().id, args.open_house_mode ? OpenHouseMode.ENABLED : OpenHouseMode.DISABLED);
       });
 
-    this.openAction = this.homey.flow.getActionCard('set_twist_assist')
+    this.set_twist_assistAction = this.homey.flow.getActionCard('set_twist_assist')
       .registerRunListener(async (args: { device: typeof SmartLockDevice, twist_assist: Boolean }, state: any) => {
         const device: typeof SmartLockDevice = args.device;
         await device.setTwistAssist(args.twist_assist, false);
         await device.oAuth2Client.changeTwistAssist(device.getData().id, args.twist_assist ? TwistAssistMode.ENABLED : TwistAssistMode.DISABLED);
       });
 
-    this.openAction = this.homey.flow.getActionCard('set_touch_to_connect')
+    this.set_touch_to_connectAction = this.homey.flow.getActionCard('set_touch_to_connect')
       .registerRunListener(async (args: { device: typeof SmartLockDevice, touch_to_connect: Boolean }, state: any) => {
         const device: typeof SmartLockDevice = args.device;
         await device.setTouchToConnect(args.touch_to_connect, false);

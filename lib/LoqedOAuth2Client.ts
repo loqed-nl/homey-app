@@ -53,11 +53,13 @@ export interface SettingArgument {
     open_house_mode_button: Boolean,
     twist_assist_button: Boolean,
     touch_to_connect_button: Boolean,
+    unlock_also_opens: Boolean,
   },
   newSettings: {
     open_house_mode_button: Boolean,
     twist_assist_button: Boolean,
     touch_to_connect_button: Boolean,
+    unlock_also_opens: Boolean,
   },
   changedKeys: String[]
 }

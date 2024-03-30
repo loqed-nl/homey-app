@@ -82,12 +82,17 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
       }
       if (this.hasCapability('touch_to_connect')) await this.removeCapability('touch_to_connect');
     }
+    
+    this.unlockAlsoOpens = newSettings.unlock_also_opens || false;
   }
 
   async onOAuth2Init() {
 
     const oAuth2Client: LoqedOAuth2Client = this.oAuth2Client;
     const { id } = this.getData();
+    
+    var s = this.getSettings();
+    this.unlockAlsoOpens = s.unlock_also_opens || false;
     //console.log(id);
     //this.unsetStoreValue(WEBHOOK_KEY);
     if (!this.hasCapability('open')) await this.setSettings({ open_house_mode_button: false });
@@ -100,8 +105,8 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
     }
 
     this.registerCapabilityListener('locked', async (value: any) => {
-      const lockState = (value ? BoltState.NIGHT_LOCK : BoltState.DAY_LOCK);
-
+      let lockState = (value ? BoltState.NIGHT_LOCK : BoltState.DAY_LOCK);
+      if(this.unlockAlsoOpens && lockState == BoltState.DAY_LOCK) lockState = BoltState.OPEN;
       await this.changeOpen(lockState);      
       //await this.driver.triggerLockedStateChangedFlow(this, undefined, lockState, '');
       var r = await oAuth2Client.changeBoltState(id, lockState);
