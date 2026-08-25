@@ -127,5 +127,9 @@
   "3.4.7": {
     "en": "Setting added: When unlocking a lock the lock is also opened.",
     "nl": "Instelling toegevoegd: Bij het ontgrendelen van een slot wordt het slot ook geopend." 
+  },
+  "3.4.9": {
+    "en": "Resolved: When migrated to a new Homey, the lock status would not instantly be refreshed.",
+    "nl": "Opgelost: Bij migratie naar een nieuwe Homey-installatie werd de vergrendelingsstatus niet direct bijgewerkt." 
   }
 }

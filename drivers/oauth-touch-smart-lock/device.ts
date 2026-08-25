@@ -96,11 +96,12 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
     //console.log(id);
     //this.unsetStoreValue(WEBHOOK_KEY);
     if (!this.hasCapability('open')) await this.setSettings({ open_house_mode_button: false });
-
-    if (!this.getStoreValue(WEBHOOK_KEY)) {
+    const homeyId = await this.homey.cloud.getHomeyId();
+    const webHookId = this.getStoreValue(WEBHOOK_KEY);
+    if (!webHookId || !webHookId.endsWith(homeyId)) {
       await oAuth2Client.createWebhook(id).then((x) => {
         console.log('createWebhook x:\n', x);
-        this.setStoreValue(WEBHOOK_KEY, x.data.id);
+        this.setStoreValue(WEBHOOK_KEY, x.data.id + "_" + homeyId);
       });
     }
 
@@ -158,7 +159,7 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
     const { id } = this.getData();
 
     if (webHookId) {
-      await oAuth2Client.deleteWebhook(id, webHookId).then(async () => {
+      await oAuth2Client.deleteWebhook(id, webHookId.split('_')[0]).then(async () => {
         await this.unsetStoreValue(WEBHOOK_KEY);
       });
     }
