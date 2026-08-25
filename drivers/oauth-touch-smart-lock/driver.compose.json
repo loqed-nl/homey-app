@@ -1,0 +1,40 @@
+{
+  "id": "oauth-touch-smart-lock",
+  "name": {
+    "en": "Touch Smart Lock",
+    "nl": "Touch Smart Lock"
+  },
+  "platforms": [
+    "local",
+    "cloud"
+  ],
+  "connectivity": [
+    "cloud"
+  ],
+  "class": "lock",
+  "capabilities": [
+    "locked",
+    "measure_battery",
+    "open_house_mode"
+  ],
+  "energy": {
+    "batteries": [
+      "AAA",
+      "AAA",
+      "AAA",
+      "AAA",
+      "AAA",
+      "AAA",
+      "AAA",
+      "AAA"
+    ]
+  },
+  "capabilitiesOptions": {
+  },
+  "images": {
+    "large": "/drivers/touch-smart-lock/assets/images/large.jpg",
+    "small": "/drivers/touch-smart-lock/assets/images/small.jpg"
+  },
+  "icon": "/drivers/touch-smart-lock/assets/images/icon.svg",
+  "$extends": "loqed"
+}

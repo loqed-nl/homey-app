@@ -1,0 +1,20 @@
+{
+"type": "boolean" ,
+  "title": {
+    "en": "Touch to Connect",
+    "nl": "Touch to Connect"
+  },
+  "icon":"./assets/icons/touch_to_connect.svg",
+  "uiComponent": "sensor",
+  "getable": true,
+  "setable": false,
+  "insights":true,
+  "insightsTitleTrue":{
+    "en": "Touch to Connect enabled",    
+    "nl": "Touch to Connect aangezet"
+  },  
+  "insightsTitleFalse":{
+    "en": "Touch to Connect disabled",
+    "nl": "Touch to Connect uitgezet"
+  }
+}

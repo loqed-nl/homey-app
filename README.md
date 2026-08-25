@@ -10,4 +10,8 @@ When unsure about a contribution or when you want to discuss a new feature pleas
 ## Credits
 
 -   [LOQED B.V.](https://loqed.com)
+-   [Arie J. Godschalk](https://github.com/xeroxq)
+
+
+No longer active:
 -   [Bert van Hoekelen](https://github.com/bertvanhoekelen)

@@ -2,5 +2,14 @@
   "pair":  {
     "setup": "Installatie",
     "setup_description": "Er word verbinding gemaakt met het slot, even geduld. Je wordt automatisch uitgelogd in de app op je telefoon. Als de connectie is geslaagd dien je hier opnieuw in te loggen."
+  },
+  "errors": {
+    "open_readonly": "Je kunt de deur niet sluiten via de openknop.\nDe status wordt automatisch bijgewerkt.",
+    "cannot_set_open_house_mode_button":"U kunt de knop Touwtje uit de Brievenbus niet instellen voor dit slot.",
+    "lock_unknown_warning":"De status van dit slot is onbekend."
+  },
+  "notifications" :
+  {
+    "notification_version_3_rewrite":"LOQED versie 3 is herschreven.\nVersie 3 gebruikt OAuth om verbinding te maken met de apparaten voor verbeterde functionaliteiten.\nVoor de beste ervaring wordt u geadviseerd om bestaande sloten te verwijderen en deze opnieuw te koppelen in de Homey App.\nAls u de testversie 3 had geïnstalleerd, moet u apparaten verwijderen en opnieuw koppelen."
   }
 }

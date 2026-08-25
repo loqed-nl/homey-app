@@ -1,0 +1,20 @@
+{
+"type": "boolean" ,
+  "title": {
+    "en": "Open",
+    "nl": "Open"
+  },
+  "icon":"./assets/icons/open.svg",
+  "uiComponent": "button",
+  "getable": true,
+  "setable": true,
+  "insights":true,
+  "insightsTitleTrue":{
+    "en": "Opened",    
+    "nl": "Geopend"
+  },  
+  "insightsTitleFalse":{
+    "en": "Unlocked",
+    "nl": "Ontgrendeld"
+  }
+}

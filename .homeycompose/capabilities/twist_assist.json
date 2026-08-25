@@ -1,0 +1,20 @@
+{
+"type": "boolean" ,
+  "title": {
+    "en": "Twist assist",
+    "nl": "Twist assist"
+  },
+  "icon":"./assets/icons/twist_assist.svg",
+  "uiComponent": "button",
+  "getable": true,
+  "setable": true,
+  "insights":true,
+  "insightsTitleTrue":{
+    "en": "Twist assist enabled",    
+    "nl": "Twist assist aangezet"
+  },  
+  "insightsTitleFalse":{
+    "en": "Twist assist disabled",
+    "nl": "Twist assist uitgezet"
+  }
+}

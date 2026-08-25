@@ -48,5 +48,84 @@
   "2.0.4": {
     "en": "Lock state is reported using the new webhook flow.",
     "nl": "Slot status wordt gewijzigd met de nieuwe webhook flow."
+  },
+  "2.0.5": {
+    "en": "Increase speed of adding a new lock.",
+    "nl": "Toevoegen van het slot is sneller geworden."
+  },
+  "2.1.0": {
+    "en": "Prevent sending duplicate lock action.",
+    "nl": "Het slot zal een slot actie maar 1 keer sturen."
+  },
+  "2.1.1": {
+    "en": "Prevent sending duplicate lock action.",
+    "nl": "Het slot zal een slot actie maar 1 keer sturen."
+  },
+  "2.1.2": {
+    "en": "Prevent sending duplicate lock action.",
+    "nl": "Het slot zal een slot actie maar 1 keer sturen."
+  },
+  "2.1.3": {
+    "en": "Prevent lock action from being executed twice.",
+    "nl": "Voorkom dat de vergrendelingsactie twee keer wordt uitgevoerd."
+  },
+  "3.0.0": {
+    "en": "Using the new API. Added battery info and optimized flow cards.",
+    "nl": "Gebruik van de nieuwe API. Batterij informatie toegevoegd en flow kaarten geoptimaliseerd."
+  },
+  "3.1.0": {
+    "en": "Add open house mode trigger, sync device state."
+  },
+  "3.1.1": {
+    "en": "Add open house mode trigger, sync device state.",
+    "nl": "Open huis modus trigger toegevoegd, apparaat status synchroniseren."
+  },
+  "3.2.0": {
+    "en": "Add device availability.",
+    "nl": "Apparaat beschikbaarheid toegevoegd."
+  },
+  "3.3.0": {
+    "en": "Open lock action is fixed.",
+    "nl": "Open slot actie is gefixt."
+  },
+  "3.3.1": {
+    "en": "Rebuild of version 3.\nAdded Open House Mode, Twist Assist and Touch to Connect.\nYou are advised to remove existing locks and pair them again in the Homey App for the best experience.\nIf you had the test version 3 installed, you need to remove and re-pair devices.",
+    "nl": "Herbouwde versie 3.\nTouwtje uit de brievenbus, Twist Assist en Touch to Connect zijn toegevoegd.\nVoor de beste ervaring wordt u geadviseerd om bestaande sloten te verwijderen en deze opnieuw te koppelen in de Homey App.\nAls u de testversie 3 had geïnstalleerd, moet u apparaten verwijderen en opnieuw koppelen."
+  },
+  "3.3.2": {
+    "en": "Fixed: Flowcards.",
+    "nl": "Opgelost: flowkaarten."
+  },
+  "3.3.3": {
+    "en": "Resolved: Authorization was refreshed incorrectly.",
+    "nl": "Opgelost: Authorizatie werd niet correct onderhouden."
+  },
+  "3.4.1": {
+    "en": "Resolved: Authorization was refreshing incorrectly.\nExtra options didn't always work correctly.\nWhen a device is offline (bridge) the device will be set to unavailable.\nWhen the lock status is unknown, nothing will be triggered and a warning is shown on the device.",
+    "nl": "Opgelost: Autorisatie werd onjuist vernieuwd.\nExtra opties werkten niet altijd correct.\nWanneer een apparaat offline is (bridge), wordt het apparaat ingesteld op niet beschikbaar.\nAls de vergrendelingsstatus onbekend is, wordt er niets geactiveerd en wordt er een waarschuwing weergegeven op het apparaat."
+  },
+  "3.4.2": {
+    "en": "Resolved: Extra settings like Twist Assist or Guest Mode didn't work for everyone. Now it should work correctly after a repair of any device.",
+    "nl": "Opgelost: Extra instellingen zoals Twist Assist of Touwtje uit de Brievenbus werkten niet voor iedereen. Nu zou het wel moeten werken na het herstellen van een apparaat."
+  },
+  "3.4.3": {
+    "en": "Resolved: Legacy devices were not updated anymore.",
+    "nl": "Opgelost: Oudere apparaten werden niet meer bijgewerkt."
+  },
+  "3.4.4": {
+    "en": "Resolved: Flowcard lock status changed would not trigger when changed in Homey.",
+    "nl": "Opgelost: De flowkaart Slot status veranderd werd niet geactiveerd wanneer deze in Homey wordt gewijzigd."
+  },
+  "3.4.5": {
+    "en": "Added: The OAuth device now has a Lock Status Changed flowcard.",
+    "nl": "Opgelost: Het OAuth apparaat heeft nu een Flowkaart Slot status gewijzigd."
+  },
+  "3.4.6": {
+    "en": "Debug version: Enabled extensive logging.",
+    "nl": "Foutopsporingsversie: uitgebreide logboekregistratie ingeschakeld."
+  },
+  "3.4.7": {
+    "en": "Setting added: When unlocking a lock the lock is also opened.",
+    "nl": "Instelling toegevoegd: Bij het ontgrendelen van een slot wordt het slot ook geopend." 
   }
 }

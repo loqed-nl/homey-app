@@ -1,13 +1,18 @@
 {
   "id": "com.loqed.touch-smart-lock",
-  "version": "2.0.4",
+  "version": "3.4.7",
   "compatibility": ">= 5.0.0",
+  "platforms": [
+    "local",
+    "cloud"
+  ],
   "brandColor": "#002746",
   "sdk": 3,
   "name": {
     "en": "LOQED",
     "nl": "LOQED"
   },
+  "homeyCommunityTopicId": 89816,
   "tags": {
     "en": [
       "loqed",
@@ -30,7 +35,7 @@
     "small": "/assets/images/small.jpg"
   },
   "homepage": "https://loqed.com",
-  "support": "mailto:support@loqed.com",
+  "support": "mailto:homey@loqed.com",
   "author": {
     "name": "LOQED B.V.",
     "email": "support@loqed.com",
@@ -38,6 +43,10 @@
   },
   "contributors": {
     "developers": [
+      {
+        "name": "Arie J. Godschalk",
+        "email": "arie@qluster-it.nl"
+      },
       {
         "name": "Bert van Hoekelen",
         "email": "bert@magwel.nl"

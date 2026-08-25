@@ -13,6 +13,10 @@
       "args": [
         {
           "type": "dropdown",
+          "title": {
+            "en": "Bolt state",
+            "nl": "Vergrendeling"
+          },
           "name": "lockState",
           "placeholder": {
             "en": "Lock state",

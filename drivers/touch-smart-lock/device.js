@@ -9,7 +9,7 @@ const STATE_OPEN = 'OPEN';
 const STATE_LATCH = 'DAY_LOCK';
 const STATE_NIGHT_LOCK = 'NIGHT_LOCK';
 
-class TouchSmartLockDevice extends Homey.Device {
+class TouchSmartLockDeviceLegacy extends Homey.Device {
   async onInit() {
     this.util = new Util({ homey: this.homey });
     this._flowLockStateChanged = this.homey.flow.getDeviceTriggerCard('lock_state_changed');
@@ -70,4 +70,4 @@ class TouchSmartLockDevice extends Homey.Device {
   }
 }
 
-module.exports = TouchSmartLockDevice;
+module.exports = TouchSmartLockDeviceLegacy;
