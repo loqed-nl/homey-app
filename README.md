@@ -15,3 +15,8 @@ When unsure about a contribution or when you want to discuss a new feature pleas
 
 No longer active:
 -   [Bert van Hoekelen](https://github.com/bertvanhoekelen)
+
+
+### Links
+https://app.loqed.com/
+https://support.loqed.com/
