@@ -34,6 +34,55 @@
             "en": "john@example.com",
             "nl": "jan@voorbeeld.nl"
           }
+        },          
+        {
+          "type": "string",
+          "name": "keyAdminName",
+          "title": {
+            "en": "Key Name (Admin)",
+            "nl": "Sleutel Naam (Admin)"
+          },
+          "example": {
+            "en": "Frontdoor (Henk)",
+            "nl": "Voordeur (Henk)"
+          }
+        }
+      ]
+    },
+    {
+      "id": "oauth_lock_state_unknown",
+      "title": {
+        "en": "Lock state unknown",
+        "nl": "Slot status onbekend"
+      },
+      "hint": {
+        "en": "Lock status is unknown.",
+        "nl": "Slot status is onbekend."
+      },
+      "tokens": [
+        {
+          "type": "string",
+          "name": "keyAccountEmail",
+          "title": {
+            "en": "Email address",
+            "nl": "E-mailadres"
+          },
+          "example": {
+            "en": "john@example.com",
+            "nl": "jan@voorbeeld.nl"
+          }
+        },          
+        {
+          "type": "string",
+          "name": "keyAdminName",
+          "title": {
+            "en": "Key Name (Admin)",
+            "nl": "Sleutel Naam (Admin)"
+          },
+          "example": {
+            "en": "Frontdoor (Henk)",
+            "nl": "Voordeur (Henk)"
+          }
         }
       ]
     },
@@ -47,7 +96,33 @@
       "titleFormatted": {
         "en": "Opened",
         "nl": "Geopend"
-      }
+      },
+      "tokens": [
+        {
+          "type": "string",
+          "name": "keyAccountEmail",
+          "title": {
+            "en": "Email address",
+            "nl": "E-mailadres"
+          },
+          "example": {
+            "en": "john@example.com",
+            "nl": "jan@voorbeeld.nl"
+          }
+        },        
+        {
+          "type": "string",
+          "name": "keyAdminName",
+          "title": {
+            "en": "Key Name (Admin)",
+            "nl": "Sleutel Naam (Admin)"
+          },
+          "example": {
+            "en": "Frontdoor (Henk)",
+            "nl": "Voordeur (Henk)"
+          }
+        }
+      ]
     },
     {
       "id": "key_state",

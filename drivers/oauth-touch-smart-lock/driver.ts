@@ -45,6 +45,7 @@ module.exports = class TouchSmartLockDriver extends OAuth2Driver {
   private openedTrigger: FlowCardTriggerDevice | undefined;
   private openHouseModeChangedTrigger: FlowCardTriggerDevice | undefined;
   private lockStateChangedTrigger: FlowCardTriggerDevice | undefined;
+  private lockStateUnknownTrigger: FlowCardTriggerDevice | undefined;
 
 
   async onOAuth2Init() {
@@ -88,6 +89,11 @@ module.exports = class TouchSmartLockDriver extends OAuth2Driver {
         return true;
       });
 
+    this.lockStateUnknownTrigger = this.homey.flow.getDeviceTriggerCard("oauth_lock_state_unknown")
+      .registerRunListener(async (args: undefined, state: undefined) => {
+        return true;
+      });
+
 
 
     this.twistAssistChangedTrigger = this.homey.flow.getDeviceTriggerCard("twist_assist_changed")
@@ -106,7 +112,7 @@ module.exports = class TouchSmartLockDriver extends OAuth2Driver {
 
         await device.changeOpen(BoltState.OPEN);
         await device.setCapabilityValue('locked', false);
-        await device.oAuth2Client.changeBoltState(device.getData().id, BoltState.OPEN);
+        await device.changeBoltState(device.getData().id, BoltState.OPEN);
       });
 
     this.set_open_house_modeAction = this.homey.flow.getActionCard('set_open_house_mode')
@@ -171,20 +177,34 @@ module.exports = class TouchSmartLockDriver extends OAuth2Driver {
   }
 
   
-  async triggerLockedStateChangedFlow(device: Device, state: undefined, lockState:string, keyAccountEmail:string) {
+  async triggerLockedStateChangedFlow(device: Device, state: undefined, lockState:string, keyAccountEmail:string, keyAdminName:string) {
     this.lockStateChangedTrigger
       ?.trigger(device, {
         lockState: lockState,
-        keyAccountEmail: keyAccountEmail
+        keyAccountEmail: keyAccountEmail,
+        keyAdminName: keyAdminName
+      }, state)
+      .then(() => { })
+      .catch(this.error);
+  }
+
+  async triggerLockedStateUnknownFlow(device: Device, state: undefined, keyAccountEmail:string, keyAdminName:string) {
+    this.lockStateUnknownTrigger
+      ?.trigger(device, {
+        keyAccountEmail: keyAccountEmail,
+        keyAdminName: keyAdminName
       }, state)
       .then(() => { })
       .catch(this.error);
   }
 
 
-  async triggerOpenedFlow(device: Device, state: undefined) {
+  async triggerOpenedFlow(device: Device, state: undefined, keyAccountEmail:string, keyAdminName:string) {
     this.openedTrigger
-      ?.trigger(device, {}, state)
+      ?.trigger(device, {
+        keyAccountEmail: keyAccountEmail,
+        keyAdminName: keyAdminName
+      }, state)
       .then(() => { })
       .catch(this.error);
   }

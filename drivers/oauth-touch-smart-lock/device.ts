@@ -1,6 +1,7 @@
 import LoqedOAuth2Client, { BoltState, OpenHouseMode, SettingArgument, TouchToConnectMode, TwistAssistMode } from "../../lib/LoqedOAuth2Client";
 import { WebhookMessage } from "../../lib/LoqedApp";
-
+import { Defer } from "../../lib/Defer";
+//const Defer = require('../../lib/Defer')
 
 const { OAuth2Device, OAuth2Token  } = require('homey-oauth2app');
 
@@ -12,6 +13,7 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
 
   private boltStateDefer : Defer<BoltState> | undefined;
   private bolStateDeferState : BoltState | undefined;
+  private boltState: BoltState | undefined;
 
   onAdded() {
     const savedSessions = this.homey.app.getSavedOAuth2Sessions();
@@ -113,7 +115,7 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
       if(this.unlockAlsoOpens && lockState == BoltState.DAY_LOCK) lockState = BoltState.OPEN;
       await this.changeOpen(lockState);      
       //await this.driver.triggerLockedStateChangedFlow(this, undefined, lockState, '');
-      var r = await oAuth2Client.changeBoltState(id, lockState);
+      var r = await this.changeBoltState(id, lockState);
       await this.unsetWarning();
       return r;
     });
@@ -124,7 +126,7 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
         await this.setCapabilityValue('locked', false);
 
         //await this.driver.triggerLockedStateChangedFlow(this, undefined, BoltState.OPEN, '');
-        var r = await oAuth2Client.changeBoltState(id, BoltState.OPEN);
+        var r = await this.changeBoltState(id, BoltState.OPEN);
         await this.unsetWarning();
         return r;
       } throw new Error(this.homey.__('errors.open_readonly'));
@@ -179,7 +181,7 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
     const keyAccountMail = body.key_account_email;
     const event_type = body.event_type;
 
-    if (event_type && event_type.startsWith('STATE_CHANGED_') && boltState)
+    if (event_type  && boltState && (event_type.startsWith('STATE_CHANGED_') || event_type.startsWith('MOTOR_STALL')))
       if(this.boltStateDefer) {
         if(boltState===BoltState.UNKNOWN) this.boltStateDefer.reject(new Error(this.homey.__('errors.lock_unknown_warning')));
         if(this.bolStateDeferState && boltState!==this.bolStateDeferState) this.boltStateDefer.reject(new Error(this.homey.__('errors.lock_incorrectly_set_warning')));
@@ -196,18 +198,27 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
     const oAuth2Client: LoqedOAuth2Client = this.oAuth2Client;
     if(this.boltStateDefer) this.boltStateDefer.resolve(boltState);
     this.bolStateDeferState = boltState;
-    this.boltStateDefer = new Defer();
-    this.boltStateDefer.promise.then(x=>{this.boltStateDefer=undefined;this.bolStateDeferState=undefined;});
-    this.boltStateDefer.promise.catch(x=>{this.boltStateDefer=undefined;this.bolStateDeferState=undefined;});
+    let defer = new Defer<BoltState>();
+    this.boltStateDefer = defer;
+    defer.promise.then(x=>{this.boltStateDefer=undefined;this.bolStateDeferState=undefined;});
+    defer.promise.catch(x=>{this.boltStateDefer=undefined;this.bolStateDeferState=undefined;});
     
-    await oAuth2Client.changeBoltState(id, BoltState.OPEN);
+    let oldBoltState = this.getBoltState();
+
+    if(oldBoltState===boltState) defer.resolve(boltState);
     
-    return this.boltStateDefer.promise;
+
+    await oAuth2Client.changeBoltState(id, boltState);
+    
+    
+    return defer.promise;
   }
 
   async setBoltState(boltState: BoltState | undefined, keyNameAdmin: string | undefined, keyAccountMail: string | undefined) {
+    this.boltState = boltState;
     if (boltState === BoltState.UNKNOWN) {
-      await this.setWarning(this.homey.__('errors.lock_unknown_warning'));
+      await this.setWarning(this.homey.__('errors.lock_unknown_warning'));      
+      await this.driver.triggerLockedStateUnknownFlow(this, undefined, keyAccountMail || '', keyNameAdmin || '');
       return;
     } else {
       await this.unsetWarning();
@@ -223,12 +234,23 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
     }
 
     if (boltState) {
-      await this.driver.triggerLockedStateChangedFlow(this, undefined, boltState, (keyAccountMail || keyNameAdmin || ''));
+      await this.driver.triggerLockedStateChangedFlow(this, undefined, boltState, keyAccountMail || '', keyNameAdmin || '');
     }
 
     if (boltState && (boltState === BoltState.OPEN)) {
-      await this.driver.triggerOpenedFlow(this);
+      await this.driver.triggerOpenedFlow(this, undefined, keyAccountMail || '', keyNameAdmin || '');
     }
+
+  }
+
+  getBoltState():BoltState | undefined {
+    return this.boltState;
+    
+      let lockedCapabilityValue = this.getCapabilityValue('locked');
+      let oldBoltState = lockedCapabilityValue === true ? BoltState.NIGHT_LOCK : lockedCapabilityValue === false ? BoltState.DAY_LOCK : undefined;
+
+      if (this.hasCapability('open') && this.getCapabilityValue('open') === true) oldBoltState = BoltState.OPEN;
+      return oldBoltState;
 
   }
 
@@ -246,10 +268,12 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
         await this.setCapabilityValue('measure_battery', battery_percentage);
       }
 
-      let lockedCapabilityValue = this.getCapabilityValue('locked');
-      let oldBoltState = lockedCapabilityValue === true ? BoltState.NIGHT_LOCK : lockedCapabilityValue === false ? BoltState.DAY_LOCK : undefined;
+      let oldBoltState = this.getBoltState();
 
-      if (this.hasCapability('open') && this.getCapabilityValue('open') === true) oldBoltState = BoltState.OPEN;
+      // let lockedCapabilityValue = this.getCapabilityValue('locked');
+      // let oldBoltState = lockedCapabilityValue === true ? BoltState.NIGHT_LOCK : lockedCapabilityValue === false ? BoltState.DAY_LOCK : undefined;
+
+      // if (this.hasCapability('open') && this.getCapabilityValue('open') === true) oldBoltState = BoltState.OPEN;
 
       if (bolt_state !== BoltState.UNKNOWN) await this.unsetWarning();
 

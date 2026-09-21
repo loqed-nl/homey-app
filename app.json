@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "com.loqed.touch-smart-lock",
-  "version": "3.4.10",
+  "version": "3.5.0",
   "compatibility": ">= 5.0.0",
   "platforms": [
     "local",
@@ -101,6 +101,62 @@
               "en": "john@example.com",
               "nl": "jan@voorbeeld.nl"
             }
+          },
+          {
+            "type": "string",
+            "name": "keyAdminName",
+            "title": {
+              "en": "Key Name (Admin)",
+              "nl": "Sleutel Naam (Admin)"
+            },
+            "example": {
+              "en": "Frontdoor (Henk)",
+              "nl": "Voordeur (Henk)"
+            }
+          }
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=oauth-touch-smart-lock"
+          }
+        ]
+      },
+      {
+        "id": "oauth_lock_state_unknown",
+        "title": {
+          "en": "Lock state unknown",
+          "nl": "Slot status onbekend"
+        },
+        "hint": {
+          "en": "Lock status is unknown.",
+          "nl": "Slot status is onbekend."
+        },
+        "tokens": [
+          {
+            "type": "string",
+            "name": "keyAccountEmail",
+            "title": {
+              "en": "Email address",
+              "nl": "E-mailadres"
+            },
+            "example": {
+              "en": "john@example.com",
+              "nl": "jan@voorbeeld.nl"
+            }
+          },
+          {
+            "type": "string",
+            "name": "keyAdminName",
+            "title": {
+              "en": "Key Name (Admin)",
+              "nl": "Sleutel Naam (Admin)"
+            },
+            "example": {
+              "en": "Frontdoor (Henk)",
+              "nl": "Voordeur (Henk)"
+            }
           }
         ],
         "args": [
@@ -121,6 +177,32 @@
           "en": "Opened",
           "nl": "Geopend"
         },
+        "tokens": [
+          {
+            "type": "string",
+            "name": "keyAccountEmail",
+            "title": {
+              "en": "Email address",
+              "nl": "E-mailadres"
+            },
+            "example": {
+              "en": "john@example.com",
+              "nl": "jan@voorbeeld.nl"
+            }
+          },
+          {
+            "type": "string",
+            "name": "keyAdminName",
+            "title": {
+              "en": "Key Name (Admin)",
+              "nl": "Sleutel Naam (Admin)"
+            },
+            "example": {
+              "en": "Frontdoor (Henk)",
+              "nl": "Voordeur (Henk)"
+            }
+          }
+        ],
         "args": [
           {
             "type": "device",
