@@ -13,7 +13,6 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
 
   private boltStateDefer : Defer<BoltState> | undefined;
   private bolStateDeferState : BoltState | undefined;
-  private boltState: BoltState | undefined;
 
   onAdded() {
     const savedSessions = this.homey.app.getSavedOAuth2Sessions();
@@ -182,13 +181,14 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
     const event_type = body.event_type;
     const online = body.online;
 
-    if (event_type  && boltState && (event_type.startsWith('STATE_CHANGED_') || event_type.startsWith('MOTOR_STALL')))
+    if (event_type  && boltState && (event_type.startsWith('STATE_CHANGED_') || event_type.startsWith('MOTOR_STALL'))) {
       if(this.boltStateDefer) {
         if(boltState===BoltState.UNKNOWN) this.boltStateDefer.reject(new Error(this.homey.__('errors.lock_unknown_warning')));
         if(this.bolStateDeferState && boltState!==this.bolStateDeferState) this.boltStateDefer.reject(new Error(this.homey.__('errors.lock_incorrectly_set_warning')));
         this.boltStateDefer.resolve(boltState as BoltState);
       }
       await this.setBoltState(boltState, keyNameAdmin, keyAccountMail);
+    }
 
     if (batteryPercentage) {
       await this.setCapabilityValue('measure_battery', batteryPercentage);
@@ -219,8 +219,9 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
   }
 
   async setBoltState(boltState: BoltState | undefined, keyNameAdmin: string | undefined, keyAccountMail: string | undefined) {
-    this.boltState = boltState;
-    if (boltState === BoltState.UNKNOWN) {
+    let oldBoltState = this.getBoltState();
+    this.setStoreValue('boltState', boltState);
+    if (boltState === BoltState.UNKNOWN && boltState!==oldBoltState) {
       await this.setWarning(this.homey.__('errors.lock_unknown_warning'));      
       await this.driver.triggerLockedStateUnknownFlow(this, undefined, keyAccountMail || '', keyNameAdmin || '');
       return;
@@ -248,13 +249,14 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
   }
 
   getBoltState():BoltState | undefined {
-    return this.boltState;
+    return this.getStoreValue('boltState') as (BoltState | undefined);
+    // return this.boltState;
     
-      let lockedCapabilityValue = this.getCapabilityValue('locked');
-      let oldBoltState = lockedCapabilityValue === true ? BoltState.NIGHT_LOCK : lockedCapabilityValue === false ? BoltState.DAY_LOCK : undefined;
+    //   let lockedCapabilityValue = this.getCapabilityValue('locked');
+    //   let oldBoltState = lockedCapabilityValue === true ? BoltState.NIGHT_LOCK : lockedCapabilityValue === false ? BoltState.DAY_LOCK : undefined;
 
-      if (this.hasCapability('open') && this.getCapabilityValue('open') === true) oldBoltState = BoltState.OPEN;
-      return oldBoltState;
+    //   if (this.hasCapability('open') && this.getCapabilityValue('open') === true) oldBoltState = BoltState.OPEN;
+    //   return oldBoltState;
 
   }
 
