@@ -10,6 +10,9 @@ const SYNC_INTERVAL = 1000 * 60 * 5;
 const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
   private syncInterval: NodeJS.Timer | undefined;
 
+  private boltStateDefer : Defer<BoltState> | undefined;
+  private bolStateDeferState : BoltState | undefined;
+
   onAdded() {
     const savedSessions = this.homey.app.getSavedOAuth2Sessions();
     const {
@@ -176,12 +179,30 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
     const keyAccountMail = body.key_account_email;
     const event_type = body.event_type;
 
-    if (event_type && event_type.startsWith('STATE_CHANGED_'))
+    if (event_type && event_type.startsWith('STATE_CHANGED_') && boltState)
+      if(this.boltStateDefer) {
+        if(boltState===BoltState.UNKNOWN) this.boltStateDefer.reject(new Error(this.homey.__('errors.lock_unknown_warning')));
+        if(this.bolStateDeferState && boltState!==this.bolStateDeferState) this.boltStateDefer.reject(new Error(this.homey.__('errors.lock_incorrectly_set_warning')));
+        this.boltStateDefer.resolve(boltState as BoltState);
+      }
       await this.setBoltState(boltState, keyNameAdmin, keyAccountMail);
 
     if (batteryPercentage) {
       await this.setCapabilityValue('measure_battery', batteryPercentage);
     }
+  }
+
+  async changeBoltState(id:string, boltState:BoltState) {
+    const oAuth2Client: LoqedOAuth2Client = this.oAuth2Client;
+    if(this.boltStateDefer) this.boltStateDefer.resolve(boltState);
+    this.bolStateDeferState = boltState;
+    this.boltStateDefer = new Defer();
+    this.boltStateDefer.promise.then(x=>{this.boltStateDefer=undefined;this.bolStateDeferState=undefined;});
+    this.boltStateDefer.promise.catch(x=>{this.boltStateDefer=undefined;this.bolStateDeferState=undefined;});
+    
+    await oAuth2Client.changeBoltState(id, BoltState.OPEN);
+    
+    return this.boltStateDefer.promise;
   }
 
   async setBoltState(boltState: BoltState | undefined, keyNameAdmin: string | undefined, keyAccountMail: string | undefined) {
