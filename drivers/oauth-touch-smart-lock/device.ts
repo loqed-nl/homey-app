@@ -221,9 +221,10 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
   async setBoltState(boltState: BoltState | undefined, keyNameAdmin: string | undefined, keyAccountMail: string | undefined) {
     let oldBoltState = this.getBoltState();
     this.setStoreValue('boltState', boltState);
-    if (boltState === BoltState.UNKNOWN && boltState!==oldBoltState) {
-      await this.setWarning(this.homey.__('errors.lock_unknown_warning'));      
-      await this.driver.triggerLockedStateUnknownFlow(this, undefined, keyAccountMail || '', keyNameAdmin || '');
+    if (boltState === BoltState.UNKNOWN) {
+      await this.setWarning(this.homey.__('errors.lock_unknown_warning'));
+      if(boltState!==oldBoltState)
+        await this.driver.triggerLockedStateUnknownFlow(this, undefined, keyAccountMail || '', keyNameAdmin || '');
       return;
     } else {
       await this.unsetWarning();
