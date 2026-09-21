@@ -19,6 +19,7 @@ export interface WebhookMessage {
   key_local_id?: string;
   lock_id: string;
   battery_percentage?: number | undefined;
+  online?:number | undefined;
 }
 
 module.exports = class LoqedApp extends OAuth2App {

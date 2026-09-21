@@ -180,6 +180,7 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
     const keyNameAdmin = body.key_name_admin;
     const keyAccountMail = body.key_account_email;
     const event_type = body.event_type;
+    const online = body.online;
 
     if (event_type  && boltState && (event_type.startsWith('STATE_CHANGED_') || event_type.startsWith('MOTOR_STALL')))
       if(this.boltStateDefer) {
@@ -192,6 +193,9 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
     if (batteryPercentage) {
       await this.setCapabilityValue('measure_battery', batteryPercentage);
     }
+    if(online===0 || online===1)
+        await (online===1 ? this.setAvailable() : this.setUnavailable('The device is offline'));
+
   }
 
   async changeBoltState(id:string, boltState:BoltState) {
@@ -261,7 +265,8 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
       //this.log('deviceInfo:\n', deviceInfo);
       let { battery_percentage, supported_lock_states, open_house_mode, online, bolt_state, twist_assist, touch_to_connect } = deviceInfo;
 
-      await (online ? this.setAvailable() : this.setUnavailable('The device is offline'));
+      if(online===0 || online===1)
+        await (online===1 ? this.setAvailable() : this.setUnavailable('The device is offline'));
 
       if (battery_percentage !== undefined && battery_percentage !== null) {
         if (battery_percentage < 0) battery_percentage = 0;

@@ -132,8 +132,8 @@
     "en": "Resolved: When migrated to a new Homey, the lock status would not instantly be refreshed.",
     "nl": "Opgelost: Bij migratie naar een nieuwe Homey-installatie werd de vergrendelingsstatus niet direct bijgewerkt." 
   },
-  "3.5.0": {
-    "en": "Improved: Better error handling and status in device tab and flows when the lock has failed to lock (or unlock or open).\nFlowcards now have the AccountEmail and also the KeyAdminName as tokens.\nAlso a new flowcard: Status is unknown, triggers when the lock status becomes unknown.",
-    "nl": "Verbeterd: Betere foutafhandeling en statusweergave in het Apparaat tabblad en in de flows wanneer het slot niet vergrendeld (of ontgrendeld of geopend) is.\nFlowcards bevatten nu het AccountEmail en de KeyAdminName als tokens.\nOok een nieuwe flowcard: Status is onbekend, die wordt geactiveerd wanneer de slotstatus onbekend wordt." 
+  "3.5.1": {
+    "en": "Improved: Better error handling and status in device tab and flows when the lock has failed to lock (or unlock or open).\nFlowcards now have the AccountEmail and also the KeyAdminName as tokens.\nAlso a new flowcard: Status is unknown, triggers when the lock status becomes unknown.\nOnline is now received as webhook (instantly) and will be showning the device as unavailable if its offline.",
+    "nl": "Verbeterd: Betere foutafhandeling en statusweergave in het Apparaat tabblad en in de flows wanneer het slot niet vergrendeld (of ontgrendeld of geopend) is.\nFlowcards bevatten nu het AccountEmail en de KeyAdminName als tokens.\nOok een nieuwe flowcard: Status is onbekend, die wordt geactiveerd wanneer de slotstatus onbekend wordt.\nDe online status wordt nu als webhook (direct) ontvangen en het apparaat wordt als niet beschikbaar weergegeven als het offline is." 
   }
 }
