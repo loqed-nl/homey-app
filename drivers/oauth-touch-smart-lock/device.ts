@@ -181,6 +181,14 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
     const event_type = body.event_type;
     const online = body.online;
 
+    
+    if(online===0 || online===1)
+        await (online===1 ? this.setAvailable() : this.setUnavailable('The device is offline'));
+      
+    if (batteryPercentage) {
+      await this.setCapabilityValue('measure_battery', batteryPercentage);
+    }
+
     if (event_type  && boltState && (event_type.startsWith('STATE_CHANGED_') || event_type.startsWith('MOTOR_STALL'))) {
       if(this.boltStateDefer) {
         if(boltState===BoltState.UNKNOWN) this.boltStateDefer.reject(new Error(this.homey.__('errors.lock_unknown_warning')));
@@ -190,11 +198,6 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
       await this.setBoltState(boltState, keyNameAdmin, keyAccountMail);
     }
 
-    if (batteryPercentage) {
-      await this.setCapabilityValue('measure_battery', batteryPercentage);
-    }
-    if(online===0 || online===1)
-        await (online===1 ? this.setAvailable() : this.setUnavailable('The device is offline'));
 
   }
 
