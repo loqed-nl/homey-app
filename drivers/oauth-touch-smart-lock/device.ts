@@ -115,7 +115,7 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
       if(this.unlockAlsoOpens && lockState == BoltState.DAY_LOCK) lockState = BoltState.OPEN;
       await this.changeOpen(lockState);      
       //await this.driver.triggerLockedStateChangedFlow(this, undefined, lockState, '');
-      var r = await this.changeBoltState(id, lockState);
+      var r = this.changeBoltState(id, lockState);
       await this.unsetWarning();
       return r;
     });
@@ -126,10 +126,11 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
         await this.setCapabilityValue('locked', false);
 
         //await this.driver.triggerLockedStateChangedFlow(this, undefined, BoltState.OPEN, '');
-        var r = await this.changeBoltState(id, BoltState.OPEN);
+        var r = this.changeBoltState(id, BoltState.OPEN);
         await this.unsetWarning();
         return r;
-      } throw new Error(this.homey.__('errors.open_readonly'));
+      } 
+      throw new Error(this.homey.__('errors.open_readonly'));
     });
 
 
