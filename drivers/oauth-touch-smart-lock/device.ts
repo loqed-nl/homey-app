@@ -95,11 +95,12 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
     const oAuth2Client: LoqedOAuth2Client = this.oAuth2Client;
     const { id } = this.getData();
     
+    if (!this.hasCapability('open')) await this.setSettings({ open_house_mode_button: false, unlock_also_opens: false });
+    
     var s = this.getSettings();
     this.unlockAlsoOpens = s.unlock_also_opens || false;
     //console.log(id);
     //this.unsetStoreValue(WEBHOOK_KEY);
-    if (!this.hasCapability('open')) await this.setSettings({ open_house_mode_button: false });
     const homeyId = await this.homey.cloud.getHomeyId();
     const webHookId = this.getStoreValue(WEBHOOK_KEY);
     if (!webHookId || !webHookId.endsWith(homeyId)) {
@@ -203,16 +204,22 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
 
   async changeBoltState(id:string, boltState:BoltState) {
     const oAuth2Client: LoqedOAuth2Client = this.oAuth2Client;
-    //if(this.boltStateDefer) this.boltStateDefer.resolve(boltState);
+    let oldRequestedBoltState = this.bolStateDeferState || this.getBoltState() ;//this.getRequestedBoltState();
+    if(this.boltStateDefer) this.boltStateDefer.resolve(oldRequestedBoltState ?? boltState);
+    
+    
+    //this.setRequestedBoltState(boltState);
+
     this.bolStateDeferState = boltState;
     let defer = new Defer<BoltState>(30000, this.homey);
     this.boltStateDefer = defer;
-    defer.promise.then(x=>{this.boltStateDefer=undefined;this.bolStateDeferState=undefined;});
-    defer.promise.catch(x=>{this.boltStateDefer=undefined;this.bolStateDeferState=undefined;});
     
-    let oldBoltState = this.getBoltState();
+    defer.promise.then(x=>{ if(this.boltStateDefer==defer) { this.boltStateDefer=undefined;this.bolStateDeferState=undefined; } });
+    defer.promise.catch(x=>{ if(this.boltStateDefer==defer) { this.boltStateDefer=undefined;this.bolStateDeferState=undefined; } });
+    
+    //let oldBoltState = this.getBoltState();
 
-    if(oldBoltState===boltState) defer.resolve(boltState);
+    if(oldRequestedBoltState===boltState) defer.resolve(boltState);
     
 
     await oAuth2Client.changeBoltState(id, boltState);
@@ -254,15 +261,14 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
 
   getBoltState():BoltState | undefined {
     return this.getStoreValue('boltState') as (BoltState | undefined);
-    // return this.boltState;
-    
-    //   let lockedCapabilityValue = this.getCapabilityValue('locked');
-    //   let oldBoltState = lockedCapabilityValue === true ? BoltState.NIGHT_LOCK : lockedCapabilityValue === false ? BoltState.DAY_LOCK : undefined;
-
-    //   if (this.hasCapability('open') && this.getCapabilityValue('open') === true) oldBoltState = BoltState.OPEN;
-    //   return oldBoltState;
-
   }
+
+  // getRequestedBoltState():BoltState | undefined {
+  //   return this.getStoreValue('requestedBoltState') as (BoltState | undefined);
+  // }
+  // setRequestedBoltState(boltState:BoltState | undefined) {
+  //   return this.setStoreValue('requestedBoltState', boltState);
+  // }
 
   async sync(init: boolean) {
     try {
