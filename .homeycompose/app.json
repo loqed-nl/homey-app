@@ -1,6 +1,6 @@
 {
   "id": "com.loqed.touch-smart-lock",
-  "version": "3.5.6",
+  "version": "3.5.7",
   "compatibility": ">= 5.0.0",
   "platforms": [
     "local",
@@ -9,16 +9,18 @@
   "brandColor": "#002746",
   "sdk": 3,
   "name": {
-    "en": "LOQED",
-    "nl": "LOQED"
+    "en": "Shelly Loqed",
+    "nl": "Shelly Loqed"
   },
   "homeyCommunityTopicId": 89816,
   "tags": {
     "en": [
+      "shelly",
       "loqed",
       "lock"
     ],
     "nl": [
+      "shelly",
       "loqed",
       "slot"
     ]
