@@ -9,9 +9,11 @@ export class Defer<T> {
             this.reject = reject;
         });
         if(homey && timeout) {
-            homey.setTimeout(()=>{
+            let timeoutId = homey.setTimeout(()=>{
                 this.reject('timeout');
             }, timeout);
+            this.promise.then(()=> { homey.clearTimeout(timeoutId); });
+            this.promise.catch(()=> { homey.clearTimeout(timeoutId); });
         }
     }
 }
