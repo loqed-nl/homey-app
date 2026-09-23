@@ -174,35 +174,6 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
       this.homey.clearInterval(this.syncInterval);
     }
   }
-  async onWebhook(body: WebhookMessage) {
-    //this.log('webhook body:\n', body);
-    const boltState = body.requested_state;
-    const batteryPercentage = body.battery_percentage;
-    const keyNameAdmin = body.key_name_admin;
-    const keyAccountMail = body.key_account_email;
-    const event_type = body.event_type;
-    const online = body.online;
-
-    
-    if(online===0 || online===1)
-        await (online===1 ? this.setAvailable() : this.setUnavailable('The device is offline'));
-      
-    if (batteryPercentage) {
-      await this.setCapabilityValue('measure_battery', batteryPercentage);
-    }
-
-    if (event_type  && boltState && (event_type.startsWith('STATE_CHANGED_') || event_type.startsWith('MOTOR_STALL'))) {
-      if(this.boltStateDefer) {
-        if(boltState===BoltState.UNKNOWN) this.boltStateDefer.reject(new Error(this.homey.__('errors.lock_unknown_warning')));
-        if(this.bolStateDeferState && boltState!==this.bolStateDeferState) this.boltStateDefer.reject(new Error(this.homey.__('errors.lock_incorrectly_set_warning')));
-        this.boltStateDefer.resolve(boltState as BoltState);
-      }
-      await this.setBoltState(boltState, keyNameAdmin, keyAccountMail);
-    }
-
-
-  }
-
   async changeBoltState(id:string, boltState:BoltState) {
     const oAuth2Client: LoqedOAuth2Client = this.oAuth2Client;
     let oldRequestedBoltState = this.bolStateDeferState || this.getBoltState() ;//this.getRequestedBoltState();
@@ -271,6 +242,37 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
   //   return this.setStoreValue('requestedBoltState', boltState);
   // }
 
+  
+  async onWebhook(body: WebhookMessage) {
+    //this.log('webhook body:\n', body);
+    const boltState = body.requested_state;
+    const batteryPercentage = body.battery_percentage;
+    const keyNameAdmin = body.key_name_admin;
+    const keyAccountMail = body.key_account_email;
+    const event_type = body.event_type;
+    const online = body.online;
+
+    
+    // if(online===0 || online===1)
+    //     await (online===1 ? this.setAvailable() : this.setUnavailable('The device is offline'));
+      
+    if (batteryPercentage) {
+      await this.setCapabilityValue('measure_battery', batteryPercentage);
+    }
+
+    if (event_type  && boltState && (event_type.startsWith('STATE_CHANGED_') || event_type.startsWith('MOTOR_STALL'))) {
+      if(this.boltStateDefer) {
+        if(boltState===BoltState.UNKNOWN) this.boltStateDefer.reject(new Error(this.homey.__('errors.lock_unknown_warning')));
+        if(this.bolStateDeferState && boltState!==this.bolStateDeferState) this.boltStateDefer.reject(new Error(this.homey.__('errors.lock_incorrectly_set_warning')));
+        this.boltStateDefer.resolve(boltState as BoltState);
+      }
+      await this.setBoltState(boltState, keyNameAdmin, keyAccountMail);
+    }
+
+
+  }
+
+
   async sync(init: boolean) {
     try {
       let deviceInfo = await this.driver.getDeviceInfo(this);
@@ -278,8 +280,8 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
       if(process.env.DEBUG === '1') this.log('deviceInfo:\n', deviceInfo);
       let { battery_percentage, supported_lock_states, open_house_mode, online, bolt_state, twist_assist, touch_to_connect } = deviceInfo;
 
-      if(online===0 || online===1)
-        await (online===1 ? this.setAvailable() : this.setUnavailable('The device is offline'));
+      // if(online===false || online===true)
+      //   await (online===true ? this.setAvailable() : this.setUnavailable('The device is offline'));
 
       if (battery_percentage !== undefined && battery_percentage !== null) {
         if (battery_percentage < 0) battery_percentage = 0;
