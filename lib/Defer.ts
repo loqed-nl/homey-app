@@ -3,10 +3,15 @@ export class Defer<T> {
     resolve: (value: T | PromiseLike<T>) => void = ()=>{};
     reject: (reason?: any) => void = ()=>{};
 
-    constructor() {
+    constructor(timeout:Number | undefined = undefined, homey:any = undefined) {
         this.promise = new Promise<T>((resolve, reject) => {
             this.resolve = resolve;
             this.reject = reject;
         });
+        if(homey && timeout) {
+            homey.setTimeout(()=>{
+                this.reject('timeout');
+            }, timeout);
+        }
     }
 }

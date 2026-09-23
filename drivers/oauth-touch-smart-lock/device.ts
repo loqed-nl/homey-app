@@ -203,9 +203,9 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
 
   async changeBoltState(id:string, boltState:BoltState) {
     const oAuth2Client: LoqedOAuth2Client = this.oAuth2Client;
-    if(this.boltStateDefer) this.boltStateDefer.resolve(boltState);
+    //if(this.boltStateDefer) this.boltStateDefer.resolve(boltState);
     this.bolStateDeferState = boltState;
-    let defer = new Defer<BoltState>();
+    let defer = new Defer<BoltState>(30000, this.homey);
     this.boltStateDefer = defer;
     defer.promise.then(x=>{this.boltStateDefer=undefined;this.bolStateDeferState=undefined;});
     defer.promise.catch(x=>{this.boltStateDefer=undefined;this.bolStateDeferState=undefined;});
@@ -268,7 +268,7 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
     try {
       let deviceInfo = await this.driver.getDeviceInfo(this);
       if (!deviceInfo) return;
-      //this.log('deviceInfo:\n', deviceInfo);
+      if(process.env.DEBUG === '1') this.log('deviceInfo:\n', deviceInfo);
       let { battery_percentage, supported_lock_states, open_house_mode, online, bolt_state, twist_assist, touch_to_connect } = deviceInfo;
 
       if(online===0 || online===1)

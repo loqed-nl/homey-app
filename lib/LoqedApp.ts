@@ -64,9 +64,9 @@ module.exports = class LoqedApp extends OAuth2App {
 
           if (deviceLegacy) deviceLegacy.setState(body.requested_state, body.key_account_email).catch(this.error);;
         }
-      } catch (error) {
+      } catch (error:any) {
         if (LoqedApp.OAUTH2_DEBUG) 
-          this.error('webhook legacy error', error);
+          this.error('webhook legacy error', error.message);
       }
 
 
