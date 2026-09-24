@@ -112,7 +112,7 @@ module.exports = class TouchSmartLockDriver extends OAuth2Driver {
 
         await device.changeOpen(BoltState.OPEN);
         await device.setCapabilityValue('locked', false);
-        await this.unsetWarning();
+        await device.unsetWarning();
         return device.changeBoltState(device.getData().id, BoltState.OPEN);
       });
 

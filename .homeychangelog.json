@@ -143,5 +143,9 @@
   "3.5.8": {
     "en": "The name has been changed to Shelly Loqed.",
     "nl": "De naam is veranderd naar Shelly Loqed." 
+  },
+  "3.5.9": {
+    "en": "Resolved: Flowcard open gave an error.",
+    "nl": "Opgelost: Flowkaart open gaf een foutmelding." 
   }
 }
