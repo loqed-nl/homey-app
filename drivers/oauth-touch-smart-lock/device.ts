@@ -111,24 +111,31 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
     }
 
     this.registerCapabilityListener('locked', async (value: any) => {
+      //throw new Error('Error');
       let lockState = (value ? BoltState.NIGHT_LOCK : BoltState.DAY_LOCK);
       if(this.unlockAlsoOpens && lockState == BoltState.DAY_LOCK) lockState = BoltState.OPEN;
       await this.changeOpen(lockState);      
-      //await this.driver.triggerLockedStateChangedFlow(this, undefined, lockState, '');
-      var r = this.changeBoltState(id, lockState);
       await this.unsetWarning();
-      return r;
+      try {        
+        return await this.changeBoltState(id, lockState);
+      } catch (error:any) {
+        this.log(error);
+        throw error;
+      }
     });
 
 
     if (this.hasCapability('open')) this.registerCapabilityListener('open', async (value: Boolean) => {
       if (value) {
         await this.setCapabilityValue('locked', false);
-
-        //await this.driver.triggerLockedStateChangedFlow(this, undefined, BoltState.OPEN, '');
-        var r = this.changeBoltState(id, BoltState.OPEN);
         await this.unsetWarning();
-        return r;
+        //return this.changeBoltState(id, BoltState.OPEN);
+        try {        
+        return await this.changeBoltState(id, BoltState.OPEN);
+      } catch (error:any) {
+        this.log(error);
+        throw error;
+      }
       } 
       throw new Error(this.homey.__('errors.open_readonly'));
     });
@@ -195,8 +202,10 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
     
 
     await oAuth2Client.changeBoltState(id, boltState);
-    
-    
+
+    // setTimeout(()=>{
+    //   defer.reject(new Error(this.homey.__('errors.lock_unknown_warning')));
+    // }, 500);
     return defer.promise;
   }
 
@@ -266,7 +275,7 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
         if(this.bolStateDeferState && boltState!==this.bolStateDeferState) this.boltStateDefer.reject(new Error(this.homey.__('errors.lock_incorrectly_set_warning')));
         this.boltStateDefer.resolve(boltState as BoltState);
       }
-      await this.setBoltState(boltState, keyNameAdmin, keyAccountMail);
+      return await this.setBoltState(boltState, keyNameAdmin, keyAccountMail);
     }
 
 

@@ -113,7 +113,13 @@ module.exports = class TouchSmartLockDriver extends OAuth2Driver {
         await device.changeOpen(BoltState.OPEN);
         await device.setCapabilityValue('locked', false);
         await device.unsetWarning();
-        return device.changeBoltState(device.getData().id, BoltState.OPEN);
+        //return device.changeBoltState(device.getData().id, BoltState.OPEN);
+        try {        
+          return await device.changeBoltState(device.getData().id, BoltState.OPEN);
+        } catch (error:any) {
+          this.log(error);
+          throw error;
+        }
       });
 
     this.set_open_house_modeAction = this.homey.flow.getActionCard('set_open_house_mode')
