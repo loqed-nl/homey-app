@@ -132,7 +132,7 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
       if (value) {
         await this.setCapabilityValue('locked', false);
         await this.unsetWarning();
-        //return this.changeBoltState(id, BoltState.OPEN);
+        
         try {        
         return await this.changeBoltState(id, BoltState.OPEN);
       } catch (error:any) {
@@ -247,13 +247,6 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
     return this.getStoreValue('boltState') as (BoltState | undefined);
   }
 
-  // getRequestedBoltState():BoltState | undefined {
-  //   return this.getStoreValue('requestedBoltState') as (BoltState | undefined);
-  // }
-  // setRequestedBoltState(boltState:BoltState | undefined) {
-  //   return this.setStoreValue('requestedBoltState', boltState);
-  // }
-
   
   async onWebhook(body: WebhookMessage) {
     //this.log('webhook body:\n', body);
@@ -275,8 +268,8 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
     if (event_type  && boltState && (event_type.startsWith('STATE_CHANGED_') || event_type.startsWith('MOTOR_STALL'))) {
       if(this.boltStateDefer) {
         if(boltState===BoltState.UNKNOWN) this.boltStateDefer.reject(new Error(this.homey.__('errors.lock_unknown_warning')));
-        if(this.bolStateDeferState && boltState!==this.bolStateDeferState) this.boltStateDefer.reject(new Error(this.homey.__('errors.lock_incorrectly_set_warning')));
-        this.boltStateDefer.resolve(boltState as BoltState);
+        else if(this.bolStateDeferState && boltState!==this.bolStateDeferState) this.boltStateDefer.reject(new Error(this.homey.__('errors.lock_incorrectly_set_warning')));
+        else this.boltStateDefer.resolve(boltState as BoltState);
       }
       return await this.setBoltState(boltState, keyNameAdmin, keyAccountMail);
     }
