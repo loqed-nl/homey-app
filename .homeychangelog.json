@@ -155,5 +155,9 @@
   "3.5.12": {
     "en": "The name has been changed to Shelly Loqed.",
     "nl": "De naam is veranderd naar Shelly Loqed." 
+  },
+  "3.5.13": {
+    "en": "Added an error when trying to set the setting 'Unlock also opens the lock' for locks that don't have 'open'.",
+    "nl": "Foutmelding toegevoegd wanneer je de instelling 'Ontgrendelen opent ook het slot' probeert in te stellen voor een slot dat geen 'open' heeft." 
   }
 }

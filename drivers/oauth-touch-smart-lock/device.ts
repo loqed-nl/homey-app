@@ -55,7 +55,10 @@ const SmartLockDevice = class SmartLockDevice extends OAuth2Device {
         }
         if (this.hasCapability('open_house_mode')) await this.removeCapability('open_house_mode');
       }
-    } else if (newSettings.open_house_mode_button) throw new Error(this.homey.__('errors.cannot_set_open_house_mode_button'));
+    } else {
+      if (newSettings.open_house_mode_button) throw new Error(this.homey.__('errors.cannot_set_open_house_mode_button'));
+      if (newSettings.unlock_also_opens) throw new Error(this.homey.__('errors.cannot_set_unlock_also_opens'));
+    }
 
     let varTwistAssist = this.hasCapability('twist_assist') ? this.getCapabilityValue('twist_assist') : this.getCapabilityValue('twist_assist_sensor');
     if (newSettings.twist_assist_button) {
