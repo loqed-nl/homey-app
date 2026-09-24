@@ -147,5 +147,13 @@
   "3.5.10": {
     "en": "Resolved: Spelling.",
     "nl": "Opgelost: Spelling." 
+  },
+  "3.5.11": {
+    "en": "Resolved: Open.",
+    "nl": "Opgelost: Open." 
+  },
+  "3.5.12": {
+    "en": "The name has been changed to Shelly Loqed.",
+    "nl": "De naam is veranderd naar Shelly Loqed." 
   }
 }
